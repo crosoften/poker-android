@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main_user.xml"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.draccoapp.poker.ui.fragments.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_detailTournamentFragment"
+            app:destination="@id/detailTournamentFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_applicantTournamentFragment"
+            app:destination="@id/applicantTournamentFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_nextTournamentFragment"
+            app:destination="@id/nextTournamentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/coachFragment"
+        android:name="com.draccoapp.poker.ui.fragments.coach.CoachFragment"
+        android:label="fragment_coach"
+        tools:layout="@layout/fragment_coach" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.draccoapp.poker.ui.fragments.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_applicantTournamentFragment"
+            app:destination="@id/applicantTournamentFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_detailTournamentFragment"
+            app:destination="@id/detailTournamentFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_contractFragment"
+            app:destination="@id/contractFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_termsUseFragment"
+            app:destination="@id/termsUseFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_politicPrivacyFragment"
+            app:destination="@id/politicPrivacyFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_contactFragment"
+            app:destination="@id/contactFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_centerHelpFragment"
+            app:destination="@id/centerHelpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tournamentFragment"
+        android:name="com.draccoapp.poker.ui.fragments.tournament.TournamentFragment"
+        android:label="fragment_tournament"
+        tools:layout="@layout/fragment_tournament" />
+    <fragment
+        android:id="@+id/detailTournamentFragment"
+        android:name="com.draccoapp.poker.ui.fragments.tournament.DetailTournamentFragment"
+        android:label="DetailTournamentFragment" >
+        <action
+            android:id="@+id/action_detailTournamentFragment_to_gatewayFragment"
+            app:destination="@id/gatewayFragment" />
+        <argument
+            android:name="tournament"
+            app:argType="com.draccoapp.poker.data.Tournament" />
+        <action
+            android:id="@+id/action_detailTournamentFragment_to_tournamentUpdateFragment"
+            app:destination="@id/tournamentUpdateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gatewayFragment"
+        android:name="com.draccoapp.poker.ui.fragments.tournament.GatewayFragment"
+        android:label="GatewayFragment" >
+        <action
+            android:id="@+id/action_gatewayFragment_to_subscribeTournamentFragment"
+            app:destination="@id/subscribeTournamentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/subscribeTournamentFragment"
+        android:name="com.draccoapp.poker.ui.fragments.tournament.SubscribeTournamentFragment"
+        android:label="SubscribeTournamentFragment" />
+    <fragment
+        android:id="@+id/applicantTournamentFragment"
+        android:name="com.draccoapp.poker.ui.fragments.tournament.applicant.ApplicantTournamentFragment"
+        android:label="ApplicantTournamentFragment" />
+    <fragment
+        android:id="@+id/nextTournamentFragment"
+        android:name="com.draccoapp.poker.ui.fragments.tournament.next.NextTournamentFragment"
+        android:label="NextTournamentFragment" />
+    <fragment
+        android:id="@+id/contractFragment"
+        android:name="com.draccoapp.poker.ui.fragments.contract.ContractFragment"
+        android:label="ContractFragment" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.draccoapp.poker.ui.fragments.profile.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/centerHelpFragment"
+        android:name="com.draccoapp.poker.ui.fragments.profile.CenterHelpFragment"
+        android:label="fragment_center_help"
+        tools:layout="@layout/fragment_center_help" />
+    <fragment
+        android:id="@+id/contactFragment"
+        android:name="com.draccoapp.poker.ui.fragments.profile.ContactFragment"
+        android:label="fragment_contact"
+        tools:layout="@layout/fragment_contact" />
+    <fragment
+        android:id="@+id/politicPrivacyFragment"
+        android:name="com.draccoapp.poker.ui.fragments.profile.PoliticPrivacyFragment"
+        android:label="fragment_politic_privacy"
+        tools:layout="@layout/fragment_politic_privacy" />
+    <fragment
+        android:id="@+id/termsUseFragment"
+        android:name="com.draccoapp.poker.ui.fragments.profile.TermsUseFragment"
+        android:label="fragment_terms_use"
+        tools:layout="@layout/fragment_terms_use" />
+    <fragment
+        android:id="@+id/addUpdateFragment"
+        android:name="com.draccoapp.poker.ui.fragments.tournament.AddUpdateFragment"
+        android:label="AddUpdateFragment" />
+    <fragment
+        android:id="@+id/detailUpdateFragment"
+        android:name="com.draccoapp.poker.ui.fragments.tournament.DetailUpdateFragment"
+        android:label="DetailUpdateFragment" >
+        <action
+            android:id="@+id/action_detailUpdateFragment_to_addUpdateFragment"
+            app:destination="@id/addUpdateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tournamentUpdateFragment"
+        android:name="com.draccoapp.poker.ui.fragments.tournament.TournamentUpdateFragment"
+        android:label="TournamentUpdateFragment" >
+        <action
+            android:id="@+id/action_tournamentUpdateFragment_to_detailUpdateFragment"
+            app:destination="@id/detailUpdateFragment" />
+    </fragment>
+</navigation>
