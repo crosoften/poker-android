@@ -6,25 +6,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.draccoapp.poker.R
-import com.draccoapp.poker.data.Tournament
-import com.draccoapp.poker.data.randomTournament
+import coil.load
+import com.draccoapp.poker.api.model.response.Tournament
+import com.draccoapp.poker.api.model.response.User
 import com.draccoapp.poker.databinding.FragmentProfileBinding
-import com.draccoapp.poker.databinding.FragmentSplashBinding
+import com.draccoapp.poker.extensions.showSnackBarRed
 import com.draccoapp.poker.ui.activities.AccountActivity
 import com.draccoapp.poker.ui.adapters.TournamentAdapter
-import com.draccoapp.poker.ui.fragments.home.HomeFragmentDirections
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.draccoapp.poker.viewModel.UserViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
+    private val TAG = "HomeFragment"
+    private val viewModel : UserViewModel by viewModel()
 
     private lateinit var applicantAdapter: TournamentAdapter
 
@@ -40,10 +40,47 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupObserver()
         onclick()
         setupRecycler()
-        initModels()
 
+    }
+
+    private fun setupObserver() {
+
+        viewModel.getUserById()
+        viewModel.getTournamentsAvailableToUser()
+        viewModel.getTournamentsJoinedByUser()
+
+        viewModel.user.observe(viewLifecycleOwner) { response ->
+            setupUI(response)
+        }
+
+        viewModel.tournamentApplicant.observe(viewLifecycleOwner) { response ->
+            val list: MutableList<Tournament> = mutableListOf()
+            response.applicantTournament.forEach {
+                list.add(it.tournament)
+            }
+            applicantAdapter.updateList(list)
+            applicantAdapter.setUnit(viewModel.getUnit())
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            error?.let {
+                binding.root.showSnackBarRed(it)
+            }
+        }
+
+    }
+
+    private fun setupUI(response: User) {
+        binding.apply {
+
+            imgProfile.load(response.profilePicture){
+                crossfade(true)
+            }
+            textName.text = response.name
+        }
     }
 
     private fun onclick() {
@@ -111,20 +148,6 @@ class ProfileFragment : Fragment() {
             }
 
         }
-    }
-
-    private fun initModels() {
-
-        val numTournamentToAdd = 10
-
-        lifecycleScope.launch {
-            val tournamentToAdd = (1..numTournamentToAdd).map { randomTournament() }
-
-            launch(Dispatchers.Main) {
-                applicantAdapter.updateList(tournamentToAdd)
-            }
-        }
-
     }
 
     private fun setupRecycler() {

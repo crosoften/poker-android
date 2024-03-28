@@ -10,16 +10,19 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.draccoapp.poker.R
-import com.draccoapp.poker.data.Tournament
+import com.draccoapp.poker.api.model.response.Tournament
 import com.draccoapp.poker.data.randomTournament
 import com.draccoapp.poker.databinding.FragmentAllApplicantBinding
+import com.draccoapp.poker.extensions.showSnackBarRed
 import com.draccoapp.poker.ui.adapters.TournamentAdapter
 import com.draccoapp.poker.ui.adapters.TournamentListAdapter
 import com.draccoapp.poker.ui.fragments.home.HomeFragmentDirections
+import com.draccoapp.poker.viewModel.UserViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class AllApplicantFragment : Fragment() {
@@ -27,6 +30,8 @@ class AllApplicantFragment : Fragment() {
     private var _binding: FragmentAllApplicantBinding? = null
     private val binding get() = _binding!!
 
+    private val TAG = "AllApplicantFragment"
+    private val viewModel : UserViewModel by viewModel()
 
     private lateinit var applicantAdapter: TournamentListAdapter
 
@@ -42,9 +47,9 @@ class AllApplicantFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupObserver()
         onclick()
         setupRecycler()
-        initModels()
     }
 
     private fun onclick() {
@@ -54,18 +59,24 @@ class AllApplicantFragment : Fragment() {
         }
     }
 
-    private fun initModels() {
+    private fun setupObserver() {
 
-        val numTournamentToAdd = 10
+        viewModel.getTournamentsJoinedByUser()
 
-        lifecycleScope.launch {
-            val tournamentToAdd = (1..numTournamentToAdd).map { randomTournament() }
-
-            launch(Dispatchers.Main) {
-                applicantAdapter.updateList(tournamentToAdd)
+        viewModel.tournamentApplicant.observe(viewLifecycleOwner) { response ->
+            val list: MutableList<Tournament> = mutableListOf()
+            response.applicantTournament.forEach {
+                list.add(it.tournament)
             }
+            applicantAdapter.updateList(list)
+            applicantAdapter.setUnit(viewModel.getUnit())
         }
 
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            error?.let {
+                binding.root.showSnackBarRed(it)
+            }
+        }
     }
 
     private fun setupRecycler() {
@@ -79,13 +90,13 @@ class AllApplicantFragment : Fragment() {
     }
 
     private fun onClickTournament(tournament: Tournament){
-//        findNavController()
-//            .navigate(
-//                HomeFragmentDirections
-//                    .actionHomeFragmentToDetailTournamentFragment(
-//                        tournament
-//                    )
-//            )
+        findNavController()
+            .navigate(
+                HomeFragmentDirections
+                    .actionHomeFragmentToDetailTournamentFragment(
+                        tournament
+                    )
+            )
     }
 
     override fun onDestroyView() {

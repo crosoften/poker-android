@@ -12,9 +12,13 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.draccoapp.poker.R
+import com.draccoapp.poker.api.model.request.Login
 import com.draccoapp.poker.databinding.FragmentLoginBinding
-import com.draccoapp.poker.databinding.FragmentSplashBinding
 import com.draccoapp.poker.ui.activities.MainActivity
+import com.draccoapp.poker.utils.Validation
+import com.draccoapp.poker.extensions.showSnackBarRed
+import com.draccoapp.poker.viewModel.AuthViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class LoginFragment : Fragment() {
@@ -22,6 +26,11 @@ class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: AuthViewModel by viewModel()
+
+    private val TAG = "LoginFragment"
+    private lateinit var email: String
+    private lateinit var password: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,8 +44,29 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupObserver()
         onClick()
         setupUI()
+    }
+
+    private fun setupObserver() {
+
+        viewModel.login.observe(viewLifecycleOwner) { response ->
+            response?.let {
+                if(response.role == "user"){
+                    startActivity(Intent(requireContext(), MainActivity::class.java))
+                    requireActivity().finishAffinity()
+                } else {
+                    binding.root.showSnackBarRed("Usuário não autorizado")
+                }
+            }
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            error?.let {
+                binding.root.showSnackBarRed(it)
+            }
+        }
     }
 
     private fun setupUI() {
@@ -57,11 +87,14 @@ class LoginFragment : Fragment() {
 
         binding.apply {
             buttonEnter.setOnClickListener {
-                findNavController()
-                    .navigate(
-                        LoginFragmentDirections
-                            .actionLoginFragmentToTwoFactorFragment()
+                if(validateOfFields()){
+                    viewModel.login(
+                        Login(
+                            email = email,
+                            password = password
+                        )
                     )
+                }
 
             }
 
@@ -80,6 +113,36 @@ class LoginFragment : Fragment() {
                     )
             }
         }
+
+    }
+
+    private fun validateOfFields(): Boolean {
+
+        email = binding.editEmail.text.toString()
+        password = binding.editPassword.text.toString()
+
+        if(email.isEmpty()){
+            binding.editEmail.error = "Campo obrigatório"
+            return false
+        } else {
+            binding.editEmail.error = null
+        }
+
+        if(Validation.isEmailValid(email).not()){
+            binding.editEmail.error = "E-mail inválido"
+            return false
+        } else {
+            binding.editEmail.error = null
+        }
+
+        if(password.isEmpty()){
+            binding.editPassword.error = "Campo obrigatório"
+            return false
+        } else {
+            binding.editPassword.error = null
+        }
+
+        return true
 
     }
 

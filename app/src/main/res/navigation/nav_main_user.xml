@@ -69,7 +69,7 @@
             app:destination="@id/gatewayFragment" />
         <argument
             android:name="tournament"
-            app:argType="com.draccoapp.poker.data.Tournament" />
+            app:argType="com.draccoapp.poker.api.model.response.Tournament" />
         <action
             android:id="@+id/action_detailTournamentFragment_to_tournamentUpdateFragment"
             app:destination="@id/tournamentUpdateFragment" />
@@ -81,6 +81,9 @@
         <action
             android:id="@+id/action_gatewayFragment_to_subscribeTournamentFragment"
             app:destination="@id/subscribeTournamentFragment" />
+        <argument
+            android:name="tournament"
+            app:argType="com.draccoapp.poker.api.model.response.Tournament" />
     </fragment>
     <fragment
         android:id="@+id/subscribeTournamentFragment"

@@ -6,9 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import coil.load
 import com.draccoapp.poker.R
+import com.draccoapp.poker.api.model.request.Entry
 import com.draccoapp.poker.databinding.FragmentDetailTournamentBinding
 import com.draccoapp.poker.databinding.FragmentGatewayBinding
+import com.draccoapp.poker.extensions.getPreferenceData
+import com.draccoapp.poker.extensions.isoToBrFormat
+import com.draccoapp.poker.extensions.showSnackBarRed
+import com.draccoapp.poker.viewModel.TournamentViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class GatewayFragment : Fragment() {
@@ -16,6 +24,14 @@ class GatewayFragment : Fragment() {
 
     private var _binding: FragmentGatewayBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: TournamentViewModel by viewModel()
+
+    private val args by navArgs<GatewayFragmentArgs>()
+
+    private val tournament by lazy {
+        args.tournament
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +45,45 @@ class GatewayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupObserver()
+        setupUI()
         onClick()
+    }
+
+    private fun setupUI() {
+
+        tournament.imageURL.let {
+            binding.imageView2.load(it) {
+                crossfade(true)
+            }
+        }
+
+        tournament.name.let {
+            binding.textView13.text = it
+        }
+
+        tournament.date.let {
+            binding.textView14.text = it.isoToBrFormat()
+        }
+
+        tournament.prize.let {
+            binding.textView16.text = it.toString()
+        }
+    }
+
+    private fun setupObserver() {
+
+        viewModel.entry.observe(viewLifecycleOwner) {
+            findNavController()
+                .navigate(
+                    GatewayFragmentDirections
+                        .actionGatewayFragmentToSubscribeTournamentFragment()
+                )
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) {
+            binding.root.showSnackBarRed(it)
+        }
     }
 
     private fun onClick() {
@@ -37,11 +91,14 @@ class GatewayFragment : Fragment() {
         binding.apply {
 
             buttonInscrever.setOnClickListener {
-                findNavController()
-                    .navigate(
-                        GatewayFragmentDirections
-                            .actionGatewayFragmentToSubscribeTournamentFragment()
+                viewModel.entryTournament(
+                    Entry(
+                        requireContext().getPreferenceData().getUserId(),
+                        tournament.id,
+                        listOf("string")
                     )
+                )
+
             }
 
             back.setOnClickListener {

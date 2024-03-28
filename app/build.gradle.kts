@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
+    implementation(libs.play.services.location)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -67,6 +68,8 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.rxjava2Adapter)
     implementation(libs.moshiKotlin)
+    implementation(libs.retrofitConverterMoshi)
+    ksp(libs.moshiKotlinKsp)
     implementation(libs.pagingRuntimeKtx)
     implementation(libs.pagingCommonKtx)
 }

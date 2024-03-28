@@ -5,9 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.draccoapp.poker.data.Tournament
-import com.draccoapp.poker.databinding.ItemTournamentBinding
+import coil.load
+import com.draccoapp.poker.api.model.response.Tournament
 import com.draccoapp.poker.databinding.ItemTournamentListBinding
+import com.draccoapp.poker.extensions.isoToBrFormat
+import com.draccoapp.poker.extensions.viewInvisible
 
 class TournamentListAdapter(
     private val onClick: (Tournament) -> Unit
@@ -15,8 +17,14 @@ class TournamentListAdapter(
 
     private var tournamentList: AsyncListDiffer<Tournament> = AsyncListDiffer(this, DiffCallBack)
 
+    private var unit = "km"
+
     fun updateList(list: List<Tournament>){
         tournamentList.submitList(list)
+    }
+
+    fun setUnit(unit: String){
+        this.unit = unit
     }
 
     object DiffCallBack : DiffUtil.ItemCallback<Tournament>() {
@@ -39,16 +47,33 @@ class TournamentListAdapter(
         private val binding: ItemTournamentListBinding
     ): RecyclerView.ViewHolder(binding.root) {
 
-        private val distance = arrayListOf(5, 10, 20, 30, 40, 50)
-
         fun bind(tournament: Tournament){
 
-            binding.textTitleList.text = tournament.title
-            binding.textDateList.text = tournament.dataFull
-            binding.textDistanceList.text = buildString {
-                append(distance.random())
-                append(" km de você")
+            binding.textTitleList.text = tournament.name
+            binding.textDateList.text = tournament.date.isoToBrFormat()
+
+            tournament.imageURL.let { url ->
+                binding.imageView5.load(url) {
+                    crossfade(true)
+                }
             }
+
+            tournament.distance?.let { distance ->
+                when(unit){
+                    "metric" -> binding.textDistanceList.text = buildString {
+                        append(String.format("%.2f", distance))
+                        append(" Km de você")
+                    }
+                    "imperial" -> binding.textDistanceList.text = buildString {
+                        append(String.format("%.2f", distance))
+                        append(" Mi de você")
+                    }
+                }
+            } ?: run {
+                binding.textDistanceList.viewInvisible()
+            }
+
+            binding.chipList.text = "null"
 
             binding.root.setOnClickListener {
                 onClick(tournament)

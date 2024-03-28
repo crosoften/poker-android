@@ -6,10 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.draccoapp.poker.R
-import com.draccoapp.poker.databinding.FragmentAboutBinding
 import com.draccoapp.poker.databinding.FragmentDetailUpdateBinding
-import com.draccoapp.poker.utils.showSnackBar
 
 
 class DetailUpdateFragment : Fragment() {

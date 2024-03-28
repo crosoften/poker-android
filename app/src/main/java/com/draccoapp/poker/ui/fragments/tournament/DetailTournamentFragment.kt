@@ -6,15 +6,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import coil.load
 import com.draccoapp.poker.R
+import com.draccoapp.poker.api.model.request.Entry
 import com.draccoapp.poker.databinding.FragmentDetailTournamentBinding
 import com.draccoapp.poker.databinding.FragmentTournamentBinding
+import com.draccoapp.poker.extensions.getPreferenceData
+import com.draccoapp.poker.extensions.isoToBrFormat
+import com.draccoapp.poker.extensions.isoToDateTimeFormat
+import com.draccoapp.poker.extensions.showSnackBarRed
+import com.draccoapp.poker.extensions.viewInvisible
+import com.draccoapp.poker.viewModel.TournamentViewModel
+import com.draccoapp.poker.viewModel.UserViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class DetailTournamentFragment : Fragment() {
 
     private var _binding: FragmentDetailTournamentBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: TournamentViewModel by viewModel()
+
+    private val args by navArgs<DetailTournamentFragmentArgs>()
+
+    private val tournament by lazy {
+        args.tournament
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,7 +46,61 @@ class DetailTournamentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupUI()
         onClick()
+    }
+
+
+
+    private fun setupUI() {
+
+        tournament.imageURL.let {
+            binding.imageView2.load(it) {
+                crossfade(true)
+            }
+        }
+
+        tournament.name.let {
+            binding.textView13.text = it
+        }
+
+        tournament.date.let {
+            binding.textView14.text = it.isoToBrFormat()
+            binding.textView20.text = it.isoToDateTimeFormat(requireContext())
+        }
+
+        tournament.prize.let {
+            binding.textView16.text = it.toString()
+        }
+
+        tournament.description.let {
+            binding.textView18.text = it
+        }
+
+        binding.textView22.text = buildString {
+            append(tournament.latitude)
+            append(",")
+            append(tournament.longitude)
+
+        }
+
+        tournament.distance?.let { distance ->
+            when(requireContext().getPreferenceData().getUnit()){
+                "metric" -> binding.textView23.text = buildString {
+                    append(String.format("%.2f", distance))
+                    append(" Km de distância do torneio")
+                }
+                "imperial" -> binding.textView23.text = buildString {
+                    append(String.format("%.2f", distance))
+                    append(" Mi de distância do torneio")
+                }
+            }
+        } ?: run {
+            binding.textView23.viewInvisible()
+        }
+
+
+
     }
 
     private fun onClick() {
@@ -38,7 +110,9 @@ class DetailTournamentFragment : Fragment() {
                 findNavController()
                     .navigate(
                         DetailTournamentFragmentDirections
-                            .actionDetailTournamentFragmentToGatewayFragment()
+                            .actionDetailTournamentFragmentToGatewayFragment(
+                                tournament
+                            )
                     )
             }
 

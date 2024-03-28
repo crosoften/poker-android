@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.draccoapp.poker.databinding.FragmentForgotCodeBinding
 import com.draccoapp.poker.ui.activities.MainActivity
 import com.draccoapp.poker.utils.CodeValidatedHandler
-import com.draccoapp.poker.utils.showSnackBarRed
+import com.draccoapp.poker.extensions.showSnackBarRed
 
 
 class ForgotCodeFragment : Fragment() {

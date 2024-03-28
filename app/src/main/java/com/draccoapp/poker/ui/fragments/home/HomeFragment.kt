@@ -1,33 +1,40 @@
 package com.draccoapp.poker.ui.fragments.home
 
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ValueAnimator
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.draccoapp.poker.data.Tournament
-import com.draccoapp.poker.data.randomTournament
+import coil.load
+import com.draccoapp.poker.api.model.request.UpdateLocation
+import com.draccoapp.poker.api.model.response.Tournament
+import com.draccoapp.poker.api.model.response.User
 import com.draccoapp.poker.databinding.FragmentHomeBinding
-import com.draccoapp.poker.databinding.FragmentSplashBinding
 import com.draccoapp.poker.ui.adapters.TournamentAdapter
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.draccoapp.poker.extensions.showSnackBarRed
+import com.draccoapp.poker.viewModel.UserViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private val TAG = "HomeFragment"
+    private val viewModel : UserViewModel by viewModel()
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private lateinit var applicantAdapter: TournamentAdapter
     private lateinit var nextAdapter: TournamentAdapter
@@ -46,10 +53,131 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        setupLocation()
+        checkPermissions()
+        setupObserver()
         onclick()
         setupRecycler()
-        initModels()
+//        initModels()
 
+    }
+
+    private fun checkPermissions(){
+        if (ActivityCompat.checkSelfPermission(
+                requireActivity().applicationContext,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireActivity().applicationContext,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            locationPermissions.launch(
+                arrayOf(
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        } else {
+            setLocation()
+        }
+
+    }
+
+    private val locationPermissions = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()){
+        when {
+            it.getOrDefault(android.Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        android.Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    permissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+                }
+            }
+            it.getOrDefault(android.Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    permissionLauncher.launch(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                }
+            }
+        }
+    }
+
+    private val permissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()){
+        if(it){
+            setLocation()
+        } else {
+            Log.e(TAG, "Permissão negada")
+        }
+    }
+
+
+    private fun setupLocation() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun setLocation(){
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    viewModel.updateLocation(
+                        UpdateLocation(
+                            location.latitude,
+                            location.longitude
+                        )
+                    )
+                }
+            }
+
+    }
+
+    private fun setupObserver() {
+
+        viewModel.getUserById()
+        viewModel.getTournamentsAvailableToUser()
+        viewModel.getTournamentsJoinedByUser()
+
+        viewModel.user.observe(viewLifecycleOwner) { response ->
+            setupUI(response)
+        }
+
+        viewModel.tournamentApplicant.observe(viewLifecycleOwner) { response ->
+            val list: MutableList<Tournament> = mutableListOf()
+            response.applicantTournament.forEach {
+                list.add(it.tournament)
+            }
+            applicantAdapter.updateList(list)
+            applicantAdapter.setUnit(viewModel.getUnit())
+        }
+
+        viewModel.tournamentsByUser.observe(viewLifecycleOwner) { response ->
+            nextAdapter.updateList(response.tournament)
+            nextAdapter.setUnit(viewModel.getUnit())
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            error?.let {
+                binding.root.showSnackBarRed(it)
+            }
+        }
+
+    }
+
+    private fun setupUI(response: User) {
+        binding.apply {
+
+            shapeableImageView.load(response.profilePicture) {
+                crossfade(true)
+            }
+            textName.text = response.name
+        }
     }
 
     private fun onclick() {
@@ -72,21 +200,6 @@ class HomeFragment : Fragment() {
             }
 
         }
-    }
-
-    private fun initModels() {
-
-        val numTournamentToAdd = 10
-
-        lifecycleScope.launch {
-            val tournamentToAdd = (1..numTournamentToAdd).map { randomTournament() }
-
-            launch(Dispatchers.Main) {
-                applicantAdapter.updateList(tournamentToAdd)
-                nextAdapter.updateList(tournamentToAdd)
-            }
-        }
-
     }
 
     private fun setupRecycler() {
