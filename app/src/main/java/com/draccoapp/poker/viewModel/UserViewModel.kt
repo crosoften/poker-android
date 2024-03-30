@@ -8,8 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.draccoapp.poker.api.model.request.Entry
 import com.draccoapp.poker.api.model.request.UpdateLocation
 import com.draccoapp.poker.api.model.response.ApplicanteTournamentResponse
+import com.draccoapp.poker.api.model.response.Tournament
 import com.draccoapp.poker.api.model.response.TournamentResponse
 import com.draccoapp.poker.api.model.response.User
+import com.draccoapp.poker.api.model.response.generateTournaments
 import com.draccoapp.poker.api.model.type.DataState
 import com.draccoapp.poker.repository.TournamentRepository
 import com.draccoapp.poker.repository.UserRepository
@@ -37,15 +39,15 @@ class UserViewModel(
 
     private val _user = MutableLiveData<User>()
 
-    val tournamentsByUser: LiveData<TournamentResponse>
+    val tournamentsByUser: LiveData<List<Tournament>>
         get() = _tournamentNext
 
-    private val _tournamentNext = MutableLiveData<TournamentResponse>()
+    private val _tournamentNext = MutableLiveData<List<Tournament>>()
 
-    val tournamentApplicant: LiveData<ApplicanteTournamentResponse>
+    val tournamentApplicant: LiveData<List<Tournament>>
         get() = _tournamentApplicant
 
-    private val _tournamentApplicant = MutableLiveData<ApplicanteTournamentResponse>()
+    private val _tournamentApplicant = MutableLiveData<List<Tournament>>()
 
     val updateLocation: LiveData<Unit>
         get() = _updateLocation
@@ -54,6 +56,11 @@ class UserViewModel(
 
     private fun saveUser(user: User){
         preferences.saveUser(user)
+    }
+
+    init {
+        _tournamentApplicant.value = generateTournaments()
+        _tournamentNext.value = generateTournaments()
     }
 
     fun getUserById(){
@@ -88,7 +95,7 @@ class UserViewModel(
             Log.e("getTournamentsAvailableToUser", result.toString())
             result.fold(
                 onSuccess = {
-                    _tournamentNext.value = it
+//                    _tournamentNext.value = it
                     _appState.value = DataState.Success
                 },
                 onFailure = {
@@ -110,7 +117,7 @@ class UserViewModel(
             Log.e("getTournamentsJoinedByUser", result.toString())
             result.fold(
                 onSuccess = {
-                    _tournamentApplicant.value = it
+//                    _tournamentApplicant.value = it
                     _appState.value = DataState.Success
                 },
                 onFailure = {

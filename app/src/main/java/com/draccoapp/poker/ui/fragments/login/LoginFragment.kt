@@ -26,7 +26,7 @@ class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: AuthViewModel by viewModel()
+//    private val viewModel: AuthViewModel by viewModel()
 
     private val TAG = "LoginFragment"
     private lateinit var email: String
@@ -51,22 +51,22 @@ class LoginFragment : Fragment() {
 
     private fun setupObserver() {
 
-        viewModel.login.observe(viewLifecycleOwner) { response ->
-            response?.let {
-                if(response.role == "user"){
-                    startActivity(Intent(requireContext(), MainActivity::class.java))
-                    requireActivity().finishAffinity()
-                } else {
-                    binding.root.showSnackBarRed("Usuário não autorizado")
-                }
-            }
-        }
-
-        viewModel.error.observe(viewLifecycleOwner) { error ->
-            error?.let {
-                binding.root.showSnackBarRed(it)
-            }
-        }
+//        viewModel.login.observe(viewLifecycleOwner) { response ->
+//            response?.let {
+//                if(response.role == "user"){
+//                    startActivity(Intent(requireContext(), MainActivity::class.java))
+//                    requireActivity().finishAffinity()
+//                } else {
+//                    binding.root.showSnackBarRed("Usuário não autorizado")
+//                }
+//            }
+//        }
+//
+//        viewModel.error.observe(viewLifecycleOwner) { error ->
+//            error?.let {
+//                binding.root.showSnackBarRed(it)
+//            }
+//        }
     }
 
     private fun setupUI() {
@@ -87,14 +87,18 @@ class LoginFragment : Fragment() {
 
         binding.apply {
             buttonEnter.setOnClickListener {
-                if(validateOfFields()){
-                    viewModel.login(
-                        Login(
-                            email = email,
-                            password = password
-                        )
-                    )
-                }
+
+                startActivity(Intent(requireContext(), MainActivity::class.java))
+                requireActivity().finishAffinity()
+
+//                if(validateOfFields()){
+//                    viewModel.login(
+//                        Login(
+//                            email = email,
+//                            password = password
+//                        )
+//                    )
+//                }
 
             }
 

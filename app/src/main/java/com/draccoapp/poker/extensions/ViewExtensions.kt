@@ -74,24 +74,24 @@ fun Context.copyToClipboard(text: CharSequence) {
 
 
 
-fun String.isoToBrFormat(): String {
-    val isoFormatter = DateTimeFormatter.ISO_DATE_TIME
-    val brFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-    val date = LocalDate.parse(this, isoFormatter)
-    return date.format(brFormatter)
-}
+//fun String.isoToBrFormat(): String {
+//    val isoFormatter = DateTimeFormatter.ISO_DATE_TIME
+//    val brFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+//    val date = LocalDate.parse(this, isoFormatter)
+//    return date.format(brFormatter)
+//}
 
 
-fun String.isoToDateTimeFormat(context: Context): String {
-
-    val preferences = Preferences(context)
-    val isoFormatter = DateTimeFormatter.ISO_DATE_TIME
-    val locale = Locale(preferences.getLanguage(), preferences.getCountry())
-    val localFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", locale)
-    val date = LocalDateTime.parse(this, isoFormatter)
-    val localDate = date.atZone(ZoneId.of("UTC")).toLocalDateTime()
-    return localDate.format(localFormatter)
-}
+//fun String.isoToDateTimeFormat(context: Context): String {
+//
+//    val preferences = Preferences(context)
+//    val isoFormatter = DateTimeFormatter.ISO_DATE_TIME
+//    val locale = Locale(preferences.getLanguage(), preferences.getCountry())
+//    val localFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", locale)
+//    val date = LocalDateTime.parse(this, isoFormatter)
+//    val localDate = date.atZone(ZoneId.of("UTC")).toLocalDateTime()
+//    return localDate.format(localFormatter)
+//}
 
 fun Context.openWebPage(url: String) {
     val webpage: Uri = Uri.parse(url)

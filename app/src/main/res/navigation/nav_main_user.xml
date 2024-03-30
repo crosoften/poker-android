@@ -92,11 +92,19 @@
     <fragment
         android:id="@+id/applicantTournamentFragment"
         android:name="com.draccoapp.poker.ui.fragments.tournament.applicant.ApplicantTournamentFragment"
-        android:label="ApplicantTournamentFragment" />
+        android:label="ApplicantTournamentFragment" >
+        <action
+            android:id="@+id/action_applicantTournamentFragment_to_detailTournamentFragment"
+            app:destination="@id/detailTournamentFragment" />
+    </fragment>
     <fragment
         android:id="@+id/nextTournamentFragment"
         android:name="com.draccoapp.poker.ui.fragments.tournament.next.NextTournamentFragment"
-        android:label="NextTournamentFragment" />
+        android:label="NextTournamentFragment" >
+        <action
+            android:id="@+id/action_nextTournamentFragment_to_detailTournamentFragment"
+            app:destination="@id/detailTournamentFragment" />
+    </fragment>
     <fragment
         android:id="@+id/contractFragment"
         android:name="com.draccoapp.poker.ui.fragments.contract.ContractFragment"

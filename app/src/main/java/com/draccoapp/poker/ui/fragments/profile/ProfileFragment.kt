@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
+import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.response.Tournament
 import com.draccoapp.poker.api.model.response.User
 import com.draccoapp.poker.databinding.FragmentProfileBinding
@@ -24,7 +25,7 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private val TAG = "HomeFragment"
-    private val viewModel : UserViewModel by viewModel()
+//    private val viewModel : UserViewModel by viewModel()
 
     private lateinit var applicantAdapter: TournamentAdapter
 
@@ -48,28 +49,28 @@ class ProfileFragment : Fragment() {
 
     private fun setupObserver() {
 
-        viewModel.getUserById()
-        viewModel.getTournamentsAvailableToUser()
-        viewModel.getTournamentsJoinedByUser()
-
-        viewModel.user.observe(viewLifecycleOwner) { response ->
-            setupUI(response)
-        }
-
-        viewModel.tournamentApplicant.observe(viewLifecycleOwner) { response ->
-            val list: MutableList<Tournament> = mutableListOf()
-            response.applicantTournament.forEach {
-                list.add(it.tournament)
-            }
-            applicantAdapter.updateList(list)
-            applicantAdapter.setUnit(viewModel.getUnit())
-        }
-
-        viewModel.error.observe(viewLifecycleOwner) { error ->
-            error?.let {
-                binding.root.showSnackBarRed(it)
-            }
-        }
+//        viewModel.getUserById()
+//        viewModel.getTournamentsAvailableToUser()
+//        viewModel.getTournamentsJoinedByUser()
+//
+//        viewModel.user.observe(viewLifecycleOwner) { response ->
+//            setupUI(response)
+//        }
+//
+//        viewModel.tournamentApplicant.observe(viewLifecycleOwner) { response ->
+//            val list: MutableList<Tournament> = mutableListOf()
+//            response.applicantTournament.forEach {
+//                list.add(it.tournament)
+//            }
+//            applicantAdapter.updateList(list)
+//            applicantAdapter.setUnit(viewModel.getUnit())
+//        }
+//
+//        viewModel.error.observe(viewLifecycleOwner) { error ->
+//            error?.let {
+//                binding.root.showSnackBarRed(it)
+//            }
+//        }
 
     }
 
@@ -78,6 +79,8 @@ class ProfileFragment : Fragment() {
 
             imgProfile.load(response.profilePicture){
                 crossfade(true)
+                placeholder(R.drawable.ic_photo_profile)
+                error(R.drawable.ic_photo_profile)
             }
             textName.text = response.name
         }

@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.response.Tournament
 import com.draccoapp.poker.databinding.ItemTournamentListBinding
-import com.draccoapp.poker.extensions.isoToBrFormat
 import com.draccoapp.poker.extensions.viewInvisible
 
 class TournamentListAdapter(
@@ -50,11 +50,13 @@ class TournamentListAdapter(
         fun bind(tournament: Tournament){
 
             binding.textTitleList.text = tournament.name
-            binding.textDateList.text = tournament.date.isoToBrFormat()
+            binding.textDateList.text = tournament.date
 
             tournament.imageURL.let { url ->
                 binding.imageView5.load(url) {
                     crossfade(true)
+                    placeholder(R.drawable.ic_wallpaper)
+                    error(R.drawable.ic_wallpaper)
                 }
             }
 

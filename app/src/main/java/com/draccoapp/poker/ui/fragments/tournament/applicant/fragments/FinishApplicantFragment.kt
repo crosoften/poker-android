@@ -12,6 +12,7 @@ import com.draccoapp.poker.databinding.FragmentFinishApplicantBinding
 import com.draccoapp.poker.extensions.showSnackBarRed
 import com.draccoapp.poker.ui.adapters.TournamentListAdapter
 import com.draccoapp.poker.ui.fragments.home.HomeFragmentDirections
+import com.draccoapp.poker.ui.fragments.tournament.applicant.ApplicantTournamentFragmentDirections
 import com.draccoapp.poker.viewModel.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -49,14 +50,10 @@ class FinishApplicantFragment : Fragment() {
 
     private fun setupObserver() {
 
-        viewModel.getTournamentsJoinedByUser("classificationAccepted")
+//        viewModel.getTournamentsJoinedByUser("classificationAccepted")
 
         viewModel.tournamentApplicant.observe(viewLifecycleOwner) { response ->
-            val list: MutableList<Tournament> = mutableListOf()
-            response.applicantTournament.forEach {
-                list.add(it.tournament)
-            }
-            applicantAdapter.updateList(list)
+            applicantAdapter.updateList(response)
             applicantAdapter.setUnit(viewModel.getUnit())
         }
 
@@ -80,8 +77,8 @@ class FinishApplicantFragment : Fragment() {
     private fun onClickTournament(tournament: Tournament){
         findNavController()
             .navigate(
-                HomeFragmentDirections
-                    .actionHomeFragmentToDetailTournamentFragment(
+                ApplicantTournamentFragmentDirections
+                    .actionApplicantTournamentFragmentToDetailTournamentFragment(
                         tournament
                     )
             )

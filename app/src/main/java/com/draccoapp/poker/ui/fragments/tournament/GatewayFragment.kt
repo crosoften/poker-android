@@ -13,7 +13,6 @@ import com.draccoapp.poker.api.model.request.Entry
 import com.draccoapp.poker.databinding.FragmentDetailTournamentBinding
 import com.draccoapp.poker.databinding.FragmentGatewayBinding
 import com.draccoapp.poker.extensions.getPreferenceData
-import com.draccoapp.poker.extensions.isoToBrFormat
 import com.draccoapp.poker.extensions.showSnackBarRed
 import com.draccoapp.poker.viewModel.TournamentViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -25,7 +24,7 @@ class GatewayFragment : Fragment() {
     private var _binding: FragmentGatewayBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: TournamentViewModel by viewModel()
+//    private val viewModel: TournamentViewModel by viewModel()
 
     private val args by navArgs<GatewayFragmentArgs>()
 
@@ -63,7 +62,7 @@ class GatewayFragment : Fragment() {
         }
 
         tournament.date.let {
-            binding.textView14.text = it.isoToBrFormat()
+            binding.textView14.text = it
         }
 
         tournament.prize.let {
@@ -73,17 +72,17 @@ class GatewayFragment : Fragment() {
 
     private fun setupObserver() {
 
-        viewModel.entry.observe(viewLifecycleOwner) {
-            findNavController()
-                .navigate(
-                    GatewayFragmentDirections
-                        .actionGatewayFragmentToSubscribeTournamentFragment()
-                )
-        }
-
-        viewModel.error.observe(viewLifecycleOwner) {
-            binding.root.showSnackBarRed(it)
-        }
+//        viewModel.entry.observe(viewLifecycleOwner) {
+//            findNavController()
+//                .navigate(
+//                    GatewayFragmentDirections
+//                        .actionGatewayFragmentToSubscribeTournamentFragment()
+//                )
+//        }
+//
+//        viewModel.error.observe(viewLifecycleOwner) {
+//            binding.root.showSnackBarRed(it)
+//        }
     }
 
     private fun onClick() {
@@ -91,13 +90,13 @@ class GatewayFragment : Fragment() {
         binding.apply {
 
             buttonInscrever.setOnClickListener {
-                viewModel.entryTournament(
-                    Entry(
-                        requireContext().getPreferenceData().getUserId(),
-                        tournament.id,
-                        listOf("string")
-                    )
-                )
+//                viewModel.entryTournament(
+//                    Entry(
+//                        requireContext().getPreferenceData().getUserId(),
+//                        tournament.id,
+//                        listOf("string")
+//                    )
+//                )
 
             }
 

@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
+import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.request.UpdateLocation
 import com.draccoapp.poker.api.model.response.Tournament
 import com.draccoapp.poker.api.model.response.User
@@ -127,12 +128,12 @@ class HomeFragment : Fragment() {
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
                 if (location != null) {
-                    viewModel.updateLocation(
-                        UpdateLocation(
-                            location.latitude,
-                            location.longitude
-                        )
-                    )
+//                    viewModel.updateLocation(
+//                        UpdateLocation(
+//                            location.latitude,
+//                            location.longitude
+//                        )
+//                    )
                 }
             }
 
@@ -140,42 +141,40 @@ class HomeFragment : Fragment() {
 
     private fun setupObserver() {
 
-        viewModel.getUserById()
-        viewModel.getTournamentsAvailableToUser()
-        viewModel.getTournamentsJoinedByUser()
-
-        viewModel.user.observe(viewLifecycleOwner) { response ->
-            setupUI(response)
-        }
-
+//        viewModel.getUserById()
+//        viewModel.getTournamentsAvailableToUser()
+//        viewModel.getTournamentsJoinedByUser()
+//
+//        viewModel.user.observe(viewLifecycleOwner) { response ->
+//            setupUI(response)
+//        }
+//
         viewModel.tournamentApplicant.observe(viewLifecycleOwner) { response ->
-            val list: MutableList<Tournament> = mutableListOf()
-            response.applicantTournament.forEach {
-                list.add(it.tournament)
-            }
-            applicantAdapter.updateList(list)
+            applicantAdapter.updateList(response)
             applicantAdapter.setUnit(viewModel.getUnit())
         }
-
+//
         viewModel.tournamentsByUser.observe(viewLifecycleOwner) { response ->
-            nextAdapter.updateList(response.tournament)
+            nextAdapter.updateList(response)
             nextAdapter.setUnit(viewModel.getUnit())
         }
-
-        viewModel.error.observe(viewLifecycleOwner) { error ->
-            error?.let {
-                binding.root.showSnackBarRed(it)
-            }
-        }
+//
+//        viewModel.error.observe(viewLifecycleOwner) { error ->
+//            error?.let {
+//                binding.root.showSnackBarRed(it)
+//            }
+//        }
 
     }
 
     private fun setupUI(response: User) {
         binding.apply {
 
-            shapeableImageView.load(response.profilePicture) {
-                crossfade(true)
-            }
+//            shapeableImageView.load(response.profilePicture) {
+//                crossfade(true)
+//                placeholder(R.drawable.ic_profile)
+//                error(R.drawable.ic_profile)
+//            }
             textName.text = response.name
         }
     }

@@ -41,6 +41,7 @@
                     android:layout_height="60dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
+                    android:src="@drawable/ic_photo_profile"
                     android:scaleType="centerCrop"
                     app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
                     app:layout_constraintStart_toStartOf="parent"

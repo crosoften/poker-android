@@ -57,7 +57,7 @@ play-services-location = { group = "com.google.android.gms", name = "play-servic
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-safeargsAndroid = { id = "androidx.navigation.safeargs", version.ref = "safeargs" }
+safeargsAndroid = { id = "androidx.navigation.safeargs.kotlin", version.ref = "safeargs" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion"}
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize",  version.ref = "kotlinPlugin"  }
 

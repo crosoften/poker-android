@@ -13,8 +13,6 @@ import com.draccoapp.poker.api.model.request.Entry
 import com.draccoapp.poker.databinding.FragmentDetailTournamentBinding
 import com.draccoapp.poker.databinding.FragmentTournamentBinding
 import com.draccoapp.poker.extensions.getPreferenceData
-import com.draccoapp.poker.extensions.isoToBrFormat
-import com.draccoapp.poker.extensions.isoToDateTimeFormat
 import com.draccoapp.poker.extensions.showSnackBarRed
 import com.draccoapp.poker.extensions.viewInvisible
 import com.draccoapp.poker.viewModel.TournamentViewModel
@@ -57,6 +55,8 @@ class DetailTournamentFragment : Fragment() {
         tournament.imageURL.let {
             binding.imageView2.load(it) {
                 crossfade(true)
+                placeholder(R.drawable.ic_wallpaper)
+                error(R.drawable.ic_wallpaper)
             }
         }
 
@@ -65,8 +65,8 @@ class DetailTournamentFragment : Fragment() {
         }
 
         tournament.date.let {
-            binding.textView14.text = it.isoToBrFormat()
-            binding.textView20.text = it.isoToDateTimeFormat(requireContext())
+            binding.textView14.text = it
+            binding.textView20.text = it
         }
 
         tournament.prize.let {

@@ -17,6 +17,8 @@ import com.draccoapp.poker.extensions.showSnackBarRed
 import com.draccoapp.poker.ui.adapters.TournamentAdapter
 import com.draccoapp.poker.ui.adapters.TournamentListAdapter
 import com.draccoapp.poker.ui.fragments.home.HomeFragmentDirections
+import com.draccoapp.poker.ui.fragments.tournament.applicant.ApplicantTournamentFragment
+import com.draccoapp.poker.ui.fragments.tournament.applicant.ApplicantTournamentFragmentDirections
 import com.draccoapp.poker.viewModel.UserViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -61,14 +63,10 @@ class AllApplicantFragment : Fragment() {
 
     private fun setupObserver() {
 
-        viewModel.getTournamentsJoinedByUser()
+//        viewModel.getTournamentsJoinedByUser()
 
         viewModel.tournamentApplicant.observe(viewLifecycleOwner) { response ->
-            val list: MutableList<Tournament> = mutableListOf()
-            response.applicantTournament.forEach {
-                list.add(it.tournament)
-            }
-            applicantAdapter.updateList(list)
+            applicantAdapter.updateList(response)
             applicantAdapter.setUnit(viewModel.getUnit())
         }
 
@@ -92,8 +90,8 @@ class AllApplicantFragment : Fragment() {
     private fun onClickTournament(tournament: Tournament){
         findNavController()
             .navigate(
-                HomeFragmentDirections
-                    .actionHomeFragmentToDetailTournamentFragment(
+                ApplicantTournamentFragmentDirections
+                    .actionApplicantTournamentFragmentToDetailTournamentFragment(
                         tournament
                     )
             )

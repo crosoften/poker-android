@@ -48,10 +48,10 @@ class NextTournamentFragment : Fragment() {
 
     private fun setupObserver() {
 
-        viewModel.getTournamentsAvailableToUser()
+//        viewModel.getTournamentsAvailableToUser()
 
         viewModel.tournamentsByUser.observe(viewLifecycleOwner) { response ->
-            nextAdapter.updateList(response.tournament)
+            nextAdapter.updateList(response)
             nextAdapter.setUnit(viewModel.getUnit())
         }
 
@@ -75,8 +75,8 @@ class NextTournamentFragment : Fragment() {
     private fun onClickTournament(tournament: Tournament){
         findNavController()
             .navigate(
-                HomeFragmentDirections
-                    .actionHomeFragmentToDetailTournamentFragment(
+                NextTournamentFragmentDirections
+                    .actionNextTournamentFragmentToDetailTournamentFragment(
                         tournament
                     )
             )

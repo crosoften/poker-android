@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.draccoapp.poker.api.model.response.Tournament
 import com.draccoapp.poker.databinding.ItemTournamentBinding
-import com.draccoapp.poker.extensions.isoToBrFormat
 import com.draccoapp.poker.extensions.viewInvisible
 
 class TournamentAdapter(
@@ -50,7 +49,8 @@ class TournamentAdapter(
         fun bind(tournament: Tournament){
 
             binding.textTitle.text = tournament.name
-            binding.textDate.text = tournament.date.isoToBrFormat()
+//            binding.textDate.text = tournament.date.isoToBrFormat()
+            binding.textDate.text = tournament.date
 
             tournament.distance?.let { distance ->
                 when(unit){
