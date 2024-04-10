@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.draccoapp.poker.R
 import com.draccoapp.poker.data.Tournament
@@ -43,6 +44,10 @@ class AboutFragment : Fragment() {
 
         binding.apply {
 
+            back.setOnClickListener {
+                findNavController()
+                    .popBackStack()
+            }
 
         }
     }

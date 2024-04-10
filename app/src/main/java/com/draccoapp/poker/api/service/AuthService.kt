@@ -1,12 +1,13 @@
 package com.draccoapp.poker.api.service
 
-import com.draccoapp.poker.api.model.request.ChangePassword
-import com.draccoapp.poker.api.model.request.Contact
+import com.draccoapp.poker.api.model.request.CreateRequest
 import com.draccoapp.poker.api.model.request.Login
-import com.draccoapp.poker.api.model.request.RequestCode
-import com.draccoapp.poker.api.model.request.RequestPasswordReset
+import com.draccoapp.poker.api.model.request.Login2FARequest
+import com.draccoapp.poker.api.model.request.ValidateFieldsRequest
+import com.draccoapp.poker.api.model.response.CreateResponse
+import com.draccoapp.poker.api.model.response.Login2FAResponse
+import com.draccoapp.poker.api.model.response.ValidateFieldsResponse
 import com.draccoapp.poker.api.model.request.ValidateCode
-import com.draccoapp.poker.api.model.request.ValidatePasswordReset
 import com.draccoapp.poker.api.model.response.LoginResponse
 import com.draccoapp.poker.api.model.response.ValidateCodeResponse
 import retrofit2.Response
@@ -15,40 +16,30 @@ import retrofit2.http.POST
 
 interface AuthService {
 
-    @POST("user/auth/requestCode")
-    suspend fun requestCode(
-        @Body body: RequestCode
-    ): Response<Void>
+    @POST("accounts")
+    suspend fun create(
+        @Body body: CreateRequest
+    ): Response<CreateResponse>
 
-    @POST("user/auth/validateCode")
+    @POST("accounts/validate-fields/code")
     suspend fun validateCode(
         @Body body: ValidateCode
     ): Response<ValidateCodeResponse>
 
-    @POST("user/auth/validatePasswordReset")
-    suspend fun validatePasswordReset(
-        @Body body: ValidatePasswordReset
-    ): Response<Void>
+    @POST("accounts/validate-fields")
+    suspend fun validateFields(
+        @Body body: ValidateFieldsRequest
+    ): Response<ValidateFieldsResponse>
 
-    @POST("user/auth/login")
+    @POST("auth/login")
     suspend fun login(
         @Body body: Login
     ): Response<LoginResponse>
 
-    @POST("user/auth/requestPasswordReset")
-    suspend fun requestPasswordReset(
-        @Body body: RequestPasswordReset
-    ): Response<Void>
-
-    @POST("user/auth/changePassword")
-    suspend fun changePassword(
-        @Body body: ChangePassword
-    ): Response<Void>
-
-    @POST("user/auth/contact")
-    suspend fun contact(
-        @Body body: Contact
-    ): Response<Void>
+    @POST("auth/login/2fa")
+    suspend fun login2fa(
+        @Body body: Login2FARequest
+    ): Response<Login2FAResponse>
 
 
 }

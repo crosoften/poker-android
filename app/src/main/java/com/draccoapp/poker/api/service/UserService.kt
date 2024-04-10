@@ -1,7 +1,7 @@
 package com.draccoapp.poker.api.service
 
-import com.draccoapp.poker.api.model.request.UpdateLocation
-import com.draccoapp.poker.api.model.response.User
+import com.draccoapp.poker.api.modelOld.request.UpdateLocation
+import com.draccoapp.poker.api.modelOld.response.User
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

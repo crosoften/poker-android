@@ -1,9 +1,9 @@
 package com.draccoapp.poker.api.service
 
-import com.draccoapp.poker.api.model.request.Entry
-import com.draccoapp.poker.api.model.response.ApplicanteTournamentResponse
-import com.draccoapp.poker.api.model.response.Tournament
-import com.draccoapp.poker.api.model.response.TournamentResponse
+import com.draccoapp.poker.api.modelOld.request.Entry
+import com.draccoapp.poker.api.modelOld.response.ApplicanteTournamentResponse
+import com.draccoapp.poker.api.modelOld.response.Tournament
+import com.draccoapp.poker.api.modelOld.response.TournamentResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

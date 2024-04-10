@@ -4,7 +4,7 @@ class Constants {
 
 
     companion object {
-        const val BASE_URL = "http://52.67.125.1:8041/"
+        const val BASE_URL = "https://homolog.crosoften.com:8041/"
 
     }
 }

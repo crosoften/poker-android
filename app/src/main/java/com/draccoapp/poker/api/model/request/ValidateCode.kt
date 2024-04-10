@@ -9,5 +9,5 @@ data class ValidateCode(
     @Json(name = "email")
     val email: String,
     @Json(name = "code")
-    val code: Int
+    val code: String
 )

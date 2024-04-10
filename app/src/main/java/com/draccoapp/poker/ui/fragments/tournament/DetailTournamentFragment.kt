@@ -9,14 +9,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.draccoapp.poker.R
-import com.draccoapp.poker.api.model.request.Entry
 import com.draccoapp.poker.databinding.FragmentDetailTournamentBinding
-import com.draccoapp.poker.databinding.FragmentTournamentBinding
 import com.draccoapp.poker.extensions.getPreferenceData
-import com.draccoapp.poker.extensions.showSnackBarRed
 import com.draccoapp.poker.extensions.viewInvisible
 import com.draccoapp.poker.viewModel.TournamentViewModel
-import com.draccoapp.poker.viewModel.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 

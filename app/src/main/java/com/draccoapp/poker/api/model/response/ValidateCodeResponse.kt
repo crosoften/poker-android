@@ -6,6 +6,6 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class ValidateCodeResponse(
-    @Json(name = "valid")
-    val valid: Boolean
+    @Json(name = "message")
+    val message: String
 )

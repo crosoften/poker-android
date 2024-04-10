@@ -2,8 +2,9 @@ package com.draccoapp.poker.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.draccoapp.poker.api.model.response.Login2FAResponse
 import com.draccoapp.poker.api.model.response.LoginResponse
-import com.draccoapp.poker.api.model.response.User
+import com.draccoapp.poker.api.modelOld.response.User
 
 class Preferences(context: Context) {
 
@@ -105,7 +106,7 @@ class Preferences(context: Context) {
 //
 //
     fun getToken() : String {
-        return preferences.getString(KEY_ACCESS_TOKEN, "").orEmpty()
+        return preferences.getString(KEY_ACCESS_TOKEN, null).orEmpty()
     }
 
     fun getLanguage() : String {
@@ -117,18 +118,23 @@ class Preferences(context: Context) {
         return preferences.getString(KEY_COUNTRY, "").orEmpty()
     }
 
-    fun saveToken(token: LoginResponse) {
+    fun saveToken(token: Login2FAResponse) {
         editor.putBoolean(IS_LOGIN, true)
-        editor.putString(KEY_ACCESS_TOKEN, token.jwt)
-        editor.putString(KEY_ROLE, token.role)
-        editor.putInt(KEY_ID, token.id)
+        editor.putString(KEY_ACCESS_TOKEN, token.accessToken)
         editor.commit()
         editor.apply()
 
     }
 
-    fun getUserId(): Int {
-        return preferences.getInt(KEY_ID, 0)
+    fun saveID(token: LoginResponse) {
+        editor.putString(KEY_ID, token.key)
+        editor.commit()
+        editor.apply()
+
+    }
+
+    fun getUserId(): String {
+        return preferences.getString(KEY_ID, null).orEmpty()
     }
 
     fun getUnit(): String {
@@ -174,10 +180,10 @@ class Preferences(context: Context) {
 //
 //
 //
-//    fun logout() {
-//        editor.clear()
-//        editor.commit()
-//    }
+    fun logout() {
+        editor.clear()
+        editor.commit()
+    }
 
 
 }

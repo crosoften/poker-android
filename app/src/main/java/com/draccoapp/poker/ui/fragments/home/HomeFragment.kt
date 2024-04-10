@@ -14,14 +14,10 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import coil.load
-import com.draccoapp.poker.R
-import com.draccoapp.poker.api.model.request.UpdateLocation
-import com.draccoapp.poker.api.model.response.Tournament
-import com.draccoapp.poker.api.model.response.User
+import com.draccoapp.poker.api.modelOld.response.Tournament
+import com.draccoapp.poker.api.modelOld.response.User
 import com.draccoapp.poker.databinding.FragmentHomeBinding
 import com.draccoapp.poker.ui.adapters.TournamentAdapter
-import com.draccoapp.poker.extensions.showSnackBarRed
 import com.draccoapp.poker.viewModel.UserViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices

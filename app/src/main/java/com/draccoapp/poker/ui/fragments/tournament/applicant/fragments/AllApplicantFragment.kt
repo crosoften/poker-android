@@ -5,25 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.draccoapp.poker.R
-import com.draccoapp.poker.api.model.response.Tournament
-import com.draccoapp.poker.data.randomTournament
+import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.databinding.FragmentAllApplicantBinding
 import com.draccoapp.poker.extensions.showSnackBarRed
-import com.draccoapp.poker.ui.adapters.TournamentAdapter
 import com.draccoapp.poker.ui.adapters.TournamentListAdapter
-import com.draccoapp.poker.ui.fragments.home.HomeFragmentDirections
-import com.draccoapp.poker.ui.fragments.tournament.applicant.ApplicantTournamentFragment
 import com.draccoapp.poker.ui.fragments.tournament.applicant.ApplicantTournamentFragmentDirections
 import com.draccoapp.poker.viewModel.UserViewModel
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 

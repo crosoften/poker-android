@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.draccoapp.poker.api.model.request.Entry
+import com.draccoapp.poker.api.modelOld.request.Entry
 import com.draccoapp.poker.api.model.type.DataState
 import com.draccoapp.poker.repository.TournamentRepository
 import com.draccoapp.poker.utils.Preferences

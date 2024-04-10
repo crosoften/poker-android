@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.draccoapp.poker.R
-import com.draccoapp.poker.api.model.response.Tournament
+import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.databinding.ItemTournamentListBinding
 import com.draccoapp.poker.extensions.viewInvisible
 

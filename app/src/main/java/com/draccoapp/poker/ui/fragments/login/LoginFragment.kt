@@ -14,21 +14,22 @@ import androidx.navigation.fragment.findNavController
 import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.request.Login
 import com.draccoapp.poker.databinding.FragmentLoginBinding
+import com.draccoapp.poker.extensions.showSnackBarRed
 import com.draccoapp.poker.ui.activities.MainActivity
 import com.draccoapp.poker.utils.Validation
-import com.draccoapp.poker.extensions.showSnackBarRed
 import com.draccoapp.poker.viewModel.AuthViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+private const val TAG = "LoginFragment"
 
 class LoginFragment : Fragment() {
 
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-//    private val viewModel: AuthViewModel by viewModel()
+    private val viewModel by viewModel<AuthViewModel>()
 
-    private val TAG = "LoginFragment"
+
     private lateinit var email: String
     private lateinit var password: String
 
@@ -51,22 +52,22 @@ class LoginFragment : Fragment() {
 
     private fun setupObserver() {
 
-//        viewModel.login.observe(viewLifecycleOwner) { response ->
-//            response?.let {
-//                if(response.role == "user"){
-//                    startActivity(Intent(requireContext(), MainActivity::class.java))
-//                    requireActivity().finishAffinity()
-//                } else {
-//                    binding.root.showSnackBarRed("Usuário não autorizado")
-//                }
-//            }
-//        }
-//
-//        viewModel.error.observe(viewLifecycleOwner) { error ->
-//            error?.let {
-//                binding.root.showSnackBarRed(it)
-//            }
-//        }
+        viewModel.login.observe(viewLifecycleOwner) { response ->
+            response?.let {
+                findNavController()
+                    .navigate(
+                        LoginFragmentDirections
+                            .actionLoginFragmentToTwoFactorFragment()
+                    )
+            }
+
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            error?.let {
+                binding.root.showSnackBarRed(it)
+            }
+        }
     }
 
     private fun setupUI() {
@@ -88,17 +89,14 @@ class LoginFragment : Fragment() {
         binding.apply {
             buttonEnter.setOnClickListener {
 
-                startActivity(Intent(requireContext(), MainActivity::class.java))
-                requireActivity().finishAffinity()
-
-//                if(validateOfFields()){
-//                    viewModel.login(
-//                        Login(
-//                            email = email,
-//                            password = password
-//                        )
-//                    )
-//                }
+                if(validateOfFields()){
+                    viewModel.login(
+                        Login(
+                            credential = email,
+                            password = password
+                        )
+                    )
+                }
 
             }
 

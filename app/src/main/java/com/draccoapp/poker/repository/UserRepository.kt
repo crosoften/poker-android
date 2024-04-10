@@ -1,7 +1,7 @@
 package com.draccoapp.poker.repository
 
-import com.draccoapp.poker.api.model.request.UpdateLocation
-import com.draccoapp.poker.api.model.response.User
+import com.draccoapp.poker.api.modelOld.request.UpdateLocation
+import com.draccoapp.poker.api.modelOld.response.User
 import com.draccoapp.poker.api.service.UserService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

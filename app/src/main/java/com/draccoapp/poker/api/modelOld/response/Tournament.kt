@@ -1,4 +1,4 @@
-package com.draccoapp.poker.api.model.response
+package com.draccoapp.poker.api.modelOld.response
 
 
 import com.squareup.moshi.Json

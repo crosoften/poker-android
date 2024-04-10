@@ -10,22 +10,22 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.draccoapp.poker.R
-import com.draccoapp.poker.api.model.response.Tournament
-import com.draccoapp.poker.api.model.response.User
+import com.draccoapp.poker.api.modelOld.response.Tournament
+import com.draccoapp.poker.api.modelOld.response.User
 import com.draccoapp.poker.databinding.FragmentProfileBinding
-import com.draccoapp.poker.extensions.showSnackBarRed
 import com.draccoapp.poker.ui.activities.AccountActivity
 import com.draccoapp.poker.ui.adapters.TournamentAdapter
 import com.draccoapp.poker.viewModel.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+private const val TAG = "HomeFragment"
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-    private val TAG = "HomeFragment"
-//    private val viewModel : UserViewModel by viewModel()
+
+    private val viewModel by  viewModel<UserViewModel>()
 
     private lateinit var applicantAdapter: TournamentAdapter
 
@@ -146,6 +146,7 @@ class ProfileFragment : Fragment() {
             }
 
             buttonProfileLogout.setOnClickListener {
+                viewModel.logout()
                 startActivity(Intent(requireContext(), AccountActivity::class.java))
                 requireActivity().finishAffinity()
             }

@@ -7,11 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.draccoapp.poker.api.model.response.Tournament
+import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.databinding.FragmentNextTournamentBinding
 import com.draccoapp.poker.extensions.showSnackBarRed
 import com.draccoapp.poker.ui.adapters.TournamentListAdapter
-import com.draccoapp.poker.ui.fragments.home.HomeFragmentDirections
 import com.draccoapp.poker.viewModel.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -43,7 +42,13 @@ class NextTournamentFragment : Fragment() {
     }
 
     private fun onclick() {
+        binding.apply {
 
+            back.setOnClickListener {
+                findNavController()
+                    .popBackStack()
+            }
+        }
     }
 
     private fun setupObserver() {

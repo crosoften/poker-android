@@ -1,10 +1,8 @@
 package com.draccoapp.poker.repository
 
-import com.draccoapp.poker.api.model.request.Entry
-import com.draccoapp.poker.api.model.request.Login
-import com.draccoapp.poker.api.model.response.ApplicanteTournamentResponse
-import com.draccoapp.poker.api.model.response.LoginResponse
-import com.draccoapp.poker.api.model.response.TournamentResponse
+import com.draccoapp.poker.api.modelOld.request.Entry
+import com.draccoapp.poker.api.modelOld.response.ApplicanteTournamentResponse
+import com.draccoapp.poker.api.modelOld.response.TournamentResponse
 import com.draccoapp.poker.api.service.TournamentService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

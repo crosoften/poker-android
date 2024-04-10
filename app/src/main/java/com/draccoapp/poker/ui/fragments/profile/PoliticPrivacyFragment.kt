@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.draccoapp.poker.R
 import com.draccoapp.poker.databinding.FragmentAboutBinding
 import com.draccoapp.poker.databinding.FragmentPoliticPrivacyBinding
@@ -37,6 +38,10 @@ class PoliticPrivacyFragment : Fragment() {
 
         binding.apply {
 
+            back.setOnClickListener {
+                findNavController()
+                    .popBackStack()
+            }
 
         }
     }

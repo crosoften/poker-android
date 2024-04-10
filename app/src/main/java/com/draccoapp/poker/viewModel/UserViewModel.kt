@@ -5,13 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.draccoapp.poker.api.model.request.Entry
-import com.draccoapp.poker.api.model.request.UpdateLocation
-import com.draccoapp.poker.api.model.response.ApplicanteTournamentResponse
-import com.draccoapp.poker.api.model.response.Tournament
-import com.draccoapp.poker.api.model.response.TournamentResponse
-import com.draccoapp.poker.api.model.response.User
-import com.draccoapp.poker.api.model.response.generateTournaments
+import com.draccoapp.poker.api.modelOld.request.UpdateLocation
+import com.draccoapp.poker.api.modelOld.response.Tournament
+import com.draccoapp.poker.api.modelOld.response.User
+import com.draccoapp.poker.api.modelOld.response.generateTournaments
 import com.draccoapp.poker.api.model.type.DataState
 import com.draccoapp.poker.repository.TournamentRepository
 import com.draccoapp.poker.repository.UserRepository
@@ -58,6 +55,10 @@ class UserViewModel(
         preferences.saveUser(user)
     }
 
+    fun logout(){
+        preferences.logout()
+    }
+
     init {
         _tournamentApplicant.value = generateTournaments()
         _tournamentNext.value = generateTournaments()
@@ -66,7 +67,7 @@ class UserViewModel(
     fun getUserById(){
         _appState.postValue(DataState.Loading)
         viewModelScope.launch {
-            val result = repository.getUserById(preferences.getUserId())
+            val result = repository.getUserById(0)
 
             result.fold(
                 onSuccess = {
@@ -91,7 +92,7 @@ class UserViewModel(
     fun getTournamentsAvailableToUser(){
         _appState.postValue(DataState.Loading)
         viewModelScope.launch {
-            val result = repositoryTournament.getTournamentsAvailableToUser(preferences.getUserId())
+            val result = repositoryTournament.getTournamentsAvailableToUser(0)
             Log.e("getTournamentsAvailableToUser", result.toString())
             result.fold(
                 onSuccess = {
@@ -113,7 +114,7 @@ class UserViewModel(
     fun getTournamentsJoinedByUser(status: String? = null){
         _appState.postValue(DataState.Loading)
         viewModelScope.launch {
-            val result = repositoryTournament.getTournamentsJoinedByUser(preferences.getUserId(), status)
+            val result = repositoryTournament.getTournamentsJoinedByUser(0, status)
             Log.e("getTournamentsJoinedByUser", result.toString())
             result.fold(
                 onSuccess = {
@@ -139,7 +140,7 @@ class UserViewModel(
     fun updateLocation(update: UpdateLocation){
         _appState.postValue(DataState.Loading)
         viewModelScope.launch {
-            val result = repository.updateLocation(preferences.getUserId(), update)
+            val result = repository.updateLocation(0, update)
             Log.e("updateLocation", result.toString())
             result.fold(
                 onSuccess = {
