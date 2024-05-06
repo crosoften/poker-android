@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.draccoapp.poker.R
 import com.draccoapp.poker.databinding.FragmentAboutBinding
 import com.draccoapp.poker.databinding.FragmentRegisterProfileBinding
 
@@ -37,12 +38,12 @@ class RegisterProfileFragment : Fragment() {
     }
 
     private fun setupUI() {
-        val termsOfUse = "Termos de uso"
-        val politicOfPrivacy = "Políticas de privacidade"
+        val termsOfUse = getString(R.string.termos_de_uso)
+        val politicOfPrivacy = getString(R.string.pol_tica_de_privacidade)
         val text = buildString {
-            append("Declaro que concordo e aceito os ")
+            append(getString(R.string.declaro_que_concordo_e_aceito_os))
             append(termsOfUse)
-            append(" e ")
+            append(getString(R.string.e))
             append(politicOfPrivacy)
         }
 

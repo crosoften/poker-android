@@ -14,6 +14,7 @@ import com.draccoapp.poker.extensions.getPreferenceData
 import com.draccoapp.poker.extensions.viewInvisible
 import com.draccoapp.poker.viewModel.TournamentViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.Locale
 
 
 class DetailTournamentFragment : Fragment() {
@@ -83,12 +84,12 @@ class DetailTournamentFragment : Fragment() {
         tournament.distance?.let { distance ->
             when(requireContext().getPreferenceData().getUnit()){
                 "metric" -> binding.textView23.text = buildString {
-                    append(String.format("%.2f", distance))
-                    append(" Km de distância do torneio")
+                    append(String.format(Locale.US, "%.2f", distance))
+                    append(binding.root.context.getString(R.string.km_de_voce))
                 }
                 "imperial" -> binding.textView23.text = buildString {
-                    append(String.format("%.2f", distance))
-                    append(" Mi de distância do torneio")
+                    append(String.format(Locale.US, "%.2f", distance))
+                    append(binding.root.context.getString(R.string.mi_de_voce))
                 }
             }
         } ?: run {

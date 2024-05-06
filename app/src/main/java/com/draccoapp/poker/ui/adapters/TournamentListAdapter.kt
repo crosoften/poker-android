@@ -10,6 +10,7 @@ import com.draccoapp.poker.R
 import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.databinding.ItemTournamentListBinding
 import com.draccoapp.poker.extensions.viewInvisible
+import java.util.Locale
 
 class TournamentListAdapter(
     private val onClick: (Tournament) -> Unit
@@ -63,12 +64,12 @@ class TournamentListAdapter(
             tournament.distance?.let { distance ->
                 when(unit){
                     "metric" -> binding.textDistanceList.text = buildString {
-                        append(String.format("%.2f", distance))
-                        append(" Km de você")
+                        append(String.format(Locale.US, "%.2f", distance))
+                        append(binding.root.context.getString(R.string.km_de_voce))
                     }
                     "imperial" -> binding.textDistanceList.text = buildString {
-                        append(String.format("%.2f", distance))
-                        append(" Mi de você")
+                        append(String.format(Locale.US, "%.2f", distance))
+                        append(binding.root.context.getString(R.string.mi_de_voce))
                     }
                 }
             } ?: run {

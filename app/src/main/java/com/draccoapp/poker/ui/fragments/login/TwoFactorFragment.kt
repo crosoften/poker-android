@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.request.Login2FARequest
 import com.draccoapp.poker.databinding.FragmentTwoFactorBinding
 import com.draccoapp.poker.ui.activities.MainActivity
@@ -69,7 +70,7 @@ class TwoFactorFragment : Fragment() {
                     )
                 )
             } else {
-                binding.root.showSnackBarRed("Por favor, insira todos os dígitos.")
+                binding.root.showSnackBarRed(getString(R.string.por_favor_insira_todos_os_d_gitos))
             }
         }
 

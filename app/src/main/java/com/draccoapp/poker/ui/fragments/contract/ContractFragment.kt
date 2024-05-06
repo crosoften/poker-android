@@ -55,16 +55,16 @@ class ContractFragment : Fragment() {
         TabLayoutMediator(binding.tabListContract, binding.viewPagerList){ tab, position->
             when(position){
                 0->{
-                    tab.text = "Todos"
+                    tab.text = getString(R.string.todos)
                 }
                 1->{
-                    tab.text = "Pendentes"
+                    tab.text = getString(R.string.pendentes)
                 }
                 2->{
-                    tab.text = "Vigentes"
+                    tab.text = getString(R.string.vigentes)
                 }
                 3 -> {
-                    tab.text = "Finalizados"
+                    tab.text = getString(R.string.finalizados)
                 }
             }
         }.attach()

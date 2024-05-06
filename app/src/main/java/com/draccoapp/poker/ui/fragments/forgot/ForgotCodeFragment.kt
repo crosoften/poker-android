@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.draccoapp.poker.R
 import com.draccoapp.poker.databinding.FragmentForgotCodeBinding
 import com.draccoapp.poker.ui.activities.MainActivity
 import com.draccoapp.poker.utils.CodeValidatedHandler
@@ -75,7 +76,7 @@ class ForgotCodeFragment : Fragment() {
                 }
 
             } else {
-                binding.root.showSnackBarRed("Por favor, insira todos os dígitos.")
+                binding.root.showSnackBarRed(getString(R.string.por_favor_insira_todos_os_digitos))
             }
         }
 

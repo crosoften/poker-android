@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.draccoapp.poker.R
 import com.draccoapp.poker.databinding.FragmentApplicantTournamentBinding
 import com.draccoapp.poker.databinding.FragmentDetailTournamentBinding
 import com.draccoapp.poker.ui.adapters.ViewPagerTournamentApplicantAdapter
@@ -51,16 +52,16 @@ class ApplicantTournamentFragment : Fragment() {
         TabLayoutMediator(binding.tabLayoutList, binding.viewPagerList){ tab, position->
             when(position){
                 0->{
-                    tab.text = "Todos"
+                    tab.text = getString(R.string.todos)
                 }
                 1->{
-                    tab.text = "Pendentes"
+                    tab.text = getString(R.string.pendentes)
                 }
                 2->{
-                    tab.text = "Validados"
+                    tab.text = getString(R.string.validados)
                 }
                 3 -> {
-                    tab.text = "Finalizados"
+                    tab.text = getString(R.string.finalizados)
                 }
             }
         }.attach()

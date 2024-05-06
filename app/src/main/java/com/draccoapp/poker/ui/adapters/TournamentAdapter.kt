@@ -5,9 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.draccoapp.poker.R
 import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.databinding.ItemTournamentBinding
 import com.draccoapp.poker.extensions.viewInvisible
+import java.util.Locale
 
 class TournamentAdapter(
     private val onClick: (Tournament) -> Unit
@@ -54,12 +56,12 @@ class TournamentAdapter(
             tournament.distance?.let { distance ->
                 when(unit){
                     "metric" -> binding.textDistance.text = buildString {
-                        append(String.format("%.2f", distance))
-                        append(" Km de você")
+                        append(String.format(Locale.US, "%.2f", distance))
+                        append(binding.root.context.getString(R.string.km_de_voce))
                     }
                     "imperial" -> binding.textDistance.text = buildString {
-                        append(String.format("%.2f", distance))
-                        append(" Mi de você")
+                        append(String.format(Locale.US, "%.2f", distance))
+                        append(binding.root.context.getString(R.string.mi_de_voce))
                     }
                 }
             } ?: run {

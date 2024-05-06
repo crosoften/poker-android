@@ -71,7 +71,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun setupUI() {
-        val text = "Ainda não tem cadastro?  \nClique aqui!"
+        val text = getString(R.string.ainda_n_o_tem_cadastro_clique_aqui)
         val spannableString = SpannableString(text)
 
         spannableString.setSpan(
@@ -124,21 +124,21 @@ class LoginFragment : Fragment() {
         password = binding.editPassword.text.toString()
 
         if(email.isEmpty()){
-            binding.editEmail.error = "Campo obrigatório"
+            binding.editEmail.error = getString(R.string.campo_obrigat_rio)
             return false
         } else {
             binding.editEmail.error = null
         }
 
         if(Validation.isEmailValid(email).not()){
-            binding.editEmail.error = "E-mail inválido"
+            binding.editEmail.error = getString(R.string.e_mail_inv_lido)
             return false
         } else {
             binding.editEmail.error = null
         }
 
         if(password.isEmpty()){
-            binding.editPassword.error = "Campo obrigatório"
+            binding.editPassword.error = getString(R.string.campo_obrigat_rio)
             return false
         } else {
             binding.editPassword.error = null
