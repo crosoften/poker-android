@@ -33,7 +33,7 @@
     <string name="torneios_aplicados">Applied tournaments</string>
     <string name="ver_mais">See more</string>
     <string name="pr_ximos_torneios">Next tournaments</string>
-    <string name="ainda_n_o_tem_cadastro_clique_aqui">Don't have an account yet? Click here!</string>
+    <string name="ainda_n_o_tem_cadastro_clique_aqui">Don\'t have an account yet? Click here!</string>
     <string name="campo_obrigat_rio">Mandatory field</string>
     <string name="e_mail_inv_lido">Invalid email</string>
     <string name="entrar">Sign in</string>
@@ -102,4 +102,6 @@
     <string name="informe_o_nome_do_torneio">Enter the tournament name</string>
     <string name="link_do_torneio">Tournament link</string>
     <string name="informe_o_link_do_torneio">Enter the tournament link</string>
+    <string name="seu_torneio">Your tournament</string>
+    <string name="perfil">Profile</string>
 </resources>

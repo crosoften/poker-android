@@ -102,4 +102,6 @@
     <string name="informe_o_nome_do_torneio">Informe o nome do torneio</string>
     <string name="link_do_torneio">Link do torneio</string>
     <string name="informe_o_link_do_torneio">Informe o link do torneio</string>
+    <string name="seu_torneio">Seu torneio</string>
+    <string name="perfil">Perfil</string>
 </resources>
