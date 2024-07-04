@@ -110,6 +110,7 @@
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
 
                 <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imageCamera"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="4dp"

@@ -63,6 +63,9 @@ dependencies {
     implementation(libs.lifecycleRuntime)
     implementation(libs.kotlinxCoroutines)
 
+    implementation(libs.glide)
+
+
     implementation(libs.koinAndroid)
     implementation(libs.gson)
     implementation(libs.retrofit)
