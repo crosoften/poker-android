@@ -8,10 +8,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.navigation.fragment.findNavController
 import com.draccoapp.poker.R
-import com.draccoapp.poker.databinding.FragmentAboutBinding
 import com.draccoapp.poker.databinding.FragmentRegisterProfileBinding
+import com.draccoapp.poker.utils.MaskEditUtil
 
 
 class RegisterProfileFragment : Fragment() {
@@ -34,6 +35,7 @@ class RegisterProfileFragment : Fragment() {
 
         onclick()
         setupUI()
+
 
     }
 
@@ -81,6 +83,58 @@ class RegisterProfileFragment : Fragment() {
         binding.checkBox.text = spannableStringBuilder
         binding.checkBox.movementMethod = LinkMovementMethod.getInstance()
 
+
+        mascaraDataNascimento()
+
+        configEditGender()
+        configEditState()
+
+
+
+    }
+
+    private fun configEditState() {
+        val listaDeEstados = mutableListOf(
+            "AC", // Acre
+            "AL", // Alagoas
+            "AP", // Amapá
+            "AM", // Amazonas
+            "BA", // Bahia
+            "CE", // Ceará
+            "DF", // Distrito Federal
+            "ES", // Espírito Santo
+            "GO", // Goiás
+            "MA", // Maranhão
+            "MT", // Mato Grosso
+            "MS", // Mato Grosso do Sul
+            "MG", // Minas Gerais
+            "PA", // Pará
+            "PB", // Paraíba
+            "PR", // Paraná
+            "PE", // Pernambuco
+            "PI", // Piauí
+            "RJ", // Rio de Janeiro
+            "RN", // Rio Grande do Norte
+            "RS", // Rio Grande do Sul
+            "RO", // Rondônia
+            "RR", // Roraima
+            "SC", // Santa Catarina
+            "SP", // São Paulo
+            "SE", // Sergipe
+            "TO"  // Tocantins
+        )
+        val editState = binding.editState
+        editState.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listaDeEstados))
+    }
+
+    private fun configEditGender() {
+        val listaDeGeneros = mutableListOf("Male", "Female")
+        val editGender = binding.editGender
+        editGender.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listaDeGeneros))
+    }
+
+    private fun mascaraDataNascimento() {
+        binding.editDate.addTextChangedListener(MaskEditUtil.mask(binding.editDate, MaskEditUtil.FORMAT_DATE))
     }
 
     private fun onclick() {
