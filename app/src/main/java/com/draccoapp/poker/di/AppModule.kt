@@ -6,11 +6,14 @@ import com.draccoapp.poker.repository.AuthRepository
 import com.draccoapp.poker.repository.TournamentRepository
 import com.draccoapp.poker.repository.UserRepository
 import com.draccoapp.poker.api.service.AuthService
+import com.draccoapp.poker.api.service.RegisterService
 import com.draccoapp.poker.api.service.TournamentService
 import com.draccoapp.poker.api.service.UserService
+import com.draccoapp.poker.repository.RegisterRepository
 import com.draccoapp.poker.utils.Constants
 import com.draccoapp.poker.utils.Preferences
 import com.draccoapp.poker.viewModel.AuthViewModel
+import com.draccoapp.poker.viewModel.RegisterViewModel
 import com.draccoapp.poker.viewModel.TournamentViewModel
 import com.draccoapp.poker.viewModel.UserViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -58,7 +61,7 @@ val databaseModule = module {
         Preferences(androidContext())
     }
 }
-val serviceModule = module{
+val serviceModule = module {
     single {
         get<Retrofit>(Retrofit::class).create(AuthService::class.java)
     }
@@ -68,8 +71,11 @@ val serviceModule = module{
     single {
         get<Retrofit>(Retrofit::class).create(TournamentService::class.java)
     }
+    single {
+        get<Retrofit>(Retrofit::class).create(RegisterService::class.java)
+    }
 }
-val repositoryModule = module{
+val repositoryModule = module {
 
     single<CoroutineDispatcher> { Dispatchers.Default }
 
@@ -82,8 +88,11 @@ val repositoryModule = module{
     single {
         TournamentRepository(get(), get())
     }
+    single {
+        RegisterRepository(get())
+    }
 }
-val viewModelModule = module{
+val viewModelModule = module {
     viewModel {
         AuthViewModel(get(), get())
     }
@@ -92,6 +101,9 @@ val viewModelModule = module{
     }
     viewModel {
         TournamentViewModel(get(), get())
+    }
+    viewModel {
+        RegisterViewModel(get())
     }
 }
 

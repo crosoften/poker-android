@@ -18,6 +18,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -29,13 +30,24 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.draccoapp.poker.R
 import com.draccoapp.poker.databinding.FragmentRegisterProfileBinding
+import com.draccoapp.poker.utils.Constants
+import com.draccoapp.poker.utils.Constants.Companion.RegisterCity
+import com.draccoapp.poker.utils.Constants.Companion.RegisterCountry
+import com.draccoapp.poker.utils.Constants.Companion.RegisterDateBirth
+import com.draccoapp.poker.utils.Constants.Companion.RegisterEmail
+import com.draccoapp.poker.utils.Constants.Companion.RegisterGender
+import com.draccoapp.poker.utils.Constants.Companion.RegisterName
+import com.draccoapp.poker.utils.Constants.Companion.RegisterState
 import com.draccoapp.poker.utils.MaskEditUtil
+import com.draccoapp.poker.utils.mostrarToast
+import com.draccoapp.poker.viewModel.RegisterViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
@@ -51,7 +63,8 @@ class RegisterProfileFragment : Fragment() {
 
     private var currentPhotoPath: String? = null
     private var fotoSelecionada: MultipartBody.Part? = null
-
+    private val viewModel: RegisterViewModel by viewModel()
+    var imageUrl = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,9 +80,21 @@ class RegisterProfileFragment : Fragment() {
 
         onclick()
         setupUI()
+        setupObservers()
+
+    }
+
+    private fun setupObservers() {
+        viewModel.successUpload.observe(viewLifecycleOwner) {
+            if (it != null) {
+                imageUrl = it.url
+                mostrarToast("Foto enviada com sucesso", requireContext())
+            }
+        }
 
 
     }
+
 
     private fun setupUI() {
         val termsOfUse = getString(R.string.termos_de_uso)
@@ -249,7 +274,7 @@ class RegisterProfileFragment : Fragment() {
                         val imagePart = MultipartBody.Part.createFormData("file", "image.jpg", requestBody)
                         withContext(Dispatchers.Main) {
                             fotoSelecionada = imagePart
-//                            viewModel.uploadArquivo(fotoSelecionada)
+                            viewModel.uploadArquivo(fotoSelecionada)
                         }
                     }
                 } else {
@@ -270,7 +295,7 @@ class RegisterProfileFragment : Fragment() {
                         val imagePart = MultipartBody.Part.createFormData("file", "image.jpg", requestBody)
                         withContext(Dispatchers.Main) {
                             fotoSelecionada = imagePart
-//                            viewModel.uploadArquivo(fotoSelecionada)
+                            viewModel.uploadArquivo(fotoSelecionada)
                         }
                     }
                 }
@@ -332,15 +357,46 @@ class RegisterProfileFragment : Fragment() {
             }
 
             buttonEnter.setOnClickListener {
-                findNavController()
-                    .navigate(
-                        RegisterProfileFragmentDirections
-                            .actionRegisterProfileFragmentToRegisterContactFragment()
-                    )
-            }
+                val name = editName
+                val date = editDate
+                val gender = editGender
+                val country = editCountry
+                val state = editState
+                val city = editCity
+                val checkBox = checkBox
 
+                //Salvando variáveis
+                RegisterName = name.text.toString()
+                RegisterDateBirth = date.text.toString()
+                RegisterGender = gender.text.toString()
+                RegisterCountry = country.text.toString()
+                RegisterState = state.text.toString()
+                RegisterCity = city.text.toString()
+
+                Log.i("registerDados", "Dados do usuario $RegisterName salvos com sucesso")
+
+                val allFieldsFilled = validateEditTexts(name, gender, country, state, city)
+
+                if (!checkBox.isChecked) {
+                    val stringNecessarioTermos = getString(R.string.necessario_termos)
+                    mostrarToast(stringNecessarioTermos, requireContext())
+                } else if (!allFieldsFilled) {
+                    val stringPreencherCampos = getString(R.string.campos_necessarios)
+                    mostrarToast(stringPreencherCampos, requireContext())
+                } else if (date.text?.length != 10) {
+                    val stringDataInvalida = getString(R.string.data_invalida)
+                    mostrarToast(stringDataInvalida, requireContext())
+                } else {
+                    findNavController().navigate(
+                        RegisterProfileFragmentDirections.actionRegisterProfileFragmentToRegisterContactFragment()
+                    )
+                }
+            }
         }
     }
+
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -348,4 +404,8 @@ class RegisterProfileFragment : Fragment() {
         _binding = null
     }
 
+}
+
+fun validateEditTexts(vararg editTexts: EditText): Boolean {
+    return editTexts.all { it.text.toString().isNotEmpty() }
 }

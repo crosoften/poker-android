@@ -104,4 +104,11 @@
     <string name="informe_o_link_do_torneio">Informe o link do torneio</string>
     <string name="seu_torneio">Seu torneio</string>
     <string name="perfil">Perfil</string>
+    <string name="campos_necessarios">Necessário preencher todos os campos</string>
+    <string name="data_invalida">Data inválida</string>
+    <string name="necessario_termos">Necessário aceitar os termos</string>
+    <string name="erro_generico">Erro genérico</string>
+    <string name="phone_invalido">Número de telefone inválido</string>
+
+
 </resources>

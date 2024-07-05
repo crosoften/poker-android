@@ -104,4 +104,12 @@
     <string name="informe_o_link_do_torneio">Enter the tournament link</string>
     <string name="seu_torneio">Your tournament</string>
     <string name="perfil">Profile</string>
+    <string name="campos_necessarios">All fields must be filled in</string>
+    <string name="data_invalida">Invalid date</string>
+    <string name="necessario_termos">Terms required</string>
+    <string name="erro_generico">Generic error</string>
+    <string name="phone_invalido">Invalid phone number</string>
+
+
+
 </resources>
