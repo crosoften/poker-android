@@ -112,49 +112,22 @@ class RegisterProfileFragment : Fragment() {
         }
     }
 
-
     private fun setupUI() {
-        val termsOfUse = getString(R.string.termos_de_uso)
-        val politicOfPrivacy = getString(R.string.pol_tica_de_privacidade)
-        val text = buildString {
-            append(getString(R.string.declaro_que_concordo_e_aceito_os))
-            append(termsOfUse)
-            append(getString(R.string.e))
-            append(politicOfPrivacy)
+        binding.txtTermosDeUso.setOnClickListener {
+            findNavController()
+                .navigate(
+                    RegisterProfileFragmentDirections
+                        .actionRegisterProfileFragmentToTermsUseFragment2()
+                )
         }
 
-        val spannableStringBuilder = SpannableStringBuilder(text)
-
-        val clickableSpanTerms = object : ClickableSpan() {
-            override fun onClick(widget: View) {
-                findNavController()
-                    .navigate(
-                        RegisterProfileFragmentDirections
-                            .actionRegisterProfileFragmentToTermsUseFragment2()
-                    )
-            }
+        binding.txtPolDePrivacidade.setOnClickListener {
+            findNavController()
+                .navigate(
+                    RegisterProfileFragmentDirections
+                        .actionRegisterProfileFragmentToPoliticPrivacyFragment2()
+                )
         }
-
-        val clickableSpanPolitic = object : ClickableSpan() {
-            override fun onClick(widget: View) {
-                findNavController()
-                    .navigate(
-                        RegisterProfileFragmentDirections
-                            .actionRegisterProfileFragmentToPoliticPrivacyFragment2()
-                    )
-            }
-        }
-
-        val startTerms = text.indexOf(termsOfUse)
-        val endTerms = startTerms + termsOfUse.length
-
-        val startPolitic = text.indexOf(politicOfPrivacy)
-        val endPolitic = startPolitic + politicOfPrivacy.length
-
-        spannableStringBuilder.setSpan(clickableSpanTerms, startTerms, endTerms, 0)
-        spannableStringBuilder.setSpan(clickableSpanPolitic, startPolitic, endPolitic, 0)
-
-        binding.checkBox.text = spannableStringBuilder
         binding.checkBox.movementMethod = LinkMovementMethod.getInstance()
 
 

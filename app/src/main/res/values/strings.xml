@@ -45,14 +45,14 @@
     <string name="sobre">SOBRE</string>
     <string name="dicas_de_seguran_a">Dicas de segurança</string>
     <string name="contato">CONTATO</string>
-    <string name="pol_tica_de_privacidade">POLÍTICA DE PRIVACIDADE</string>
+    <string name="pol_tica_de_privacidade"><u>POLÍTICA DE PRIVACIDADE</u></string>
     <string name="diamante">Diamante</string>
     <string name="current_contract_info">Current contract Info</string>
     <string name="overall_info">Overall info</string>
     <string name="overall_profit">Overall profit</string>
     <string name="overall_ranking">Overall ranking</string>
     <string name="central_de_ajuda">Central de ajuda</string>
-    <string name="termos_de_uso">Termos de Uso</string>
+    <string name="termos_de_uso"><u>Termos de Uso</u></string>
     <string name="sair">Sair</string>
     <string name="cadastro">CADASTRO</string>
     <string name="confirma_o_via_e_mail">Confirmação via e-mail</string>
@@ -62,7 +62,7 @@
     <string name="seu_cadastro_foi_finalizado_com_sucesso">Seu cadastro foi finalizado com sucesso</string>
     <string name="aguarde_a_confirma_o_da_nossa_equipe">Aguarde a confirmação da nossa equipe</string>
     <string name="senha">Senha</string>
-    <string name="declaro_que_concordo_e_aceito_os">"Declaro que concordo e aceito os "</string>
+    <string name="declaro_que_concordo_e_aceito_os">"Declaro que concordo e aceito os \n"</string>
     <string name="e">" e "</string>
     <string name="coloque_suas_informa_es_para_que_possamos_realizar_seu_cadastro">Coloque suas informações para que possamos realizar seu cadastro</string>
     <string name="sua_foto">sua foto</string>

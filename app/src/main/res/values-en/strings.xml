@@ -45,14 +45,14 @@
     <string name="sobre">ABOUT</string>
     <string name="dicas_de_seguran_a">Security tips</string>
     <string name="contato">CONTACT</string>
-    <string name="pol_tica_de_privacidade">PRIVACY POLICY</string>
+    <string name="pol_tica_de_privacidade"><u>PRIVACY POLICY</u></string>
     <string name="diamante">Diamond</string>
     <string name="current_contract_info">Current contract Info</string>
     <string name="overall_info">Overall info</string>
     <string name="overall_profit">Overall profit</string>
     <string name="overall_ranking">Overall ranking</string>
     <string name="central_de_ajuda">Help center</string>
-    <string name="termos_de_uso">Terms of Use</string>
+    <string name="termos_de_uso"><u>Terms of Use</u></string>
     <string name="sair">Exit</string>
     <string name="cadastro">SIGN UP</string>
     <string name="confirma_o_via_e_mail">Confirmation via email</string>
@@ -62,7 +62,7 @@
     <string name="seu_cadastro_foi_finalizado_com_sucesso">Your registration has been successfully completed</string>
     <string name="aguarde_a_confirma_o_da_nossa_equipe">Wait for confirmation from our team</string>
     <string name="senha">Password</string>
-    <string name="declaro_que_concordo_e_aceito_os">"I declare that I agree and accept the "</string>
+    <string name="declaro_que_concordo_e_aceito_os">"I declare that I agree and accept the \n"</string>
     <string name="e">" and "</string>
     <string name="coloque_suas_informa_es_para_que_possamos_realizar_seu_cadastro">Enter your information so we can complete your registration</string>
     <string name="sua_foto">your photo</string>
