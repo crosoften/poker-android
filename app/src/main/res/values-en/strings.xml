@@ -75,7 +75,7 @@
     <string name="pa_s">Country</string>
     <string name="brasil">Brazil</string>
     <string name="estado">State</string>
-    <string name="s_o_paulo">São Paulo</string>
+    <string name="s_o_paulo">SP</string>
     <string name="cidade">City</string>
     <string name="validados">Validated</string>
     <string name="atualiza_o_do_torneio">TOURNAMENT UPDATE</string>
@@ -109,6 +109,10 @@
     <string name="necessario_termos">Terms required</string>
     <string name="erro_generico">Generic error</string>
     <string name="phone_invalido">Invalid phone number</string>
+    <string name="code_invalido">Please enter all digits</string>
+    <string name="senha_8digitos">The password must be at least 8 digits long</string>
+    <string name="senhas_diferentes">Passwords must be the same</string>
+
 
 
 

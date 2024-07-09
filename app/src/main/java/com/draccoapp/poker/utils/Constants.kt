@@ -7,11 +7,14 @@ class Constants {
         var RegisterName = ""
         var RegisterEmail = ""
         var RegisterDateBirth = ""
+        var RegisterCode = ""
         var RegisterGender = ""
         var RegisterCountry = ""
         var RegisterState = ""
         var RegisterCity = ""
+        var RegisterImageUrl = ""
         var RegisterPassword = ""
+        var RegisterConfirmedPassword = ""
         var RegisterPhone = ""
 
 

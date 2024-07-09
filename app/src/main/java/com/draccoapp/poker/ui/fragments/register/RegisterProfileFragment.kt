@@ -36,9 +36,11 @@ import com.draccoapp.poker.utils.Constants.Companion.RegisterCountry
 import com.draccoapp.poker.utils.Constants.Companion.RegisterDateBirth
 import com.draccoapp.poker.utils.Constants.Companion.RegisterEmail
 import com.draccoapp.poker.utils.Constants.Companion.RegisterGender
+import com.draccoapp.poker.utils.Constants.Companion.RegisterImageUrl
 import com.draccoapp.poker.utils.Constants.Companion.RegisterName
 import com.draccoapp.poker.utils.Constants.Companion.RegisterState
 import com.draccoapp.poker.utils.MaskEditUtil
+import com.draccoapp.poker.utils.converterDataNasc
 import com.draccoapp.poker.utils.mostrarToast
 import com.draccoapp.poker.viewModel.RegisterViewModel
 import kotlinx.coroutines.Dispatchers
@@ -64,7 +66,8 @@ class RegisterProfileFragment : Fragment() {
     private var currentPhotoPath: String? = null
     private var fotoSelecionada: MultipartBody.Part? = null
     private val viewModel: RegisterViewModel by viewModel()
-    var imageUrl = ""
+    private var uriGaleria: Uri? = null
+    private var bitmapCamera: Bitmap? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,18 +84,32 @@ class RegisterProfileFragment : Fragment() {
         onclick()
         setupUI()
         setupObservers()
+        tentaFixarImagem()
 
+    }
+
+    private fun tentaFixarImagem() {
+        //GALERIA
+        if (uriGaleria != null) {
+            binding.shapeableImageView3.setImageURI(uriGaleria)
+            bitmapCamera = null
+        }
+
+        //CAMERA
+        if (bitmapCamera != null) {
+            binding.shapeableImageView3.setImageBitmap(bitmapCamera)
+            uriGaleria = null
+        }
+
+        binding.shapeableImageView3.scaleType = ImageView.ScaleType.CENTER_CROP
     }
 
     private fun setupObservers() {
         viewModel.successUpload.observe(viewLifecycleOwner) {
             if (it != null) {
-                imageUrl = it.url
-                mostrarToast("Foto enviada com sucesso", requireContext())
+                RegisterImageUrl = it.url
             }
         }
-
-
     }
 
 
@@ -226,7 +243,6 @@ class RegisterProfileFragment : Fragment() {
         photoFile?.also {
             val photoURI: Uri = FileProvider.getUriForFile(
                 requireContext(),
-//                "com.crosoften.eloi.fileprovider",
                 "com.draccoapp.fileprovider",
                 it
             )
@@ -256,15 +272,16 @@ class RegisterProfileFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 // A imagem foi selecionada pela galeria
-                val uri = result.data?.data
-                if (uri != null) {
-                    binding.shapeableImageView3.setImageURI(uri)
-                    Log.i("uri", "a URI é $uri ")
+//                val uri = result.data?.data
+                uriGaleria = result.data?.data
+                if (uriGaleria != null) {
+                    binding.shapeableImageView3.setImageURI(uriGaleria)
+                    Log.i("uri", "a URI é $uriGaleria ")
                     binding.shapeableImageView3.scaleType = ImageView.ScaleType.CENTER_CROP
                     lifecycleScope.launch(Dispatchers.IO) {
                         val bitmap = Glide.with(this@RegisterProfileFragment)
                             .asBitmap()
-                            .load(uri)
+                            .load(uriGaleria)
                             .submit()
                             .get()
 
@@ -280,17 +297,18 @@ class RegisterProfileFragment : Fragment() {
                 } else {
                     // A imagem foi capturada pela câmera
                     lifecycleScope.launch(Dispatchers.IO) {
-                        val bitmap = Glide.with(this@RegisterProfileFragment)
+                        bitmapCamera = Glide.with(this@RegisterProfileFragment)
                             .asBitmap()
                             .load(currentPhotoPath)
                             .submit()
                             .get()
                         withContext(Dispatchers.Main) {
-                            binding.shapeableImageView3.setImageBitmap(bitmap)
+                            binding.shapeableImageView3.setImageBitmap(bitmapCamera)
                             binding.shapeableImageView3.scaleType = ImageView.ScaleType.CENTER_CROP
                         }
                         val stream = ByteArrayOutputStream()
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream)
+                        val bitmap = bitmapCamera
+                        bitmap?.compress(Bitmap.CompressFormat.JPEG, 70, stream)
                         val requestBody = RequestBody.create("image/jpeg".toMediaType(), stream.toByteArray())
                         val imagePart = MultipartBody.Part.createFormData("file", "image.jpg", requestBody)
                         withContext(Dispatchers.Main) {
@@ -359,6 +377,7 @@ class RegisterProfileFragment : Fragment() {
             buttonEnter.setOnClickListener {
                 val name = editName
                 val date = editDate
+                val dataFormatted = converterDataNasc(editDate.text.toString())
                 val gender = editGender
                 val country = editCountry
                 val state = editState
@@ -367,13 +386,13 @@ class RegisterProfileFragment : Fragment() {
 
                 //Salvando variáveis
                 RegisterName = name.text.toString()
-                RegisterDateBirth = date.text.toString()
+                RegisterDateBirth = dataFormatted
                 RegisterGender = gender.text.toString()
                 RegisterCountry = country.text.toString()
                 RegisterState = state.text.toString()
                 RegisterCity = city.text.toString()
 
-                Log.i("registerDados", "Dados do usuario $RegisterName salvos com sucesso")
+                Log.i("registerDados", "Dados do usuario $RegisterName salvos com sucesso e adata é $dataFormatted")
 
                 val allFieldsFilled = validateEditTexts(name, gender, country, state, city)
 
@@ -394,8 +413,6 @@ class RegisterProfileFragment : Fragment() {
             }
         }
     }
-
-
 
 
     override fun onDestroyView() {

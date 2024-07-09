@@ -75,7 +75,7 @@
     <string name="pa_s">País</string>
     <string name="brasil">Brasil</string>
     <string name="estado">Estado</string>
-    <string name="s_o_paulo">São Paulo</string>
+    <string name="s_o_paulo">SP</string>
     <string name="cidade">Cidade</string>
     <string name="validados">Validados</string>
     <string name="atualiza_o_do_torneio">ATUALIZAÇÃO DO TORNEIO</string>
@@ -109,6 +109,9 @@
     <string name="necessario_termos">Necessário aceitar os termos</string>
     <string name="erro_generico">Erro genérico</string>
     <string name="phone_invalido">Número de telefone inválido</string>
+    <string name="code_invalido">Por favor, insira todos os digitos</string>
+    <string name="senha_8digitos">A senha precisa ter no mínimo 8 dígitos</string>
+    <string name="senhas_diferentes">As senhas precisam ser iguais</string>
 
 
 </resources>
