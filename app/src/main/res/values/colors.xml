@@ -4,11 +4,13 @@
     <color name="white">#FFFFFFFF</color>
     <color name="primary">#DB282D</color>
     <color name="secundary">#0171C5</color>
+    <color name="bordaVermelha">#DC282D</color>
     <color name="background">#1D2429</color>
     <color name="button_background">#14181B</color>
     <color name="background_tournament">#014A76</color>
     <color name="textPrimary">#0564B3</color>
     <color name="unselect_bottom">#FFFFFF</color>
     <color name="text_edit">#8F9193</color>
+    <color name="transparent">#00000000</color>
     <color name="background_chip">#1E7A21</color>
 </resources>

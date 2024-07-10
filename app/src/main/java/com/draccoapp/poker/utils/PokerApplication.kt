@@ -12,6 +12,8 @@ class PokerApplication: Application() {
     override fun onCreate() {
         super.onCreate()
 
+        instance = this
+
         startKoin{
             androidContext(this@PokerApplication)
             modules(listModules)

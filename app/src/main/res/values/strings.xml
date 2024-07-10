@@ -42,10 +42,11 @@
     <string name="autentica_o_dois_fatores">Autenticação dois fatores</string>
     <string name="insira_o_c_digo_para_realizar_o_login">Insira o código para realizar o login</string>
     <string name="para_realizar_o_login_insira_o_token_que_voc_recebeu_por_e_mail">Para realizar o login, insira o token que você recebeu por e-mail:</string>
-    <string name="sobre">SOBRE</string>
+    <string name="sobre">Sobre</string>
     <string name="dicas_de_seguran_a">Dicas de segurança</string>
-    <string name="contato">CONTATO</string>
-    <string name="pol_tica_de_privacidade"><u>POLÍTICA DE PRIVACIDADE</u></string>
+    <string name="contato">Contato</string>
+    <string name="pol_tica_de_privacidade"><u>Política de Privacidade</u></string>
+    <string name="pol_tica_de_privacidade_normal">Política de Privacidade</string>
     <string name="diamante">Diamante</string>
     <string name="current_contract_info">Current contract Info</string>
     <string name="overall_info">Overall info</string>
@@ -53,6 +54,7 @@
     <string name="overall_ranking">Overall ranking</string>
     <string name="central_de_ajuda">Central de ajuda</string>
     <string name="termos_de_uso"><u>Termos de Uso</u></string>
+    <string name="termos_de_uso_normal">Termos de Uso</string>
     <string name="sair">Sair</string>
     <string name="cadastro">CADASTRO</string>
     <string name="confirma_o_via_e_mail">Confirmação via e-mail</string>
@@ -112,6 +114,7 @@
     <string name="code_invalido">Por favor, insira todos os digitos</string>
     <string name="senha_8digitos">A senha precisa ter no mínimo 8 dígitos</string>
     <string name="senhas_diferentes">As senhas precisam ser iguais</string>
+    <string name="concluir_cadastro">Concluir Cadastro</string>
 
 
 </resources>

@@ -16,6 +16,7 @@ import com.draccoapp.poker.api.model.request.Login
 import com.draccoapp.poker.databinding.FragmentLoginBinding
 import com.draccoapp.poker.extensions.showSnackBarRed
 import com.draccoapp.poker.ui.activities.MainActivity
+import com.draccoapp.poker.utils.Preferences
 import com.draccoapp.poker.utils.Validation
 import com.draccoapp.poker.viewModel.AuthViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -48,6 +49,14 @@ class LoginFragment : Fragment() {
         setupObserver()
         onClick()
         setupUI()
+
+        val preferences = Preferences(requireContext())
+//        if(preferences.isAutorized() == false){
+//            findNavController().navigate(
+//                LoginFragmentDirections
+//                    .actionLoginFragmentToRegisterDoneFragment()
+//            )
+//        }
     }
 
     private fun setupObserver() {

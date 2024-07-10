@@ -21,6 +21,7 @@ class Preferences(context: Context) {
     companion object {
         const val PREFERENCES_NAME = "Preferences"
         const val IS_LOGIN = "is_login"
+        const val IS_AUTORIZED = "is_authorized"
         const val KEY_ACCESS_TOKEN = "access_token"
         const val KEY_ROLE = "role"
         const val KEY_ID = "user_id"
@@ -107,6 +108,16 @@ class Preferences(context: Context) {
 //
     fun getToken() : String {
         return preferences.getString(KEY_ACCESS_TOKEN, null).orEmpty()
+    }
+
+    fun isAutorized(): Boolean? {
+        return preferences.getBoolean(IS_AUTORIZED, null == true)
+    }
+
+    fun setAutorized(autorized: Boolean) {
+        editor.putBoolean(IS_AUTORIZED, autorized)
+        editor.commit()
+        editor.apply()
     }
 
     fun getLanguage() : String {

@@ -42,10 +42,11 @@
     <string name="autentica_o_dois_fatores">Two-factor authentication</string>
     <string name="insira_o_c_digo_para_realizar_o_login">Enter the code to log in</string>
     <string name="para_realizar_o_login_insira_o_token_que_voc_recebeu_por_e_mail">To log in, enter the token you received by email:</string>
-    <string name="sobre">ABOUT</string>
+    <string name="sobre">About</string>
     <string name="dicas_de_seguran_a">Security tips</string>
-    <string name="contato">CONTACT</string>
-    <string name="pol_tica_de_privacidade"><u>PRIVACY POLICY</u></string>
+    <string name="contato">Contact</string>
+    <string name="pol_tica_de_privacidade"><u>Privacy Policy</u></string>
+    <string name="pol_tica_de_privacidade_normal">Privacy Policy</string>
     <string name="diamante">Diamond</string>
     <string name="current_contract_info">Current contract Info</string>
     <string name="overall_info">Overall info</string>
@@ -53,6 +54,7 @@
     <string name="overall_ranking">Overall ranking</string>
     <string name="central_de_ajuda">Help center</string>
     <string name="termos_de_uso"><u>Terms of Use</u></string>
+    <string name="termos_de_uso_normal">Terms of Use</string>
     <string name="sair">Exit</string>
     <string name="cadastro">SIGN UP</string>
     <string name="confirma_o_via_e_mail">Confirmation via email</string>
@@ -112,6 +114,7 @@
     <string name="code_invalido">Please enter all digits</string>
     <string name="senha_8digitos">The password must be at least 8 digits long</string>
     <string name="senhas_diferentes">Passwords must be the same</string>
+    <string name="concluir_cadastro">Complete Registration</string>
 
 
 

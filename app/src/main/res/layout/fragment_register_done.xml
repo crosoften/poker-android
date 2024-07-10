@@ -29,11 +29,11 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:clickable="false"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="10dp"
-                android:visibility="invisible"
-                android:clickable="false"
                 android:src="@drawable/ic_left_arrow"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -65,9 +65,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
+                android:paddingBottom="30dp"
                 android:layout_height="wrap_content">
-
-
 
 
                 <TextView
@@ -104,142 +103,169 @@
                 <ImageView
                     android:id="@+id/image_wait"
                     android:layout_width="140dp"
-                    android:layout_height="140dp"
+                    android:layout_height="197dp"
                     android:layout_marginTop="20dp"
-                    android:background="@color/white"
+                    android:background="@color/transparent"
+                    android:src="@drawable/ic_medalha"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_message" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_profile_about"
-                    style="@style/Widget.Material3.Button.IconButton.Outlined"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_marginHorizontal="24dp"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="24dp"
-                    android:background="@drawable/bg_button_secundary"
                     android:text="@string/sobre"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     app:backgroundTint="@color/button_background"
+                    app:cornerRadius="6dp"
                     app:icon="@drawable/ic_sobre"
-                    app:iconTint="@color/white"
-                    app:iconTintMode="multiply"
                     app:iconGravity="start"
                     app:iconPadding="20dp"
                     app:iconSize="28dp"
+                    app:iconTint="@color/white"
+                    app:iconTintMode="multiply"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/image_wait" />
+                    app:layout_constraintTop_toBottomOf="@+id/image_wait"
+                    app:strokeColor="@color/bordaVermelha"
+                    app:strokeWidth="1dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_profile_help"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_marginHorizontal="24dp"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="24dp"
-                    android:background="@drawable/bg_button_secundary"
                     android:text="@string/central_de_ajuda"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     app:backgroundTint="@color/button_background"
+                    app:cornerRadius="6dp"
                     app:icon="@drawable/ic_help"
-                    app:iconTint="@color/white"
-                    app:iconTintMode="multiply"
                     app:iconGravity="start"
                     app:iconPadding="20dp"
                     app:iconSize="28dp"
+                    app:iconTint="@color/white"
+                    app:iconTintMode="multiply"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button_profile_about" />
+                    app:layout_constraintTop_toBottomOf="@+id/button_profile_about"
+                    app:strokeColor="@color/bordaVermelha"
+                    app:strokeWidth="1dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_profile_terms"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_marginHorizontal="24dp"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="24dp"
-                    android:background="@drawable/bg_button_secundary"
-                    android:text="@string/central_de_ajuda"
+                    android:text="@string/termos_de_uso_normal"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     app:backgroundTint="@color/button_background"
+                    app:cornerRadius="6dp"
                     app:icon="@drawable/ic_terms"
-                    app:iconTint="@color/white"
-                    app:iconTintMode="multiply"
                     app:iconGravity="start"
                     app:iconPadding="20dp"
                     app:iconSize="28dp"
+                    app:iconTint="@color/white"
+                    app:iconTintMode="multiply"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button_profile_help" />
+                    app:layout_constraintTop_toBottomOf="@+id/button_profile_help"
+                    app:strokeColor="@color/bordaVermelha"
+                    app:strokeWidth="1dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_profile_politic"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_marginHorizontal="24dp"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="24dp"
-                    android:background="@drawable/bg_button_secundary"
-                    android:text="@string/pol_tica_de_privacidade"
+                    android:text="@string/pol_tica_de_privacidade_normal"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     app:backgroundTint="@color/button_background"
+                    app:cornerRadius="6dp"
                     app:icon="@drawable/ic_politic"
-                    app:iconTint="@color/white"
-                    app:iconTintMode="multiply"
                     app:iconGravity="start"
                     app:iconPadding="20dp"
                     app:iconSize="28dp"
+                    app:iconTint="@color/white"
+                    app:iconTintMode="multiply"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button_profile_terms" />
+                    app:layout_constraintTop_toBottomOf="@+id/button_profile_terms"
+                    app:strokeColor="@color/bordaVermelha"
+                    app:strokeWidth="1dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_profile_contact"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_marginHorizontal="24dp"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="24dp"
-                    android:background="@drawable/bg_button_secundary"
                     android:text="@string/contato"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     app:backgroundTint="@color/button_background"
+                    app:cornerRadius="6dp"
                     app:icon="@drawable/ic_contact"
-                    app:iconTint="@color/white"
-                    app:iconTintMode="multiply"
                     app:iconGravity="start"
                     app:iconPadding="20dp"
                     app:iconSize="28dp"
+                    app:iconTint="@color/white"
+                    app:iconTintMode="multiply"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/button_profile_politic" />
+                    app:layout_constraintTop_toBottomOf="@+id/button_profile_politic"
+                    app:strokeColor="@color/bordaVermelha"
+                    app:strokeWidth="1dp" />
+
+
+<!--                <com.google.android.material.button.MaterialButton-->
+<!--                    android:id="@+id/button_concluir"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginHorizontal="24dp"-->
+<!--                    android:layout_marginStart="24dp"-->
+<!--                    android:layout_marginTop="30dp"-->
+<!--                    android:layout_marginEnd="24dp"-->
+<!--                    android:background="@drawable/bg_button"-->
+<!--                    android:fontFamily="@font/roboto_bold"-->
+<!--                    android:foreground="?attr/selectableItemBackground"-->
+<!--                    android:text="@string/concluir_cadastro"-->
+<!--                    android:textAllCaps="false"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    app:backgroundTint="@color/primary"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/button_profile_contact" />-->
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

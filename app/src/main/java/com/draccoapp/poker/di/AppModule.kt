@@ -1,16 +1,16 @@
 package com.draccoapp.poker.di
 
 import android.content.Context
-import android.content.SharedPreferences
-import com.draccoapp.poker.repository.AuthRepository
-import com.draccoapp.poker.repository.TournamentRepository
-import com.draccoapp.poker.repository.UserRepository
 import com.draccoapp.poker.api.service.AuthService
 import com.draccoapp.poker.api.service.RegisterService
 import com.draccoapp.poker.api.service.TournamentService
 import com.draccoapp.poker.api.service.UserService
+import com.draccoapp.poker.repository.AuthRepository
 import com.draccoapp.poker.repository.RegisterRepository
+import com.draccoapp.poker.repository.TournamentRepository
+import com.draccoapp.poker.repository.UserRepository
 import com.draccoapp.poker.utils.Constants
+import com.draccoapp.poker.utils.PokerApplication
 import com.draccoapp.poker.utils.Preferences
 import com.draccoapp.poker.viewModel.AuthViewModel
 import com.draccoapp.poker.viewModel.RegisterViewModel
@@ -25,26 +25,47 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 private const val CONNECTION_TIMEOUT = 30 * 1000
 
+//val netWorkModule = module {
+//    single<OkHttpClient> {
+//        OkHttpClient.Builder().addInterceptor { chain ->
+//            val newRequest = chain.request().newBuilder()
+//                .header("accept", "application/json")
+//                .header(
+//                    "Authorization",
+//                    "Bearer ${
+//                        get<Preferences>(Preferences::class).getToken()
+//                    }"
+//                )
+//                .build()
+//            chain.proceed(newRequest)
+//        }.connectTimeout(
+//            CONNECTION_TIMEOUT.toLong(),
+//            TimeUnit.MINUTES
+//        ).readTimeout(1, TimeUnit.MINUTES).build()
+//    }
+//    single<Retrofit> {
+//        Retrofit.Builder()
+//            .baseUrl(Constants.BASE_URL)
+//            .client(get())
+//            .addConverterFactory(MoshiConverterFactory.create())
+//            .build()
+//    }
+//}
+
+
 val netWorkModule = module {
+    single {
+        Preferences(PokerApplication.instance) // Substitua isso pela forma correta de obter a instância de Preferences no seu caso
+    }
     single<OkHttpClient> {
-        OkHttpClient.Builder().addInterceptor { chain ->
-            val newRequest = chain.request().newBuilder()
-                .header("accept", "application/json")
-                .header(
-                    "Authorization",
-                    "Bearer ${
-                        get<Preferences>(Preferences::class).getToken()
-                    }"
-                )
-                .build()
-            chain.proceed(newRequest)
-        }.connectTimeout(
-            CONNECTION_TIMEOUT.toLong(),
-            TimeUnit.MINUTES
-        ).readTimeout(1, TimeUnit.MINUTES).build()
+        val preferences: Preferences = get()
+        getUnsafeOkHttpClient(preferences)
     }
     single<Retrofit> {
         Retrofit.Builder()
@@ -53,8 +74,10 @@ val netWorkModule = module {
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
     }
-
 }
+
+
+
 val databaseModule = module {
 
     single {
@@ -109,3 +132,37 @@ val viewModelModule = module {
 
 
 val listModules = listOf(netWorkModule, databaseModule, serviceModule, repositoryModule, viewModelModule)
+
+fun getUnsafeOkHttpClient(preferences: Preferences): OkHttpClient {
+    val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
+        override fun checkClientTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {}
+
+        override fun checkServerTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {}
+
+        override fun getAcceptedIssuers(): Array<java.security.cert.X509Certificate> = arrayOf()
+    })
+
+    val sslContext = SSLContext.getInstance("SSL")
+    sslContext.init(null, trustAllCerts, java.security.SecureRandom())
+
+    val sslSocketFactory = sslContext.socketFactory
+
+    return OkHttpClient.Builder()
+        .sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
+        .hostnameVerifier { _, _ -> true }
+        .addInterceptor { chain ->
+            val newRequest = chain.request().newBuilder()
+                .header("accept", "application/json")
+                .header(
+                    "Authorization",
+                    "Bearer ${preferences.getToken()}"
+                )
+                .build()
+            chain.proceed(newRequest)
+        }
+        .connectTimeout(CONNECTION_TIMEOUT.toLong(), TimeUnit.MINUTES)
+        .readTimeout(1, TimeUnit.MINUTES)
+        .build()
+}
+
+
