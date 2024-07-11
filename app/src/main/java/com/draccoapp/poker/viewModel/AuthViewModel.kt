@@ -1,5 +1,6 @@
 package com.draccoapp.poker.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -63,8 +64,8 @@ class AuthViewModel(
         preferences.saveToken(token)
     }
 
-    private fun saveID(token: LoginResponse){
-        preferences.saveID(token)
+    private fun saveKey(key: LoginResponse){
+        preferences.saveID(key)
     }
 
     fun getKey(): String {
@@ -86,12 +87,13 @@ class AuthViewModel(
                     _login.value = it
                     _appState.value = DataState.Success
                     it?.let { id ->
-                        saveID(id)
+                        saveKey(id)
                     }
                 },
                 onFailure = {
                     it.message?.let { e ->
                         _error.value = e
+                        Log.i("WillErro", "login: O erro foi  $e")
                     } ?: run {
                         _error.value = "Oopss.. algo deu errado"
                     }

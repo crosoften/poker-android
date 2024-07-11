@@ -1,6 +1,7 @@
 package com.draccoapp.poker.ui.fragments.register
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ class RegisterContactFragment : Fragment() {
     private var _binding: FragmentRegisterContactBinding? = null
     private val binding get() = _binding!!
     private val viewModel: RegisterViewModel by viewModel()
+    private var firstTimeMovingToDoneFragment = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,14 +41,20 @@ class RegisterContactFragment : Fragment() {
         setupObserves()
     }
 
-    private fun setupObserves(){
-        viewModel.successRegisterStep1.observe(viewLifecycleOwner){
-            mostrarToast("Código enviar para o email", requireContext())
-            findNavController()
-                .navigate(
-                    RegisterContactFragmentDirections
-                        .actionRegisterContactFragmentToRegisterCodeFragment()
-                )
+    private fun setupObserves() {
+        viewModel.successRegisterStep1.observe(viewLifecycleOwner) {
+//            mostrarToast("Código enviar para o email", requireContext())
+
+            if (firstTimeMovingToDoneFragment) {
+                firstTimeMovingToDoneFragment = false
+                findNavController()
+                    .navigate(
+                        RegisterContactFragmentDirections
+                            .actionRegisterContactFragmentToRegisterCodeFragment()
+                    )
+            }
+
+
         }
 
     }
@@ -63,6 +71,7 @@ class RegisterContactFragment : Fragment() {
             }
 
             buttonEnter.setOnClickListener {
+                firstTimeMovingToDoneFragment = true
                 val email = editEmail
                 val phone = editPhone
                 val phoneLimpo = MaskEditUtil.unmask(phone.text.toString())
@@ -82,11 +91,11 @@ class RegisterContactFragment : Fragment() {
                     viewModel.registerStep1(RegisterStep1Body(email = email.text.toString(), phone = phoneLimpo))
                 }
 
-                findNavController()
-                    .navigate(
-                        RegisterContactFragmentDirections
-                            .actionRegisterContactFragmentToRegisterCodeFragment()
-                    )
+//                findNavController()
+//                    .navigate(
+//                        RegisterContactFragmentDirections
+//                            .actionRegisterContactFragmentToRegisterCodeFragment()
+//                    )
             }
         }
     }

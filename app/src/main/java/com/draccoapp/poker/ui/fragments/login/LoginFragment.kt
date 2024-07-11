@@ -1,6 +1,5 @@
 package com.draccoapp.poker.ui.fragments.login
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -14,9 +13,6 @@ import androidx.navigation.fragment.findNavController
 import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.request.Login
 import com.draccoapp.poker.databinding.FragmentLoginBinding
-import com.draccoapp.poker.extensions.showSnackBarRed
-import com.draccoapp.poker.ui.activities.MainActivity
-import com.draccoapp.poker.utils.Preferences
 import com.draccoapp.poker.utils.Validation
 import com.draccoapp.poker.viewModel.AuthViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -30,7 +26,7 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<AuthViewModel>()
 
-
+    private var firstTimeMovingToDoneFragment = true
     private lateinit var email: String
     private lateinit var password: String
 
@@ -50,13 +46,6 @@ class LoginFragment : Fragment() {
         onClick()
         setupUI()
 
-        val preferences = Preferences(requireContext())
-//        if(preferences.isAutorized() == false){
-//            findNavController().navigate(
-//                LoginFragmentDirections
-//                    .actionLoginFragmentToRegisterDoneFragment()
-//            )
-//        }
     }
 
     private fun setupObserver() {
@@ -74,7 +63,10 @@ class LoginFragment : Fragment() {
 
         viewModel.error.observe(viewLifecycleOwner) { error ->
             error?.let {
-                binding.root.showSnackBarRed(it)
+                if (firstTimeMovingToDoneFragment){
+                    firstTimeMovingToDoneFragment = false
+                    findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterDoneFragment())
+                }
             }
         }
     }
@@ -98,7 +90,7 @@ class LoginFragment : Fragment() {
         binding.apply {
             buttonEnter.setOnClickListener {
 
-                if(validateOfFields()){
+                if (validateOfFields()) {
                     viewModel.login(
                         Login(
                             credential = email,
@@ -106,7 +98,7 @@ class LoginFragment : Fragment() {
                         )
                     )
                 }
-
+                firstTimeMovingToDoneFragment = true
             }
 
             labelForgot.setOnClickListener {
@@ -132,21 +124,21 @@ class LoginFragment : Fragment() {
         email = binding.editEmail.text.toString()
         password = binding.editPassword.text.toString()
 
-        if(email.isEmpty()){
+        if (email.isEmpty()) {
             binding.editEmail.error = getString(R.string.campo_obrigat_rio)
             return false
         } else {
             binding.editEmail.error = null
         }
 
-        if(Validation.isEmailValid(email).not()){
+        if (Validation.isEmailValid(email).not()) {
             binding.editEmail.error = getString(R.string.e_mail_inv_lido)
             return false
         } else {
             binding.editEmail.error = null
         }
 
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             binding.editPassword.error = getString(R.string.campo_obrigat_rio)
             return false
         } else {

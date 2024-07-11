@@ -12,6 +12,7 @@ import com.draccoapp.poker.api.model.request.RegisterStep2Body
 import com.draccoapp.poker.databinding.FragmentRegisterCodeBinding
 import com.draccoapp.poker.utils.CodeValidatedHandler
 import com.draccoapp.poker.extensions.showSnackBarRed
+import com.draccoapp.poker.ui.fragments.login.LoginFragmentDirections
 import com.draccoapp.poker.utils.Constants.Companion.RegisterCode
 import com.draccoapp.poker.utils.Constants.Companion.RegisterEmail
 import com.draccoapp.poker.utils.PokerApplication
@@ -24,7 +25,8 @@ class RegisterCodeFragment : Fragment() {
 
     private var _binding: FragmentRegisterCodeBinding? = null
     private val binding get() = _binding!!
-    private val viewModel : RegisterViewModel by viewModel()
+    private val viewModel: RegisterViewModel by viewModel()
+    private var firstTimeMovingToDoneFragment = true
 
 
     override fun onCreateView(
@@ -58,12 +60,17 @@ class RegisterCodeFragment : Fragment() {
 
     private fun setupObservers() {
         viewModel.successRegisterStep2.observe(viewLifecycleOwner) {
-            findNavController()
-                .navigate(
-                    RegisterCodeFragmentDirections
-                        .actionRegisterCodeFragmentToRegisterPasswordFragment()
-                )
-            Log.i("Token", "setupObservers: O token foi ${it.message}")
+
+            if (firstTimeMovingToDoneFragment) {
+                firstTimeMovingToDoneFragment = false
+                findNavController()
+                    .navigate(
+                        RegisterCodeFragmentDirections
+                            .actionRegisterCodeFragmentToRegisterPasswordFragment()
+                    )
+                Log.i("Token", "setupObservers: O token foi ${it.message}")
+            }
+
         }
     }
 
@@ -72,6 +79,7 @@ class RegisterCodeFragment : Fragment() {
 
         binding.buttonEnter.setOnClickListener {
             val code = codeValidatedHandler.getCodeValidated()
+            firstTimeMovingToDoneFragment = true
 
             if (code.length < 4) {
                 val stringCode = getString(R.string.code_invalido)
@@ -83,10 +91,6 @@ class RegisterCodeFragment : Fragment() {
 
 
             Log.i("Token", "setupUI: O código digitado foi $code")
-//            if (codeValidatedHandler.isAllDigitsEntered()) {
-//            } else {
-//                binding.root.showSnackBarRed(getString(R.string.por_favor_insira_todos_os_digitos))
-//            }
         }
 
     }
