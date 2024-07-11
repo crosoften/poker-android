@@ -96,6 +96,7 @@ class RegisterContactFragment : Fragment() {
 //                        RegisterContactFragmentDirections
 //                            .actionRegisterContactFragmentToRegisterCodeFragment()
 //                    )
+
             }
         }
     }

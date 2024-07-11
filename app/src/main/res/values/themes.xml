@@ -19,6 +19,12 @@
         <item name="cornerSize">50%</item>
     </style>
 
+
+<!--    <style name="ShapeAppearanceOverlay.App.CornerSize50Percent" parent="">-->
+<!--        <item name="cornerSize">50%</item>-->
+<!--    </style>-->
+
+
     <style name="TextInputLayoutDrop" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
         <item name="boxStrokeColor">@color/black</item>
         <item name="boxBackgroundColor">@color/black</item>

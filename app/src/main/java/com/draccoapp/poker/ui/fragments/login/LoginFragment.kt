@@ -1,5 +1,6 @@
 package com.draccoapp.poker.ui.fragments.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -13,9 +14,11 @@ import androidx.navigation.fragment.findNavController
 import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.request.Login
 import com.draccoapp.poker.databinding.FragmentLoginBinding
+import com.draccoapp.poker.utils.SharedUtils
 import com.draccoapp.poker.utils.Validation
 import com.draccoapp.poker.viewModel.AuthViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.Locale
 
 private const val TAG = "LoginFragment"
 
@@ -77,7 +80,7 @@ class LoginFragment : Fragment() {
 
         spannableString.setSpan(
             ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.primary)),
-            25,
+            26,
             text.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
@@ -86,6 +89,14 @@ class LoginFragment : Fragment() {
     }
 
     private fun onClick() {
+
+        binding.btnSelectBrazil.setOnClickListener {
+            setLanguagePt()
+        }
+
+        binding.btnSelectEUA.setOnClickListener {
+            setLanguageEn()
+        }
 
         binding.apply {
             buttonEnter.setOnClickListener {
@@ -149,11 +160,46 @@ class LoginFragment : Fragment() {
 
     }
 
+    private fun setLanguagePt() {
+        SharedUtils.setValueInSharedPreferences(LANGUAGE_KEY, "português")
+        language = "português"
+        setLocale("pt")
+    }
+
+    private fun setLanguageEn() {
+        SharedUtils.setValueInSharedPreferences(LANGUAGE_KEY, "inglês")
+        language = "inglês"
+        setLocale("en")
+    }
+
+    fun setLocale(lang: String?) {
+        val myLocale = Locale(lang)
+        val res = resources
+        val dm = res.displayMetrics
+        val conf = res.configuration
+        conf.locale = myLocale
+        res.updateConfiguration(conf, dm)
+
+
+        // Recriar o LoginFragment
+        val fragmentManager = parentFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+
+        // Use o ID do container onde o fragmento deve ser colocado
+        fragmentTransaction.replace(R.id.fragment_container_account, LoginFragment())
+        fragmentTransaction.commit()
+
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
 
         _binding = null
+    }
+
+    companion object {
+        var language = "inglês"
+        var LANGUAGE_KEY = "LANGUAGE_KEY"
     }
 
 }
