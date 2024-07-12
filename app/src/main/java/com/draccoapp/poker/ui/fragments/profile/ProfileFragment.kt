@@ -15,8 +15,11 @@ import com.draccoapp.poker.api.modelOld.response.User
 import com.draccoapp.poker.databinding.FragmentProfileBinding
 import com.draccoapp.poker.ui.activities.AccountActivity
 import com.draccoapp.poker.ui.adapters.TournamentAdapter
+import com.draccoapp.poker.ui.fragments.login.LoginFragment
+import com.draccoapp.poker.utils.SharedUtils
 import com.draccoapp.poker.viewModel.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.Locale
 
 private const val TAG = "HomeFragment"
 
@@ -151,6 +154,14 @@ class ProfileFragment : Fragment() {
                 requireActivity().finishAffinity()
             }
 
+            binding.btnSelectBrazil.setOnClickListener {
+                setLanguagePt()
+            }
+
+            binding.btnSelectEUA.setOnClickListener {
+                setLanguageEn()
+            }
+
         }
     }
 
@@ -175,6 +186,38 @@ class ProfileFragment : Fragment() {
                     )
             )
     }
+
+    private fun setLanguagePt() {
+        SharedUtils.setValueInSharedPreferences(LoginFragment.LANGUAGE_KEY, "português")
+        LoginFragment.language = "português"
+        setLocale("pt")
+    }
+
+    private fun setLanguageEn() {
+        SharedUtils.setValueInSharedPreferences(LoginFragment.LANGUAGE_KEY, "inglês")
+        LoginFragment.language = "inglês"
+        setLocale("en")
+    }
+
+    fun setLocale(lang: String?) {
+        val myLocale = Locale(lang)
+        val res = resources
+        val dm = res.displayMetrics
+        val conf = res.configuration
+        conf.locale = myLocale
+        res.updateConfiguration(conf, dm)
+
+
+        // Recriar o LoginFragment
+        val fragmentManager = parentFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+
+        // Use o ID do container onde o fragmento deve ser colocado
+        fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, ProfileFragment())
+        fragmentTransaction.commit()
+
+    }
+
 
 
     override fun onDestroyView() {

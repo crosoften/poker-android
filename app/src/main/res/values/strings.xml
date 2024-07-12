@@ -6,7 +6,7 @@
     <string name="km_de_voce">" Km de você"</string>
     <string name="mi_de_voce">" Mi de você"</string>
     <string name="title">Título</string>
-    <string name="contratos">contratos</string>
+    <string name="contratos">Contratos</string>
     <string name="o_que_voc_procura">O que você procura?</string>
     <string name="todos">Todos</string>
     <string name="pendentes">Pendentes</string>
@@ -26,9 +26,9 @@
     <string name="confirmar_senha">Confirmar senha</string>
     <string name="seja_bem_vindo_a">Seja bem vindo(a)!</string>
     <string name="player_level">Player level</string>
-    <string name="time_left_contract">Time left contract</string>
-    <string name="your_tournaments">Your tournaments</string>
-    <string name="current_contract_profit">Current contract profit</string>
+    <string name="time_left_contract">Tempo restante do contrato</string>
+    <string name="your_tournaments">Seus torneios</string>
+    <string name="current_contract_profit">Lucro do contrato atual</string>
     <string name="ranking">Ranking</string>
     <string name="torneios_aplicados">Torneios aplicados</string>
     <string name="ver_mais">Ver mais</string>
@@ -48,10 +48,10 @@
     <string name="pol_tica_de_privacidade"><u>Política de Privacidade</u></string>
     <string name="pol_tica_de_privacidade_normal">Política de Privacidade</string>
     <string name="diamante">Diamante</string>
-    <string name="current_contract_info">Current contract Info</string>
-    <string name="overall_info">Overall info</string>
-    <string name="overall_profit">Overall profit</string>
-    <string name="overall_ranking">Overall ranking</string>
+    <string name="current_contract_info">Informações do contrato atual</string>
+    <string name="overall_info">Informações gerais</string>
+    <string name="overall_profit">Lucro geral</string>
+    <string name="overall_ranking">Ranking geral</string>
     <string name="central_de_ajuda">Central de ajuda</string>
     <string name="termos_de_uso"><u>Termos de Uso</u></string>
     <string name="termos_de_uso_normal">Termos de Uso</string>

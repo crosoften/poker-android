@@ -23,6 +23,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
+                android:paddingBottom="30dp"
                 android:layout_height="match_parent">
 
                 <ImageView
@@ -432,7 +433,7 @@
                     android:background="@drawable/bg_button_secundary"
                     android:text="@string/contratos"
                     android:textAlignment="textStart"
-                    android:textAllCaps="true"
+                    android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     app:backgroundTint="@color/button_background"
@@ -482,7 +483,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="24dp"
                     android:background="@drawable/bg_button_secundary"
-                    android:text="@string/termos_de_uso"
+                    android:text="@string/termos_de_uso_normal"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
@@ -508,7 +509,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="24dp"
                     android:background="@drawable/bg_button_secundary"
-                    android:text="@string/pol_tica_de_privacidade"
+                    android:text="@string/pol_tica_de_privacidade_normal"
                     android:textAlignment="textStart"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
@@ -577,6 +578,37 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/button_profile_contact" />
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center_horizontal"
+                    app:layout_constraintTop_toBottomOf="@+id/button_profile_logout">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/btn_selectBrazil"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/img_brazil"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+
+                    <Space
+                        android:layout_width="40dp"
+                        android:layout_height="10dp"/>
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/btn_selectEUA"
+                        android:layout_width="34dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_height="34dp"
+                        android:src="@drawable/ic_english"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+
+                </LinearLayout>
+
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
