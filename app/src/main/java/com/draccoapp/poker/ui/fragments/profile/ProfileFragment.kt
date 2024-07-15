@@ -191,15 +191,11 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setLanguagePt() {
-//        SharedUtils.setValueInSharedPreferences(LoginFragment.LANGUAGE_KEY, "português")
-//        LoginFragment.language = "português"
         preferences.setLanguage("pt")
         setLocale("pt")
     }
 
     private fun setLanguageEn() {
-//        SharedUtils.setValueInSharedPreferences(LoginFragment.LANGUAGE_KEY, "inglês")
-//        LoginFragment.language = "inglês"
         preferences.setLanguage("en")
         setLocale("en")
     }

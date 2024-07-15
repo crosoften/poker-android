@@ -165,17 +165,11 @@ class LoginFragment : Fragment() {
     }
 
     private fun setLanguagePt() {
-//        SharedUtils.setValueInSharedPreferences(LANGUAGE_KEY, "português")
-//        language = "português"
-
         preferences.setLanguage("pt")
         setLocale("pt")
     }
 
     private fun setLanguageEn() {
-//        SharedUtils.setValueInSharedPreferences(LANGUAGE_KEY, "inglês")
-//        language = "inglês"
-
         preferences.setLanguage("en")
         setLocale("en")
     }
@@ -188,19 +182,9 @@ class LoginFragment : Fragment() {
         conf.locale = myLocale
         res.updateConfiguration(conf, dm)
 
-
-//        // Recriar o LoginFragment
-//        val fragmentManager = parentFragmentManager
-//        val fragmentTransaction = fragmentManager.beginTransaction()
-//
-//        // Use o ID do container onde o fragmento deve ser colocado
-//        fragmentTransaction.replace(R.id.fragment_container_account, LoginFragment())
-//        fragmentTransaction.commit()
-
         // Recriar o LoginFragment usando o NavController
         val navController = findNavController()
         navController.navigate(R.id.loginFragment)
-
     }
 
     override fun onDestroyView() {
@@ -208,10 +192,5 @@ class LoginFragment : Fragment() {
 
         _binding = null
     }
-
-//    companion object {
-//        var language = "inglês"
-//        var LANGUAGE_KEY = "LANGUAGE_KEY"
-//    }
 
 }

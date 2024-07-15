@@ -119,6 +119,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/input_name" />
 
+                <TextView
+                    android:id="@+id/txt_moedaAtual"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/poppins_light"
+                    android:text="(R$)"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/label_award"
+                    app:layout_constraintStart_toEndOf="@+id/label_award"
+                    app:layout_constraintTop_toTopOf="@+id/label_award" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_award"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -138,7 +151,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="@color/black"
-                        android:hint="R$ 000,00"
+                        android:hint="000.00"
                         android:inputType="numberDecimal"
                         android:maxLines="1"
                         android:paddingVertical="0dp"
@@ -153,9 +166,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_light"
                     android:text="@string/pa_s"
                     android:textColor="@color/white"
-                    android:fontFamily="@font/poppins_light"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/input_award" />
@@ -178,13 +191,13 @@
                     <AutoCompleteTextView
                         android:id="@+id/edit_country"
                         android:layout_width="match_parent"
-                        android:focusableInTouchMode="false"
                         android:layout_height="50dp"
                         android:background="@color/black"
+                        android:focusableInTouchMode="false"
                         android:imeOptions="actionNext"
-                        android:textAlignment="viewStart"
                         android:inputType="none"
                         android:text="Brasil"
+                        android:textAlignment="viewStart"
                         android:textColor="@color/white"
                         android:textColorHint="@color/white" />
 
@@ -197,9 +210,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_light"
                     android:text="@string/estado"
                     android:textColor="@color/white"
-                    android:fontFamily="@font/poppins_light"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/input_country" />
@@ -222,13 +235,13 @@
                     <AutoCompleteTextView
                         android:id="@+id/edit_state"
                         android:layout_width="match_parent"
-                        android:focusableInTouchMode="false"
                         android:layout_height="50dp"
                         android:background="@color/black"
+                        android:focusableInTouchMode="false"
                         android:imeOptions="actionNext"
-                        android:textAlignment="viewStart"
                         android:inputType="none"
                         android:text="São Paulo"
+                        android:textAlignment="viewStart"
                         android:textColor="@color/white"
                         android:textColorHint="@color/white" />
 
@@ -240,16 +253,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_light"
                     android:text="@string/cidade"
                     android:textColor="@color/white"
-                    android:fontFamily="@font/poppins_light"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/input_state" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_city"
-                    style="@style/TextInputLayoutDrop"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="24dp"
@@ -262,18 +274,31 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/label_city">
 
-                    <AutoCompleteTextView
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_city"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="@color/black"
-                        android:focusableInTouchMode="false"
                         android:imeOptions="actionNext"
-                        android:inputType="none"
-                        android:text="São Paulo"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:paddingVertical="0dp"
+                        android:text=" "
                         android:textAlignment="viewStart"
                         android:textColor="@color/white"
                         android:textColorHint="@color/white" />
+
+                    <!--                    <com.google.android.material.textfield.TextInputEditText-->
+                    <!--                        android:id="@+id/edit_link"-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="50dp"-->
+                    <!--                        android:background="@color/black"-->
+                    <!--                        android:hint="@string/informe_o_link_do_torneio"-->
+                    <!--                        android:inputType="textCapWords"-->
+                    <!--                        android:maxLines="1"-->
+                    <!--                        android:paddingVertical="0dp"-->
+                    <!--                        android:textColor="@color/white"-->
+                    <!--                        android:textColorHint="@color/white" />-->
 
                 </com.google.android.material.textfield.TextInputLayout>
 
