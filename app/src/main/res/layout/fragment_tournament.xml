@@ -333,7 +333,7 @@
 
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_enter"
+                    android:id="@+id/button_confirmar"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

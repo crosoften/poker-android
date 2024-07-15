@@ -125,6 +125,12 @@ class Preferences(context: Context) {
 
     }
 
+    fun setLanguage(language: String) {
+        editor.putString(KEY_LANGUAGE, language)
+        editor.commit()
+        editor.apply()
+    }
+
     fun getCountry() : String {
         return preferences.getString(KEY_COUNTRY, "").orEmpty()
     }
@@ -134,14 +140,12 @@ class Preferences(context: Context) {
         editor.putString(KEY_ACCESS_TOKEN, token.accessToken)
         editor.commit()
         editor.apply()
-
     }
 
     fun saveID(token: LoginResponse) {
         editor.putString(KEY_ID, token.key)
         editor.commit()
         editor.apply()
-
     }
 
     fun getUserId(): String {

@@ -111,7 +111,6 @@ class AuthRepository(
                     body = body
                 )
                 when {
-
                     response.isSuccessful -> {
                         Result.success(response.body())
                     }

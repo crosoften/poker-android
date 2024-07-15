@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.request.Login
 import com.draccoapp.poker.databinding.FragmentLoginBinding
+import com.draccoapp.poker.utils.Preferences
 import com.draccoapp.poker.utils.SharedUtils
 import com.draccoapp.poker.utils.Validation
 import com.draccoapp.poker.viewModel.AuthViewModel
@@ -32,6 +33,7 @@ class LoginFragment : Fragment() {
     private var firstTimeMovingToDoneFragment = true
     private lateinit var email: String
     private lateinit var password: String
+    private lateinit var preferences : Preferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,6 +77,8 @@ class LoginFragment : Fragment() {
     }
 
     private fun setupUI() {
+        preferences = Preferences(requireContext())
+
         val text = getString(R.string.ainda_n_o_tem_cadastro_clique_aqui)
         val spannableString = SpannableString(text)
 
@@ -161,14 +165,18 @@ class LoginFragment : Fragment() {
     }
 
     private fun setLanguagePt() {
-        SharedUtils.setValueInSharedPreferences(LANGUAGE_KEY, "português")
-        language = "português"
+//        SharedUtils.setValueInSharedPreferences(LANGUAGE_KEY, "português")
+//        language = "português"
+
+        preferences.setLanguage("pt")
         setLocale("pt")
     }
 
     private fun setLanguageEn() {
-        SharedUtils.setValueInSharedPreferences(LANGUAGE_KEY, "inglês")
-        language = "inglês"
+//        SharedUtils.setValueInSharedPreferences(LANGUAGE_KEY, "inglês")
+//        language = "inglês"
+
+        preferences.setLanguage("en")
         setLocale("en")
     }
 
@@ -181,13 +189,17 @@ class LoginFragment : Fragment() {
         res.updateConfiguration(conf, dm)
 
 
-        // Recriar o LoginFragment
-        val fragmentManager = parentFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
+//        // Recriar o LoginFragment
+//        val fragmentManager = parentFragmentManager
+//        val fragmentTransaction = fragmentManager.beginTransaction()
+//
+//        // Use o ID do container onde o fragmento deve ser colocado
+//        fragmentTransaction.replace(R.id.fragment_container_account, LoginFragment())
+//        fragmentTransaction.commit()
 
-        // Use o ID do container onde o fragmento deve ser colocado
-        fragmentTransaction.replace(R.id.fragment_container_account, LoginFragment())
-        fragmentTransaction.commit()
+        // Recriar o LoginFragment usando o NavController
+        val navController = findNavController()
+        navController.navigate(R.id.loginFragment)
 
     }
 
@@ -197,9 +209,9 @@ class LoginFragment : Fragment() {
         _binding = null
     }
 
-    companion object {
-        var language = "inglês"
-        var LANGUAGE_KEY = "LANGUAGE_KEY"
-    }
+//    companion object {
+//        var language = "inglês"
+//        var LANGUAGE_KEY = "LANGUAGE_KEY"
+//    }
 
 }

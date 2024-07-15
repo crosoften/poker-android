@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.draccoapp.poker.api.model.request.TournamentBodyNew
+import com.draccoapp.poker.api.model.response.TournamentResponseNew
 import com.draccoapp.poker.api.modelOld.request.Entry
 import com.draccoapp.poker.api.model.type.DataState
 import com.draccoapp.poker.repository.TournamentRepository
@@ -15,6 +17,9 @@ class TournamentViewModel(
     private val repository: TournamentRepository,
     private val preferences: Preferences
 ) : ViewModel() {
+
+    val successCreateTournament = MutableLiveData<TournamentResponseNew>()
+
 
     val error: LiveData<String>
         get() = _error
@@ -30,6 +35,40 @@ class TournamentViewModel(
         get() = _entry
 
     private val _entry = MutableLiveData<Unit>()
+
+    fun createTournament(body: TournamentBodyNew){
+        _appState.postValue(DataState.Loading)
+        viewModelScope.launch {
+            val result = repository.createTournament(body)
+            Log.e("TournamentViewModel", "O result da criação do torneio foi : $result")
+
+            result.fold(
+                onSuccess = {
+                    _appState.value = DataState.Success
+                    successCreateTournament.value = it
+                },
+                onFailure = {
+                    it.message?.let { e ->
+                        _error.value = e
+                    } ?: run {
+                        _error.value = "Não foi possível completar a criação do torneio"
+                    }
+                    _appState.value = DataState.Error
+                }
+            )
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     fun entryTournament(entry: Entry){
         _appState.postValue(DataState.Loading)

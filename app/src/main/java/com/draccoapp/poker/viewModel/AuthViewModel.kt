@@ -90,6 +90,7 @@ class AuthViewModel(
                         saveKey(id)
                     }
                 },
+
                 onFailure = {
                     it.message?.let { e ->
                         _error.value = e

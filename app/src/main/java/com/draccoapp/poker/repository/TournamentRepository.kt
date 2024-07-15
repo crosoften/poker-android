@@ -1,5 +1,7 @@
 package com.draccoapp.poker.repository
 
+import com.draccoapp.poker.api.model.request.TournamentBodyNew
+import com.draccoapp.poker.api.model.response.TournamentResponseNew
 import com.draccoapp.poker.api.modelOld.request.Entry
 import com.draccoapp.poker.api.modelOld.response.ApplicanteTournamentResponse
 import com.draccoapp.poker.api.modelOld.response.TournamentResponse
@@ -13,8 +15,30 @@ class TournamentRepository(
     private val dispatcher: CoroutineDispatcher
 ) {
 
+    suspend fun createTournament(body: TournamentBodyNew): Result<TournamentResponseNew?> =
+        withContext(dispatcher) {
+            try {
+                val response = service.createTournament(
+                    body = body
+                )
+                when {
+
+                    response.isSuccessful -> {
+                        Result.success(response.body())
+                    }
+
+                    else -> {
+                        Result.failure(Throwable(response.message()))
+                    }
+                }
+            } catch (e: Exception) {
+                Result.failure(Throwable(e.message))
+            }
+        }
+
+
     suspend fun getTournamentsAvailableToUser(userId: Int): Result<TournamentResponse?> =
-        withContext(dispatcher){
+        withContext(dispatcher) {
             try {
                 val response = service.getTournamentsAvailableToUser(
                     userId = userId
@@ -29,13 +53,13 @@ class TournamentRepository(
                         Result.failure(Throwable(response.message()))
                     }
                 }
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 Result.failure(Throwable(e.message))
             }
         }
 
     suspend fun getTournamentsJoinedByUser(userId: Int, status: String?): Result<ApplicanteTournamentResponse?> =
-        withContext(dispatcher){
+        withContext(dispatcher) {
             try {
                 val response = service.getTournamentsJoinedByUser(
                     userId = userId,
@@ -51,13 +75,13 @@ class TournamentRepository(
                         Result.failure(Throwable(response.message()))
                     }
                 }
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 Result.failure(Throwable(e.message))
             }
         }
 
     suspend fun entryTournament(entry: Entry): Result<Unit?> =
-        withContext(dispatcher){
+        withContext(dispatcher) {
             try {
                 val response = service.entryTournament(entry)
                 when {
@@ -70,7 +94,7 @@ class TournamentRepository(
                         Result.failure(Throwable(response.message()))
                     }
                 }
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 Result.failure(Throwable(e.message))
             }
         }

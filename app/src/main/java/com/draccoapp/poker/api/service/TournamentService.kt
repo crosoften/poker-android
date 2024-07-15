@@ -1,5 +1,7 @@
 package com.draccoapp.poker.api.service
 
+import com.draccoapp.poker.api.model.request.TournamentBodyNew
+import com.draccoapp.poker.api.model.response.TournamentResponseNew
 import com.draccoapp.poker.api.modelOld.request.Entry
 import com.draccoapp.poker.api.modelOld.response.ApplicanteTournamentResponse
 import com.draccoapp.poker.api.modelOld.response.Tournament
@@ -7,17 +9,23 @@ import com.draccoapp.poker.api.modelOld.response.TournamentResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TournamentService {
 
-    @Multipart
-    @POST("tournament")
+
+    @POST("tournaments/non-official")
     suspend fun createTournament(
-    ): Response<Void>
+        @Body body: TournamentBodyNew
+    ): Response<TournamentResponseNew>
+
+
+//    @Multipart
+//    @POST("tournament")
+//    suspend fun createTournament(
+//    ): Response<Void>
 
     @GET("tournament/{tournamentId}")
     suspend fun getTournamentById(
@@ -40,5 +48,5 @@ interface TournamentService {
     @POST("/tournament/entry")
     suspend fun entryTournament(
         @Body entry: Entry
-    ) : Response<Unit>
+    ): Response<Unit>
 }
