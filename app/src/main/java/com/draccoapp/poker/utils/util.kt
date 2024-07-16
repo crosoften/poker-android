@@ -1,7 +1,10 @@
 package com.draccoapp.poker.utils
 
 import android.content.Context
+import android.view.View
 import android.widget.Toast
+import com.draccoapp.poker.R
+import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.regex.Matcher
@@ -75,6 +78,20 @@ fun limparError(texto: String): String? {
         texto
     }
 }
+
+fun View.showSnackbarRed(message: String) {
+    val snackBar = Snackbar.make(this, message, Snackbar.LENGTH_LONG)
+    snackBar.setBackgroundTint(resources.getColor(R.color.vermelhoSnack))
+    snackBar.show()
+}
+
+fun View.showSnackbarGreen(message: String) {
+    val snackBar = Snackbar.make(this, message, Snackbar.LENGTH_LONG)
+    snackBar.setBackgroundTint(resources.getColor(R.color.verdeSnack))
+    snackBar.show()
+}
+
+
 
 fun limparMessage(texto: String): String? {
     // Utilizando expressão regular para extrair a mensagem entre as aspas

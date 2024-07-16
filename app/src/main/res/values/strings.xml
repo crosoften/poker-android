@@ -115,6 +115,16 @@
     <string name="senha_8digitos">A senha precisa ter no mínimo 8 dígitos</string>
     <string name="senhas_diferentes">As senhas precisam ser iguais</string>
     <string name="concluir_cadastro">Concluir Cadastro</string>
+    <string name="torneio_criado_com_sucesso">Torneio criado com sucesso</string>
+    <string name="necessario_adicionar_um_comprovante">Necessário adicionar um comprovante</string>
+    <string name="necessario_preencher_todos_os_campos_acima">Necessário preencher todos os campos acima</string>
+    <string name="eua">Estados Unidos</string>
+    <string name="selecionar_comprovante">Selecionar comprovante</string>
+    <string name="camera">Câmera</string>
+    <string name="galeria">Galeria</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="camera_permission">Permissão da câmera</string>
+    <string name="camera_permission_required_to_take_pictures">É necessária permissão da câmera para tirar fotos.</string>
 
 
 </resources>

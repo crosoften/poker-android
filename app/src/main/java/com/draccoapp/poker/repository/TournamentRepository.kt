@@ -2,12 +2,14 @@ package com.draccoapp.poker.repository
 
 import com.draccoapp.poker.api.model.request.TournamentBodyNew
 import com.draccoapp.poker.api.model.response.TournamentResponseNew
+import com.draccoapp.poker.api.model.response.UploadFileResponse
 import com.draccoapp.poker.api.modelOld.request.Entry
 import com.draccoapp.poker.api.modelOld.response.ApplicanteTournamentResponse
 import com.draccoapp.poker.api.modelOld.response.TournamentResponse
 import com.draccoapp.poker.api.service.TournamentService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import okhttp3.MultipartBody
 import java.lang.Exception
 
 class TournamentRepository(
@@ -37,6 +39,28 @@ class TournamentRepository(
         }
 
 
+    suspend fun uploadFile (file: MultipartBody.Part?) : Result<UploadFileResponse?> =
+        withContext(dispatcher) {
+            try {
+                val response = service.uploadArquivos(file)
+                Result.success(response)
+
+//                when {
+//                    response.isSuccessful -> {
+//                        Result.success(response.body())
+//                    }
+//
+//                    else -> {
+//                        Result.failure(Throwable(response.message()))
+//                    }
+//                }
+
+            } catch (e: Exception) {
+                Result.failure(Throwable(e.message))
+            }
+        }
+
+
     suspend fun getTournamentsAvailableToUser(userId: Int): Result<TournamentResponse?> =
         withContext(dispatcher) {
             try {
@@ -44,7 +68,6 @@ class TournamentRepository(
                     userId = userId
                 )
                 when {
-
                     response.isSuccessful -> {
                         Result.success(response.body())
                     }

@@ -14,6 +14,7 @@ import com.draccoapp.poker.R
 import com.draccoapp.poker.databinding.FragmentSplashBinding
 import com.draccoapp.poker.ui.activities.AccountActivity
 import com.draccoapp.poker.ui.activities.MainActivity
+import com.draccoapp.poker.utils.Preferences
 import com.draccoapp.poker.viewModel.AuthViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -42,6 +43,9 @@ class SplashFragment : Fragment() {
 
     private fun initDelay() {
 //        val progressBarHorizontal = binding.progressBar
+        val preferences = Preferences(requireContext())
+        preferences.setLanguage("en")
+
 
         val totalProgressTime = 3000
         val progressBarMax = 100
@@ -59,15 +63,13 @@ class SplashFragment : Fragment() {
 
         animator.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
-                if(viewModel.getIsLogged()){
+                if (viewModel.getIsLogged()) {
                     startActivity(Intent(requireContext(), MainActivity::class.java))
                     requireActivity().finishAffinity()
                 } else {
                     startActivity(Intent(requireContext(), AccountActivity::class.java))
                     requireActivity().finishAffinity()
                 }
-
-
             }
         })
     }

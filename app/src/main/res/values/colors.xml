@@ -12,5 +12,7 @@
     <color name="unselect_bottom">#FFFFFF</color>
     <color name="text_edit">#8F9193</color>
     <color name="transparent">#00000000</color>
+    <color name="vermelhoSnack">#fd7268</color>
+    <color name="verdeSnack">#0c5b0a</color>
     <color name="background_chip">#1E7A21</color>
 </resources>

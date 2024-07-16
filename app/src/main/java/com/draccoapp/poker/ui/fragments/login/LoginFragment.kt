@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.request.Login
 import com.draccoapp.poker.databinding.FragmentLoginBinding
+import com.draccoapp.poker.ui.activities.MainActivity
 import com.draccoapp.poker.utils.Preferences
 import com.draccoapp.poker.utils.SharedUtils
 import com.draccoapp.poker.utils.Validation
@@ -33,11 +34,10 @@ class LoginFragment : Fragment() {
     private var firstTimeMovingToDoneFragment = true
     private lateinit var email: String
     private lateinit var password: String
-    private lateinit var preferences : Preferences
+    private lateinit var preferences: Preferences
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
@@ -57,18 +57,23 @@ class LoginFragment : Fragment() {
 
         viewModel.login.observe(viewLifecycleOwner) { response ->
             response?.let {
-                findNavController()
-                    .navigate(
-                        LoginFragmentDirections
-                            .actionLoginFragmentToTwoFactorFragment()
-                    )
+
+                startActivity(Intent(requireContext(), MainActivity::class.java))
+                requireActivity().finishAffinity()
+
+                //PULANDO FRAGMENT 2FACTOR POIS AINDA NÃO TEM VERIFICAÇÃO NA API
+//                findNavController()
+//                    .navigate(
+//                        LoginFragmentDirections
+//                            .actionLoginFragmentToTwoFactorFragment()
+//                    )
             }
 
         }
 
         viewModel.error.observe(viewLifecycleOwner) { error ->
             error?.let {
-                if (firstTimeMovingToDoneFragment){
+                if (firstTimeMovingToDoneFragment) {
                     firstTimeMovingToDoneFragment = false
                     findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterDoneFragment())
                 }
@@ -83,10 +88,7 @@ class LoginFragment : Fragment() {
         val spannableString = SpannableString(text)
 
         spannableString.setSpan(
-            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.primary)),
-            26,
-            text.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.primary)), 26, text.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
 
         binding.labelCreate.text = spannableString
@@ -108,8 +110,7 @@ class LoginFragment : Fragment() {
                 if (validateOfFields()) {
                     viewModel.login(
                         Login(
-                            credential = email,
-                            password = password
+                            credential = email, password = password
                         )
                     )
                 }
@@ -118,17 +119,14 @@ class LoginFragment : Fragment() {
 
             labelForgot.setOnClickListener {
                 findNavController().navigate(
-                    LoginFragmentDirections
-                        .actionLoginFragmentToForgotEmailFragment()
+                    LoginFragmentDirections.actionLoginFragmentToForgotEmailFragment()
                 )
             }
 
             labelCreate.setOnClickListener {
-                findNavController()
-                    .navigate(
-                        LoginFragmentDirections
-                            .actionLoginFragmentToRegisterProfileFragment()
-                    )
+                findNavController().navigate(
+                    LoginFragmentDirections.actionLoginFragmentToRegisterProfileFragment()
+                )
             }
         }
 

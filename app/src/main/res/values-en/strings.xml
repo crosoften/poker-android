@@ -115,6 +115,16 @@
     <string name="senha_8digitos">The password must be at least 8 digits long</string>
     <string name="senhas_diferentes">Passwords must be the same</string>
     <string name="concluir_cadastro">Complete Registration</string>
+    <string name="torneio_criado_com_sucesso">Tournament created successfully</string>
+    <string name="necessario_adicionar_um_comprovante">You need to add a receipt</string>
+    <string name="necessario_preencher_todos_os_campos_acima">You must fill in all the fields above</string>
+    <string name="eua">United States of America</string>
+    <string name="selecionar_comprovante">Select receipt</string>
+    <string name="camera">Camera</string>
+    <string name="galeria">Gallery</string>
+    <string name="cancelar">Cancel</string>
+    <string name="camera_permission">Camera permission</string>
+    <string name="camera_permission_required_to_take_pictures">Camera permission required to take pictures.</string>
 
 
 
