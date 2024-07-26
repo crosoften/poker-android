@@ -283,7 +283,7 @@ class TournamentFragment : Fragment() {
                 startCamera()
             } else {
                 // A permissão foi negada, você pode exibir uma mensagem para o usuário ou solicitar novamente
-                Toast.makeText(requireContext(), "Camera permission denied", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), getString(R.string.camera_permission_denied), Toast.LENGTH_SHORT)
                     .show()
             }
         }

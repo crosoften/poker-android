@@ -1,23 +1,27 @@
 package com.draccoapp.poker.ui.fragments.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.request.Login
+import com.draccoapp.poker.api.model.request.Login2faBodyNew
 import com.draccoapp.poker.databinding.FragmentLoginBinding
 import com.draccoapp.poker.ui.activities.MainActivity
 import com.draccoapp.poker.utils.Preferences
-import com.draccoapp.poker.utils.SharedUtils
 import com.draccoapp.poker.utils.Validation
+import com.draccoapp.poker.utils.mostrarToast
 import com.draccoapp.poker.viewModel.AuthViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
@@ -55,28 +59,41 @@ class LoginFragment : Fragment() {
 
     private fun setupObserver() {
 
-        viewModel.login.observe(viewLifecycleOwner) { response ->
+        viewModel.successLogin.observe(viewLifecycleOwner) { response ->
             response?.let {
+
+                viewModel.login2faNew(Login2faBodyNew(code = "1234", key = response.key))
+
 
                 startActivity(Intent(requireContext(), MainActivity::class.java))
                 requireActivity().finishAffinity()
 
-                //PULANDO FRAGMENT 2FACTOR POIS AINDA NÃO TEM VERIFICAÇÃO NA API
-//                findNavController()
-//                    .navigate(
-//                        LoginFragmentDirections
-//                            .actionLoginFragmentToTwoFactorFragment()
-//                    )
+                Log.i("TokenWill", "A key do usuário logado é     Key =   ${response.key}")
             }
-
         }
 
-        viewModel.error.observe(viewLifecycleOwner) { error ->
-            error?.let {
+        viewModel.successLogin2fa.observe(viewLifecycleOwner) { response ->
+            response?.let {
+                //salvar toker no preferences
+                preferences.saveToken(response)
+            }
+        }
+
+        viewModel.error401.observe(viewLifecycleOwner) { error401 ->
+            error401?.let {
                 if (firstTimeMovingToDoneFragment) {
                     firstTimeMovingToDoneFragment = false
                     findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterDoneFragment())
                 }
+            }
+        }
+
+
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            error?.let {
+
+                mostrarToast(it, requireContext())
+                Log.i(TAG, "No fragment login error é : $error")
             }
         }
     }
@@ -108,6 +125,7 @@ class LoginFragment : Fragment() {
             buttonEnter.setOnClickListener {
 
                 if (validateOfFields()) {
+                    Log.i(TAG, "onClick: Chamando viewModel.login")
                     viewModel.login(
                         Login(
                             credential = email, password = password
@@ -115,6 +133,7 @@ class LoginFragment : Fragment() {
                     )
                 }
                 firstTimeMovingToDoneFragment = true
+                closeKeyboard()
             }
 
             labelForgot.setOnClickListener {
@@ -184,6 +203,15 @@ class LoginFragment : Fragment() {
         val navController = findNavController()
         navController.navigate(R.id.loginFragment)
     }
+
+    private fun closeKeyboard() {
+        val view: View? = activity?.currentFocus
+        if (view != null) {
+            val imm: InputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

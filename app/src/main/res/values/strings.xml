@@ -125,6 +125,7 @@
     <string name="cancelar">Cancelar</string>
     <string name="camera_permission">Permissão da câmera</string>
     <string name="camera_permission_required_to_take_pictures">É necessária permissão da câmera para tirar fotos.</string>
+    <string name="camera_permission_denied">Permissão da câmera negada</string>
 
 
 </resources>

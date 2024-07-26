@@ -125,6 +125,7 @@
     <string name="cancelar">Cancel</string>
     <string name="camera_permission">Camera permission</string>
     <string name="camera_permission_required_to_take_pictures">Camera permission required to take pictures.</string>
+    <string name="camera_permission_denied">Camera permission denied</string>
 
 
 

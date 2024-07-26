@@ -75,4 +75,6 @@ dependencies {
     ksp(libs.moshiKotlinKsp)
     implementation(libs.pagingRuntimeKtx)
     implementation(libs.pagingCommonKtx)
+
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.1")
 }

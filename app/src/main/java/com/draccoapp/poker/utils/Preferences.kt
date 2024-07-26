@@ -2,7 +2,9 @@ package com.draccoapp.poker.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.draccoapp.poker.api.model.response.Login2FAResponse
+import com.draccoapp.poker.api.model.response.Login2faResponseNew
 import com.draccoapp.poker.api.model.response.LoginResponse
 import com.draccoapp.poker.api.modelOld.response.User
 
@@ -135,7 +137,8 @@ class Preferences(context: Context) {
         return preferences.getString(KEY_COUNTRY, "").orEmpty()
     }
 
-    fun saveToken(token: Login2FAResponse) {
+    fun saveToken(token: Login2faResponseNew) {
+        Log.i("TokenWill", "saveToken: no preferences   token a ser salvo é ${token.accessToken}")
         editor.putBoolean(IS_LOGIN, true)
         editor.putString(KEY_ACCESS_TOKEN, token.accessToken)
         editor.commit()

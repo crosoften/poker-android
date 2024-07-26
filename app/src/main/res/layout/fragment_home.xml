@@ -41,11 +41,11 @@
                     android:layout_height="60dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
-                    android:src="@drawable/ic_photo_profile"
                     android:scaleType="centerCrop"
-                    app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+                    android:src="@drawable/ic_photo_profile"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                    app:layout_constraintTop_toBottomOf="@+id/imageView"
+                    app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
 
                 <TextView
                     android:id="@+id/textView"
@@ -143,6 +143,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
                         <TextView
+                            android:id="@+id/txt_tempoRestanteContrato"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
@@ -168,6 +169,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
                         <TextView
+                            android:id="@+id/txt_seusTorneios"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="10dp"
@@ -192,17 +194,36 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:fontFamily="@font/montserrat_medium"
-                            android:text="$ 00,00"
-                            android:textColor="@color/white"
-                            android:textSize="12sp"
+                            android:orientation="horizontal"
                             app:layout_constraintBottom_toBottomOf="@+id/textView3"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/textView3" />
+                            app:layout_constraintTop_toTopOf="@+id/textView3">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserrat_medium"
+                                android:text="$"
+                                android:textColor="@color/white"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/txt_lucroContratoAtual"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="3dp"
+                                android:layout_marginEnd="10dp"
+                                android:fontFamily="@font/montserrat_medium"
+                                android:text="00,00"
+                                android:textColor="@color/white"
+                                android:textSize="12sp" />
+
+
+                        </LinearLayout>
+
 
                         <TextView
                             android:id="@+id/textView8"

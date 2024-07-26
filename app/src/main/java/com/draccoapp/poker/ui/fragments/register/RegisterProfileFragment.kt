@@ -9,11 +9,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.text.SpannableStringBuilder
+import android.text.Editable
+import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,24 +24,26 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.draccoapp.poker.R
 import com.draccoapp.poker.databinding.FragmentRegisterProfileBinding
-import com.draccoapp.poker.utils.Constants
+import com.draccoapp.poker.ui.fragments.tournament.TAG
 import com.draccoapp.poker.utils.Constants.Companion.RegisterCity
 import com.draccoapp.poker.utils.Constants.Companion.RegisterCountry
 import com.draccoapp.poker.utils.Constants.Companion.RegisterDateBirth
-import com.draccoapp.poker.utils.Constants.Companion.RegisterEmail
 import com.draccoapp.poker.utils.Constants.Companion.RegisterGender
 import com.draccoapp.poker.utils.Constants.Companion.RegisterImageUrl
 import com.draccoapp.poker.utils.Constants.Companion.RegisterName
 import com.draccoapp.poker.utils.Constants.Companion.RegisterState
 import com.draccoapp.poker.utils.MaskEditUtil
+import com.draccoapp.poker.utils.Preferences
 import com.draccoapp.poker.utils.converterDataNasc
 import com.draccoapp.poker.utils.mostrarToast
 import com.draccoapp.poker.viewModel.RegisterViewModel
+import com.draccoapp.poker.viewModel.TournamentViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -66,8 +67,13 @@ class RegisterProfileFragment : Fragment() {
     private var currentPhotoPath: String? = null
     private var fotoSelecionada: MultipartBody.Part? = null
     private val viewModel: RegisterViewModel by viewModel()
+    private val viewModelEstados: TournamentViewModel by viewModel()
     private var uriGaleria: Uri? = null
     private var bitmapCamera: Bitmap? = null
+
+    private lateinit var preferences: Preferences
+    private lateinit var listaDeEstadosBrasileiros: List<String>
+    private lateinit var listaDeEstadosEUA: List<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,17 +81,19 @@ class RegisterProfileFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentRegisterProfileBinding.inflate(inflater, container, false)
+        preferences = Preferences(requireContext())
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        inicializaListaDeEstados()
         onclick()
         setupUI()
         setupObservers()
         tentaFixarImagem()
-
+        configEditCountry()
+        configEditState()
     }
 
     private fun tentaFixarImagem() {
@@ -134,7 +142,6 @@ class RegisterProfileFragment : Fragment() {
         mascaraDataNascimento()
 
         configEditGender()
-        configEditState()
 
         binding.imageCamera.setOnClickListener {
             openImagePicker()
@@ -143,17 +150,30 @@ class RegisterProfileFragment : Fragment() {
 
     }
 
+    private fun configEditState() {
+        val listaCorreta = if (binding.editCountry.text.toString() == "Brasil" || binding.editCountry.text.toString() == "Brazil") {
+            listaDeEstadosBrasileiros
+        } else {
+            listaDeEstadosEUA
+        }
+
+
+        val editState = binding.editState
+        editState.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listaCorreta))
+    }
+
+
     private fun openImagePicker() {
-        val options = arrayOf<CharSequence>("Câmera", "Galeria", "Cancelar")
+        val options = arrayOf<CharSequence>(getString(R.string.camera), getString(R.string.galeria), getString(R.string.cancelar))
         AlertDialog.Builder(requireContext())
-            .setTitle("Selecionar foto")
+            .setTitle(getString(R.string.selecionar_comprovante))
             .setItems(options) { dialog, item ->
                 when {
-                    options[item] == "Câmera" -> {
+                    options[item] == getString(R.string.camera) -> {
                         checkCameraPermission()
                     }
 
-                    options[item] == "Galeria" -> {
+                    options[item] == getString(R.string.galeria) -> {
                         val pickPhoto =
                             Intent(
                                 Intent.ACTION_PICK,
@@ -162,7 +182,7 @@ class RegisterProfileFragment : Fragment() {
                         activityResultContract.launch(pickPhoto)
                     }
 
-                    options[item] == "Cancelar" -> {
+                    options[item] == getString(R.string.cancelar) -> {
                         dialog.dismiss()
                     }
                 }
@@ -181,12 +201,12 @@ class RegisterProfileFragment : Fragment() {
             startCamera()
         } else {
             AlertDialog.Builder(requireContext())
-                .setTitle("Camera permission")
-                .setMessage("Camera permission required to take pictures.")
+                .setTitle(getString(R.string.camera_permission))
+                .setMessage(getString(R.string.camera_permission_required_to_take_pictures))
                 .setPositiveButton("OK") { _, _ ->
                     requestCameraPermission.launch(Manifest.permission.CAMERA)
                 }
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton(getString(R.string.cancelar), null)
                 .create()
                 .show()
         }
@@ -199,7 +219,7 @@ class RegisterProfileFragment : Fragment() {
                 startCamera()
             } else {
                 // A permissão foi negada, você pode exibir uma mensagem para o usuário ou solicitar novamente
-                Toast.makeText(requireContext(), "Camera permission denied", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), getString(R.string.camera_permission_denied), Toast.LENGTH_SHORT)
                     .show()
             }
         }
@@ -293,45 +313,23 @@ class RegisterProfileFragment : Fragment() {
             }
         }
 
-
-    private fun configEditState() {
-        val listaDeEstados = mutableListOf(
-            "AC", // Acre
-            "AL", // Alagoas
-            "AP", // Amapá
-            "AM", // Amazonas
-            "BA", // Bahia
-            "CE", // Ceará
-            "DF", // Distrito Federal
-            "ES", // Espírito Santo
-            "GO", // Goiás
-            "MA", // Maranhão
-            "MT", // Mato Grosso
-            "MS", // Mato Grosso do Sul
-            "MG", // Minas Gerais
-            "PA", // Pará
-            "PB", // Paraíba
-            "PR", // Paraná
-            "PE", // Pernambuco
-            "PI", // Piauí
-            "RJ", // Rio de Janeiro
-            "RN", // Rio Grande do Norte
-            "RS", // Rio Grande do Sul
-            "RO", // Rondônia
-            "RR", // Roraima
-            "SC", // Santa Catarina
-            "SP", // São Paulo
-            "SE", // Sergipe
-            "TO"  // Tocantins
-        )
-        val editState = binding.editState
-        editState.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listaDeEstados))
-    }
-
     private fun configEditGender() {
-        val listaDeGeneros = mutableListOf("Male", "Female")
+        val language = preferences.getLanguage()
+
         val editGender = binding.editGender
-        editGender.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listaDeGeneros))
+
+        if (language == "pt") {
+            val listaDeGenerosPT = mutableListOf("Masculino", "Feminino")
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listaDeGenerosPT)
+            editGender.setAdapter(adapter)
+            adapter.notifyDataSetChanged()
+        } else {
+            val listaDeGenerosEN = mutableListOf("Male", "Female")
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listaDeGenerosEN)
+            editGender.setAdapter(adapter)
+            adapter.notifyDataSetChanged()
+        }
+
     }
 
     private fun mascaraDataNascimento() {
@@ -339,7 +337,6 @@ class RegisterProfileFragment : Fragment() {
     }
 
     private fun onclick() {
-
         binding.apply {
 
             back.setOnClickListener {
@@ -394,6 +391,52 @@ class RegisterProfileFragment : Fragment() {
         _binding = null
     }
 
+    private fun configEditCountry() {
+        val language = preferences.getLanguage()
+        Log.i(TAG, "configMoedaAtual: A linguagem no preferences atual é   $language")
+
+        val editCountry = binding.editCountry
+
+        if (language == "pt") {
+            val listaDePaisesPT = mutableListOf("Brasil", "Estados Unidos da América")
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listaDePaisesPT)
+            editCountry.setAdapter(adapter)
+            adapter.notifyDataSetChanged()
+        } else {
+            val listaDePaisesEN = mutableListOf("Brazil", "United States of America")
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listaDePaisesEN)
+            editCountry.setAdapter(adapter)
+            adapter.notifyDataSetChanged()
+        }
+
+
+        binding.editCountry.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                val country = s.toString()
+                val listaCorreta = if (country == "Brasil" || country == "Brazil") {
+                    listaDeEstadosBrasileiros
+                } else {
+                    listaDeEstadosEUA
+                }
+                atualizarListaEstados(listaCorreta)
+            }
+        })
+
+    }
+
+    private fun inicializaListaDeEstados() {
+        listaDeEstadosBrasileiros = viewModelEstados.listaDeEstadosBrasileiros
+        listaDeEstadosEUA = viewModelEstados.listaDeEstadosEUA
+    }
+
+    fun atualizarListaEstados(lista: List<String>) {
+        val editState = binding.editState
+        editState.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, lista))
+    }
 }
 
 fun validateEditTexts(vararg editTexts: EditText): Boolean {

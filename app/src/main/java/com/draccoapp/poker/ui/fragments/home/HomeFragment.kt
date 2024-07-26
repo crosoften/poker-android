@@ -14,10 +14,13 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.api.modelOld.response.User
 import com.draccoapp.poker.databinding.FragmentHomeBinding
 import com.draccoapp.poker.ui.adapters.TournamentAdapter
+import com.draccoapp.poker.utils.Preferences
+import com.draccoapp.poker.viewModel.HomeViewModel
 import com.draccoapp.poker.viewModel.UserViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -29,7 +32,8 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val TAG = "HomeFragment"
-    private val viewModel : UserViewModel by viewModel()
+    private val viewModel: UserViewModel by viewModel()
+    private val homeViewModel: HomeViewModel by viewModel()
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -57,10 +61,15 @@ class HomeFragment : Fragment() {
         onclick()
         setupRecycler()
 //        initModels()
+        val preferences = Preferences(requireContext())
+
+        Log.i("TokenWill", "onViewCreated: Token no homefrag é   ${preferences.getToken()}")
+        homeViewModel.getMeusDados()
+
 
     }
 
-    private fun checkPermissions(){
+    private fun checkPermissions() {
         if (ActivityCompat.checkSelfPermission(
                 requireActivity().applicationContext,
                 android.Manifest.permission.ACCESS_FINE_LOCATION
@@ -82,10 +91,11 @@ class HomeFragment : Fragment() {
     }
 
     private val locationPermissions = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()){
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) {
         when {
             it.getOrDefault(android.Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && ActivityCompat.checkSelfPermission(
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && ActivityCompat.checkSelfPermission(
                         requireContext(),
                         android.Manifest.permission.ACCESS_FINE_LOCATION
                     ) != PackageManager.PERMISSION_GRANTED
@@ -93,8 +103,9 @@ class HomeFragment : Fragment() {
                     permissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
                 }
             }
+
             it.getOrDefault(android.Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && ActivityCompat.checkSelfPermission(
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && ActivityCompat.checkSelfPermission(
                         requireContext(),
                         android.Manifest.permission.ACCESS_COARSE_LOCATION
                     ) != PackageManager.PERMISSION_GRANTED
@@ -106,8 +117,9 @@ class HomeFragment : Fragment() {
     }
 
     private val permissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()){
-        if(it){
+        ActivityResultContracts.RequestPermission()
+    ) {
+        if (it) {
             setLocation()
         } else {
             Log.e(TAG, "Permissão negada")
@@ -120,7 +132,7 @@ class HomeFragment : Fragment() {
     }
 
     @SuppressLint("MissingPermission")
-    private fun setLocation(){
+    private fun setLocation() {
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
                 if (location != null) {
@@ -136,6 +148,19 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupObserver() {
+
+        homeViewModel.successMeusDados.observe(viewLifecycleOwner) { response ->
+            binding.textName.text = response.name
+
+            Glide.with(requireContext()).load(response.imageUrl).into(binding.shapeableImageView)
+            binding.textView6.text = response.playerLevel
+            binding.txtTempoRestanteContrato.text = response.contractExpiresIn
+            binding.txtSeusTorneios.text = response.tournamentsCount.toString()
+            binding.txtLucroContratoAtual.text = response.contractProfit.toString()
+            binding.textView7.text = response.ranking.toString()
+
+        }
+
 
 //        viewModel.getUserById()
 //        viewModel.getTournamentsAvailableToUser()
@@ -166,11 +191,6 @@ class HomeFragment : Fragment() {
     private fun setupUI(response: User) {
         binding.apply {
 
-//            shapeableImageView.load(response.profilePicture) {
-//                crossfade(true)
-//                placeholder(R.drawable.ic_profile)
-//                error(R.drawable.ic_profile)
-//            }
             textName.text = response.name
         }
     }
@@ -214,7 +234,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun onClickTournament(tournament: Tournament){
+    private fun onClickTournament(tournament: Tournament) {
         findNavController()
             .navigate(
                 HomeFragmentDirections
