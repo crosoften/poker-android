@@ -126,7 +126,8 @@
     <string name="camera_permission">Camera permission</string>
     <string name="camera_permission_required_to_take_pictures">Camera permission required to take pictures.</string>
     <string name="camera_permission_denied">Camera permission denied</string>
-
+    <string name="_40_km_de_voc">40 km from you</string>
+    <string name="zip_code">Zip Code</string>
 
 
 

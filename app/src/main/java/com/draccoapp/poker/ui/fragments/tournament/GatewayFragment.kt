@@ -1,26 +1,27 @@
 package com.draccoapp.poker.ui.fragments.tournament
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import coil.load
+import com.bumptech.glide.Glide
 import com.draccoapp.poker.databinding.FragmentGatewayBinding
+import com.draccoapp.poker.utils.converterDataNextTournament
+import com.draccoapp.poker.viewModel.TournamentViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class GatewayFragment : Fragment() {
 
-
     private var _binding: FragmentGatewayBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: TournamentViewModel by viewModel()
 
-//    private val viewModel: TournamentViewModel by viewModel()
 
     private val args by navArgs<GatewayFragmentArgs>()
-
     private val tournament by lazy {
         args.tournament
     }
@@ -44,18 +45,16 @@ class GatewayFragment : Fragment() {
 
     private fun setupUI() {
 
-        tournament.imageURL.let {
-            binding.imageView2.load(it) {
-                crossfade(true)
-            }
-        }
+        Glide.with(requireContext())
+            .load(tournament.imageUrl)
+            .into(binding.imageView2)
 
-        tournament.name.let {
+        tournament.title.let {
             binding.textView13.text = it
         }
 
-        tournament.date.let {
-            binding.textView14.text = it
+        tournament.startDatetime.let {
+            binding.textView14.text = converterDataNextTournament(it.toString())
         }
 
         tournament.prize.let {
@@ -65,17 +64,6 @@ class GatewayFragment : Fragment() {
 
     private fun setupObserver() {
 
-//        viewModel.entry.observe(viewLifecycleOwner) {
-//            findNavController()
-//                .navigate(
-//                    GatewayFragmentDirections
-//                        .actionGatewayFragmentToSubscribeTournamentFragment()
-//                )
-//        }
-//
-//        viewModel.error.observe(viewLifecycleOwner) {
-//            binding.root.showSnackBarRed(it)
-//        }
     }
 
     private fun onClick() {

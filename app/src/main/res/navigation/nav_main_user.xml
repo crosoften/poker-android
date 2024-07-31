@@ -71,11 +71,15 @@
             app:destination="@id/gatewayFragment" />
         <argument
             android:name="tournament"
-            app:argType="com.draccoapp.poker.api.modelOld.response.Tournament" />
+            app:argType="com.draccoapp.poker.api.model.response.homeFrament.NextTournament" />
+
+        <!--            app:argType="com.draccoapp.poker.api.modelOld.response.Tournament" -->
+
         <action
             android:id="@+id/action_detailTournamentFragment_to_tournamentUpdateFragment"
             app:destination="@id/tournamentUpdateFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/gatewayFragment"
         android:name="com.draccoapp.poker.ui.fragments.tournament.GatewayFragment"
@@ -86,7 +90,10 @@
             app:destination="@id/subscribeTournamentFragment" />
         <argument
             android:name="tournament"
-            app:argType="com.draccoapp.poker.api.modelOld.response.Tournament" />
+            app:argType="com.draccoapp.poker.api.model.response.homeFrament.NextTournament" />
+
+        <!--        app:argType="com.draccoapp.poker.api.modelOld.response.Tournament"-->
+
     </fragment>
     <fragment
         android:id="@+id/subscribeTournamentFragment"
@@ -144,7 +151,7 @@
         android:id="@+id/addUpdateFragment"
         android:name="com.draccoapp.poker.ui.fragments.tournament.AddUpdateFragment"
         android:label="AddUpdateFragment"
-        tools:layout="@layout/fragment_add_update"/>
+        tools:layout="@layout/fragment_add_update" />
     <fragment
         android:id="@+id/detailUpdateFragment"
         android:name="com.draccoapp.poker.ui.fragments.tournament.DetailUpdateFragment"

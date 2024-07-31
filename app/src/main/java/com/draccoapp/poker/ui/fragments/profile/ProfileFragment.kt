@@ -181,13 +181,13 @@ class ProfileFragment : Fragment() {
     }
 
     private fun onClickTournament(tournament: Tournament){
-        findNavController()
-            .navigate(
-                ProfileFragmentDirections
-                    .actionProfileFragmentToDetailTournamentFragment(
-                        tournament
-                    )
-            )
+//        findNavController()
+//            .navigate(
+//                ProfileFragmentDirections
+//                    .actionProfileFragmentToDetailTournamentFragment(
+//                        tournament
+//                    )
+//            )
     }
 
     private fun setLanguagePt() {

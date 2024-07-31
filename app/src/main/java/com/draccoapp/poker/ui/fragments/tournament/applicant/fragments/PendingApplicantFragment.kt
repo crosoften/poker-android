@@ -75,13 +75,13 @@ class PendingApplicantFragment : Fragment() {
     }
 
     private fun onClickTournament(tournament: Tournament){
-        findNavController()
-            .navigate(
-                ApplicantTournamentFragmentDirections
-                    .actionApplicantTournamentFragmentToDetailTournamentFragment(
-                        tournament
-                    )
-            )
+//        findNavController()
+//            .navigate(
+//                ApplicantTournamentFragmentDirections
+//                    .actionApplicantTournamentFragmentToDetailTournamentFragment(
+//                        tournament
+//                    )
+//            )
     }
 
     override fun onDestroyView() {

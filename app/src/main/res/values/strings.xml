@@ -126,6 +126,8 @@
     <string name="camera_permission">Permissão da câmera</string>
     <string name="camera_permission_required_to_take_pictures">É necessária permissão da câmera para tirar fotos.</string>
     <string name="camera_permission_denied">Permissão da câmera negada</string>
+    <string name="_40_km_de_voc">40 km de você</string>
+    <string name="zip_code">CEP</string>
 
 
 </resources>

@@ -15,11 +15,15 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.draccoapp.poker.api.model.response.homeFrament.NextTournament
+import com.draccoapp.poker.api.model.response.homeFrament.TournamentsImIn
 import com.draccoapp.poker.api.modelOld.response.Tournament
-import com.draccoapp.poker.api.modelOld.response.User
 import com.draccoapp.poker.databinding.FragmentHomeBinding
 import com.draccoapp.poker.ui.adapters.TournamentAdapter
+import com.draccoapp.poker.ui.adapters.adaptersNew.TournamentAdapterNew
+import com.draccoapp.poker.ui.adapters.adaptersNew.TournamentMineAdapterNew
 import com.draccoapp.poker.utils.Preferences
+import com.draccoapp.poker.utils.mapTournamentToNextTournament
 import com.draccoapp.poker.viewModel.HomeViewModel
 import com.draccoapp.poker.viewModel.UserViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -37,8 +41,8 @@ class HomeFragment : Fragment() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    private lateinit var applicantAdapter: TournamentAdapter
-    private lateinit var nextAdapter: TournamentAdapter
+    private lateinit var tournamentMineAdapter: TournamentMineAdapterNew
+    private lateinit var nextTournamentAdapter: TournamentAdapterNew
     private var listApplicant: MutableList<Tournament> = mutableListOf()
     private var listNext: MutableList<Tournament> = mutableListOf()
 
@@ -64,7 +68,7 @@ class HomeFragment : Fragment() {
         val preferences = Preferences(requireContext())
 
         Log.i("TokenWill", "onViewCreated: Token no homefrag é   ${preferences.getToken()}")
-        homeViewModel.getMeusDados()
+        homeViewModel.getHomeFragment()
 
 
     }
@@ -148,52 +152,32 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupObserver() {
-
-        homeViewModel.successMeusDados.observe(viewLifecycleOwner) { response ->
-            binding.textName.text = response.name
-
-            Glide.with(requireContext()).load(response.imageUrl).into(binding.shapeableImageView)
-            binding.textView6.text = response.playerLevel
-            binding.txtTempoRestanteContrato.text = response.contractExpiresIn
-            binding.txtSeusTorneios.text = response.tournamentsCount.toString()
-            binding.txtLucroContratoAtual.text = response.contractProfit.toString()
-            binding.textView7.text = response.ranking.toString()
-
-        }
+        homeViewModel.successHomeFragment.observe(viewLifecycleOwner) { response ->
+            Log.i(TAG, "setupObserver: Os dados todos da home foram $response")
 
 
-//        viewModel.getUserById()
-//        viewModel.getTournamentsAvailableToUser()
-//        viewModel.getTournamentsJoinedByUser()
-//
-//        viewModel.user.observe(viewLifecycleOwner) { response ->
-//            setupUI(response)
-//        }
-//
-        viewModel.tournamentApplicant.observe(viewLifecycleOwner) { response ->
-            applicantAdapter.updateList(response)
-            applicantAdapter.setUnit(viewModel.getUnit())
-        }
-//
-        viewModel.tournamentsByUser.observe(viewLifecycleOwner) { response ->
-            nextAdapter.updateList(response)
-            nextAdapter.setUnit(viewModel.getUnit())
-        }
-//
-//        viewModel.error.observe(viewLifecycleOwner) { error ->
-//            error?.let {
-//                binding.root.showSnackBarRed(it)
-//            }
-//        }
+            binding.textName.text = response.myself.name
 
-    }
+            Glide.with(requireContext()).load(response.myself.imageUrl).into(binding.shapeableImageView)
+            binding.textView6.text = response.myself.playerLevel
+            binding.txtTempoRestanteContrato.text = response.myself.contractExpiresIn
+            binding.txtSeusTorneios.text = response.myself.tournamentsCount.toString()
+            binding.txtLucroContratoAtual.text = response.myself.contractProfit.toString()
+            binding.textView7.text = response.myself.ranking.toString()
 
-    private fun setupUI(response: User) {
-        binding.apply {
+            nextTournamentAdapter.updateList(response.nextTournaments)
 
-            textName.text = response.name
+            val listTournaments = mutableListOf<com.draccoapp.poker.api.model.response.homeFrament.Tournament>()
+            response.tournamentsImIn.forEach {
+                listTournaments.add(it.tournament)
+            }
+
+            tournamentMineAdapter.updateList(listTournaments)
+
+
         }
     }
+
 
     private fun onclick() {
         binding.apply {
@@ -219,30 +203,38 @@ class HomeFragment : Fragment() {
 
     private fun setupRecycler() {
 
-        applicantAdapter = TournamentAdapter(::onClickTournament)
+        tournamentMineAdapter = TournamentMineAdapterNew(){
+           val nextTournamente = mapTournamentToNextTournament(it)
+            findNavController()
+                .navigate(
+                    HomeFragmentDirections
+                        .actionHomeFragmentToDetailTournamentFragment(
+                            nextTournamente
+                        )
+                )
+        }
 
         binding.recyclerDone.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = applicantAdapter
+            adapter = tournamentMineAdapter
         }
 
-        nextAdapter = TournamentAdapter(::onClickTournament)
+        nextTournamentAdapter = TournamentAdapterNew(requireContext()) {
+            findNavController()
+                .navigate(
+                    HomeFragmentDirections
+                        .actionHomeFragmentToDetailTournamentFragment(
+                            it
+                        )
+                )
+        }
 
         binding.recyclerNext.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = nextAdapter
+            adapter = nextTournamentAdapter
         }
     }
 
-    private fun onClickTournament(tournament: Tournament) {
-        findNavController()
-            .navigate(
-                HomeFragmentDirections
-                    .actionHomeFragmentToDetailTournamentFragment(
-                        tournament
-                    )
-            )
-    }
 
 
     override fun onDestroyView() {

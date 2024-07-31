@@ -78,13 +78,13 @@ class NextTournamentFragment : Fragment() {
     }
 
     private fun onClickTournament(tournament: Tournament){
-        findNavController()
-            .navigate(
-                NextTournamentFragmentDirections
-                    .actionNextTournamentFragmentToDetailTournamentFragment(
-                        tournament
-                    )
-            )
+//        findNavController()
+//            .navigate(
+//                NextTournamentFragmentDirections
+//                    .actionNextTournamentFragmentToDetailTournamentFragment(
+//                        tournament
+//                    )
+//            )
     }
 
     override fun onDestroyView() {

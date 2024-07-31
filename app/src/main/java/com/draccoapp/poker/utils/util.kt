@@ -4,9 +4,14 @@ import android.content.Context
 import android.view.View
 import android.widget.Toast
 import com.draccoapp.poker.R
+import com.draccoapp.poker.api.model.response.homeFrament.LocationX
+import com.draccoapp.poker.api.model.response.homeFrament.LocationXXX
+import com.draccoapp.poker.api.model.response.homeFrament.NextTournament
+import com.draccoapp.poker.api.model.response.homeFrament.Tournament
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -22,6 +27,47 @@ fun String.formatToBrl(): String {
     val value = this.toFloatOrNull() ?: return this
     return String.format("%.2f", value).replace(".", ",")
 }
+
+
+fun mapTournamentToNextTournament(tournament: Tournament): NextTournament {
+    return NextTournament(
+        description = tournament.description,
+        eventUrl = tournament.eventUrl,
+        finalDatetime = tournament.finalDatetime?.toString(),
+        formId = tournament.formId?.toString(),
+        id = tournament.id,
+        imageUrl = tournament.imageUrl?.toString(),
+        location = null,
+        prize = tournament.prize,
+        rules = tournament.rules?.toString(),
+        startDatetime = tournament.startDatetime,
+        status = tournament.status,
+        time = tournament.time?.toString(),
+        title = tournament.title,
+        type = tournament.type
+    )
+}
+
+
+fun converterDataNextTournament(dataHoraString: String): String {
+    // Formato original da string de data e hora
+    val formatoOriginal = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+
+    // Formato desejado para a data
+    val formatoDesejado = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
+    return try {
+        // Parse da string para objeto Date
+        val dataHora = formatoOriginal.parse(dataHoraString)
+
+        // Formatar para obter a data no formato desejado
+        formatoDesejado.format(dataHora)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        "N/A" // ou lançar uma exceção, dependendo do contexto do seu app
+    }
+}
+
 
 fun toast(context: Context, text: String) {
     Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
@@ -90,7 +136,6 @@ fun View.showSnackbarGreen(message: String) {
     snackBar.setBackgroundTint(resources.getColor(R.color.verdeSnack))
     snackBar.show()
 }
-
 
 
 fun limparMessage(texto: String): String? {

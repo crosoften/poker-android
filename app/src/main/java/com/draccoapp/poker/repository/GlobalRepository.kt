@@ -4,6 +4,7 @@ import com.draccoapp.poker.api.service.GlobalService
 
 class GlobalRepository(private val service: GlobalService) {
 
-    fun getMeusDados() = service.getMeusDados()
+//    fun getMeusDados() = service.getMeusDados()
 
+    fun getHomeFragment() = service.getHomeFragment()
 }
