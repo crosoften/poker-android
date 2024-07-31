@@ -8,13 +8,21 @@ import androidx.lifecycle.viewModelScope
 import com.draccoapp.poker.api.model.request.TournamentBodyNew
 import com.draccoapp.poker.api.model.response.TournamentResponseNew
 import com.draccoapp.poker.api.model.response.UploadFileResponse
+import com.draccoapp.poker.api.model.response.tournamentForms.TournamentForms
 import com.draccoapp.poker.api.modelOld.request.Entry
 import com.draccoapp.poker.api.model.type.DataState
 import com.draccoapp.poker.repository.TournamentRepository
+import com.draccoapp.poker.utils.PokerApplication
 import com.draccoapp.poker.utils.Preferences
+import com.draccoapp.poker.utils.limparMessage
+import com.draccoapp.poker.utils.mostrarToast
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.http.Multipart
+import java.io.IOException
 
 class TournamentViewModel(
     private val repository: TournamentRepository,
@@ -23,7 +31,7 @@ class TournamentViewModel(
 
     val successCreateTournament = MutableLiveData<TournamentResponseNew>()
     val successUploadFile = MutableLiveData<UploadFileResponse>()
-
+    val successGetTournamentForms = MutableLiveData<TournamentForms>()
 
     val error: LiveData<String>
         get() = _error
@@ -39,6 +47,38 @@ class TournamentViewModel(
         get() = _entry
 
     private val _entry = MutableLiveData<Unit>()
+
+
+
+
+
+    fun getTournament(id: String) {
+        repository.getTournament(id).enqueue(object : Callback<TournamentForms> {
+            override fun onResponse(call: Call<TournamentForms>, response: Response<TournamentForms>) {
+                if (response.isSuccessful) {
+                    successGetTournamentForms.postValue(response.body())
+                    Log.i("AuthViewModel", "onResponse: A resposta foi isSuccessfull")
+                } else {
+                    try {
+                        val errorBody = response.errorBody()?.string()
+                        val erroLoginLimpo = limparMessage(errorBody.toString())
+                        Log.e("Error Body", "O erro  do servidor  LIMPOOO  foi ${erroLoginLimpo ?: "erro desconhecido"} ")
+                        mostrarToast(" $erroLoginLimpo ", PokerApplication.instance)
+                    } catch (e: IOException) {
+                        Log.e("IOException", "Erro de leitura do response ->>", e)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<TournamentForms>, t: Throwable) {
+                mostrarToast("Generic error", PokerApplication.instance)
+                Log.e("AuthViewModel", "ONFAILUREEE  o erro na função solicitarTokenViewModel do CadastroViewModel foi $t")
+            }
+
+        })
+    }
+
+
 
     fun createTournament(body: TournamentBodyNew) {
         _appState.postValue(DataState.Loading)

@@ -12,15 +12,15 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragments.tournament.GatewayFragment">
 
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:id="@+id/constraintLayout"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@color/background"-->
-<!--            android:orientation="vertical"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent">-->
+        <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+        <!--            android:id="@+id/constraintLayout"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:background="@color/background"-->
+        <!--            android:orientation="vertical"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent">-->
 
         <ImageView
             android:id="@+id/back"
@@ -36,20 +36,20 @@
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/white" />
 
-            <TextView
-                android:id="@+id/solicitation_details"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_bold"
-                android:text="@string/inscri_o"
-                android:elevation="4dp"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/back"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/back" />
+        <TextView
+            android:id="@+id/solicitation_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="4dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/inscri_o"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/back" />
 
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+        <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
         <androidx.core.widget.NestedScrollView
@@ -128,27 +128,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_inscrever"
+                <LinearLayout
+                    android:id="@+id/linLay_questions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="24dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="200dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/bg_button"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:text="@string/confirmar"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/roboto_bold"
-                    android:textAllCaps="true"
-                    app:backgroundTint="@color/primary"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView16" />
+                    android:layout_marginHorizontal="22dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@+id/textView16">
+
+                    <!--                    Aqui serão adicionadas as questões programaticamente-->
+
+                </LinearLayout>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -156,6 +147,26 @@
 
         </androidx.core.widget.NestedScrollView>
 
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_inscrever"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="200dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_button"
+            android:fontFamily="@font/roboto_bold"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="@string/confirmar"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/primary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

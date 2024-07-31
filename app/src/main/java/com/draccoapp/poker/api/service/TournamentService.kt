@@ -3,6 +3,7 @@ package com.draccoapp.poker.api.service
 import com.draccoapp.poker.api.model.request.TournamentBodyNew
 import com.draccoapp.poker.api.model.response.TournamentResponseNew
 import com.draccoapp.poker.api.model.response.UploadFileResponse
+import com.draccoapp.poker.api.model.response.tournamentForms.TournamentForms
 import com.draccoapp.poker.api.modelOld.request.Entry
 import com.draccoapp.poker.api.modelOld.response.ApplicanteTournamentResponse
 import com.draccoapp.poker.api.modelOld.response.Tournament
@@ -21,6 +22,9 @@ import retrofit2.http.Query
 interface TournamentService {
 
 
+    @GET("tournaments/{id}")
+    fun getTournament(@Path("id") id: String): Call<TournamentForms>
+
     @POST("tournaments/non-official")
     suspend fun createTournament(
         @Body body: TournamentBodyNew
@@ -28,7 +32,7 @@ interface TournamentService {
 
     @Multipart
     @POST("/upload-file")
-    suspend fun uploadArquivos(@Part file: MultipartBody.Part?) : UploadFileResponse
+    suspend fun uploadArquivos(@Part file: MultipartBody.Part?): UploadFileResponse
 
 
 //    @Multipart

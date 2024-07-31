@@ -17,6 +17,10 @@ class TournamentRepository(
     private val dispatcher: CoroutineDispatcher
 ) {
 
+
+    fun getTournament(id: String) = service.getTournament(id)
+
+
     suspend fun createTournament(body: TournamentBodyNew): Result<TournamentResponseNew?> =
         withContext(dispatcher) {
             try {
