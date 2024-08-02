@@ -1,20 +1,19 @@
 package com.draccoapp.poker.ui.fragments.contract.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.draccoapp.poker.R
+import com.draccoapp.poker.api.pagging.adaptersPaginacao.AdapterPaginacaoOngoing
 import com.draccoapp.poker.data.Contract
-import com.draccoapp.poker.data.randomContract
-import com.draccoapp.poker.databinding.FragmentAllContractBinding
 import com.draccoapp.poker.databinding.FragmentCurrentContractBinding
 import com.draccoapp.poker.ui.adapters.ContractListAdapter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.draccoapp.poker.viewModel.ContractViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import retrofit2.HttpException
 
 
 class CurrentContractFragment : Fragment() {
@@ -22,9 +21,8 @@ class CurrentContractFragment : Fragment() {
 
     private var _binding: FragmentCurrentContractBinding? = null
     private val binding get() = _binding!!
-
-
-    private lateinit var contractListAdapter: ContractListAdapter
+    private val viewModel: ContractViewModel by viewModel()
+    private lateinit var adapterPaginacaoOngoing: AdapterPaginacaoOngoing
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,57 +30,43 @@ class CurrentContractFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentCurrentContractBinding.inflate(inflater, container, false)
+        adapterPaginacaoOngoing = AdapterPaginacaoOngoing()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        onclick()
         setupRecycler()
-        initModels()
+        setupObserver()
+
     }
 
-    private fun onclick() {
-        binding.apply {
+    private fun setupObserver() {
+        viewModel.list.observe(viewLifecycleOwner) {
+            Log.i("ListaContracts", "setupObserver: RECEBI OS CONSTRATOS $it")
 
-
-        }
-    }
-
-    private fun initModels() {
-
-        val numContractToAdd = 10
-
-        lifecycleScope.launch {
-            val contractToAdd = (1..numContractToAdd).map { randomContract() }
-
-            launch(Dispatchers.Main) {
-                contractListAdapter.updateList(contractToAdd)
+            try {
+                adapterPaginacaoOngoing.submitData(lifecycle, it)
+                Log.i("ListaContracts", "Depois de chamar submitData")
+            } catch (e: HttpException) {
+                Log.e("ListaContracts", "Erro HTTP: ${e.code()} - ${e.message()}")
+            } catch (e: Exception) {
+                Log.e("ListaContracts", "Erro inesperado: ${e.message}")
             }
         }
-
     }
+
 
     private fun setupRecycler() {
 
-        contractListAdapter = ContractListAdapter(::onClickContract)
-
         binding.recycler.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            adapter = contractListAdapter
+            adapter = adapterPaginacaoOngoing
         }
     }
 
-    private fun onClickContract(contract: Contract){
-//        findNavController()
-//            .navigate(
-//                HomeFragmentDirections
-//                    .actionHomeFragmentToDetailTournamentFragment(
-//                        tournament
-//                    )
-//            )
-    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

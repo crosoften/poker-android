@@ -15,6 +15,7 @@ import com.draccoapp.poker.utils.Constants
 import com.draccoapp.poker.utils.PokerApplication
 import com.draccoapp.poker.utils.Preferences
 import com.draccoapp.poker.viewModel.AuthViewModel
+import com.draccoapp.poker.viewModel.ContractViewModel
 import com.draccoapp.poker.viewModel.HomeViewModel
 import com.draccoapp.poker.viewModel.RegisterViewModel
 import com.draccoapp.poker.viewModel.TournamentViewModel
@@ -167,6 +168,9 @@ val viewModelModule = module {
     viewModel {
         HomeViewModel(get())
     }
+    viewModel {
+        ContractViewModel(get())
+    }
 }
 
 
@@ -195,6 +199,7 @@ fun getUnsafeOkHttpClient(preferences: Preferences): OkHttpClient {
                 .header(
                     "Authorization",
                     "Bearer ${preferences.getToken()}"
+//                    "Bearer ${Constants.USER_TOKEN}"
                 )
                 .build()
             chain.proceed(newRequest)

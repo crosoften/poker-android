@@ -19,6 +19,7 @@ import com.draccoapp.poker.api.model.request.Login
 import com.draccoapp.poker.api.model.request.Login2faBodyNew
 import com.draccoapp.poker.databinding.FragmentLoginBinding
 import com.draccoapp.poker.ui.activities.MainActivity
+import com.draccoapp.poker.utils.Constants
 import com.draccoapp.poker.utils.Preferences
 import com.draccoapp.poker.utils.Validation
 import com.draccoapp.poker.utils.mostrarToast
@@ -68,7 +69,7 @@ class LoginFragment : Fragment() {
                 startActivity(Intent(requireContext(), MainActivity::class.java))
                 requireActivity().finishAffinity()
 
-                Log.i("TokenWill", "A key do usuário logado é     Key =   ${response.key}")
+                Log.i("TokenWill", "O IDD do usuário logado é     Id =   ${response.key}")
             }
         }
 
@@ -76,6 +77,8 @@ class LoginFragment : Fragment() {
             response?.let {
                 //salvar toker no preferences
                 preferences.saveToken(response)
+                Constants.USER_TOKEN = response.accessToken
+
             }
         }
 

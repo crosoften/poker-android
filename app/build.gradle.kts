@@ -76,5 +76,9 @@ dependencies {
     implementation(libs.pagingRuntimeKtx)
     implementation(libs.pagingCommonKtx)
 
+    // Paging3
+    implementation ("androidx.paging:paging-runtime-ktx:3.3.1")
+    implementation ("androidx.paging:paging-common-ktx:3.3.1")
+
     implementation ("com.squareup.okhttp3:logging-interceptor:4.9.1")
 }

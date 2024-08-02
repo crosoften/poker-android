@@ -5,6 +5,8 @@ class Constants {
         //        const val BASE_URL = "https://homolog.crosoften.com:8041/"
         const val BASE_URL = "https://propath.standardbacking.com:8080"
 
+        var USER_TOKEN = ""
+
         var RegisterName = ""
         var RegisterEmail = ""
         var RegisterDateBirth = ""

@@ -66,10 +66,9 @@ class HomeFragment : Fragment() {
         setupRecycler()
 //        initModels()
         val preferences = Preferences(requireContext())
-
         Log.i("TokenWill", "onViewCreated: Token no homefrag é   ${preferences.getToken()}")
-        homeViewModel.getHomeFragment()
 
+        homeViewModel.getHomeFragment()
 
     }
 
@@ -180,8 +179,8 @@ class HomeFragment : Fragment() {
 
 
     private fun onclick() {
-        binding.apply {
 
+        binding.apply {
             btnApplicantSeeAll.setOnClickListener {
                 findNavController()
                     .navigate(
