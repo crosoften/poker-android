@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -93,7 +95,6 @@ class GatewayFragment : Fragment() {
                     "shortAnswer" -> {
                         configPergunta(question, linearLayout)
                         configRespostaShortAnswer(linearLayout)
-
                     }
 
                     "longAnswer" -> {
@@ -103,6 +104,10 @@ class GatewayFragment : Fragment() {
 
                     "multipleChoice" -> {
                         configPergunta(question, linearLayout)
+                        configRespostaMultipleChoice(question, linearLayout)
+
+
+
                     }
 
                     "selectionBox" -> {
@@ -116,13 +121,25 @@ class GatewayFragment : Fragment() {
                     else -> {
                         mostrarToast("Tipo de pergunta desconhecido", requireContext())
                     }
-
-
                 }
             }
         }//observer
 
 
+    }
+
+    private fun configRespostaMultipleChoice(question: Question, linearLayout: LinearLayout) {
+        val radioGroup = RadioGroup(requireContext())
+
+        question.options.forEach { option ->
+            val radioButton = RadioButton(requireContext()).apply {
+                text = option.option
+                setTextColor(resources.getColor(R.color.white))
+            }
+            radioGroup.addView(radioButton)
+        }
+
+        linearLayout.addView(radioGroup)
     }
 
     private fun configRespostaShortAnswer(linearLayout: LinearLayout) {

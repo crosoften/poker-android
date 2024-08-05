@@ -72,15 +72,6 @@ class AllContractFragment : Fragment() {
         }
     }
 
-    private fun onClickContract(contract: Contract) {
-//        findNavController()
-//            .navigate(
-//                HomeFragmentDirections
-//                    .actionHomeFragmentToDetailTournamentFragment(
-//                        tournament
-//                    )
-//            )
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

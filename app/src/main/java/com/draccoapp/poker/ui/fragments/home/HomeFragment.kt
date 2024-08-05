@@ -5,6 +5,8 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -58,13 +60,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         setupLocation()
         checkPermissions()
         setupObserver()
         onclick()
         setupRecycler()
-//        initModels()
         val preferences = Preferences(requireContext())
         Log.i("TokenWill", "onViewCreated: Token no homefrag é   ${preferences.getToken()}")
 
