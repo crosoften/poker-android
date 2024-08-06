@@ -24,6 +24,10 @@
 <!--        <item name="cornerSize">50%</item>-->
 <!--    </style>-->
 
+    <style name="CustomCheckBoxStyle" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:button">@null</item> <!-- Remove a aparência da marca de seleção -->
+    </style>
+
 
     <style name="TextInputLayoutDrop" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
         <item name="boxStrokeColor">@color/black</item>
