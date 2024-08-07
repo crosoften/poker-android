@@ -36,13 +36,16 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class GatewayFragment : Fragment() {
     private val TAG = "GatewayFragment"
-
     private var _binding: FragmentGatewayBinding? = null
     private val binding get() = _binding!!
     private val viewModel: TournamentViewModel by viewModel()
     var shortAnswerCounter = 1
     var dropdownCounter = 1
-    var selectionCounter = 1
+    private val editTextList = mutableListOf<TextInputEditText>()
+    private val editTextLongList = mutableListOf<TextInputEditText>()
+    private val selectedRadioButtons = mutableListOf<RadioButton>()
+    private val dropDownList = mutableListOf<AutoCompleteTextView>()
+
 
     private val args by navArgs<GatewayFragmentArgs>()
     private val tournament by lazy {
@@ -70,22 +73,11 @@ class GatewayFragment : Fragment() {
 
 
     private fun setupUI() {
+        Glide.with(requireContext()).load(tournament.imageUrl).into(binding.imageView2)
 
-        Glide.with(requireContext())
-            .load(tournament.imageUrl)
-            .into(binding.imageView2)
-
-        tournament.title.let {
-            binding.textView13.text = it
-        }
-
-        tournament.startDatetime.let {
-            binding.textView14.text = converterDataNextTournament(it.toString())
-        }
-
-        tournament.prize.let {
-            binding.textView16.text = it.toString()
-        }
+        tournament.title.let { binding.textView13.text = it }
+        tournament.startDatetime.let { binding.textView14.text = converterDataNextTournament(it.toString()) }
+        tournament.prize.let { binding.textView16.text = it.toString() }
     }
 
     private fun setupObserver() {
@@ -118,8 +110,6 @@ class GatewayFragment : Fragment() {
                     "selectionBox" -> {
                         configPergunta(question, linearLayout)
                         configRespostaHorizontalLayoutWithCircles(question, linearLayout)
-//                        configRespostaHorizontalLayoutWithRadioButtons(question, linearLayout)
-//                        configRespostaHorizontalLayout(question, linearLayout)
                     }
 
                     "dropdown" -> {
@@ -137,7 +127,6 @@ class GatewayFragment : Fragment() {
 
     }
 
-    val idsCheckBox = mutableListOf<String>()
 
     private fun configRespostaHorizontalLayoutWithCircles(question: Question, parentLinearLayout: LinearLayout) {
         question.options.forEach { option ->
@@ -208,21 +197,19 @@ class GatewayFragment : Fragment() {
             // Adiciona o LinearLayout horizontal ao parentLinearLayout
             parentLinearLayout.addView(horizontalLayout)
 
-            // Log para confirmar a adição dos círculos
-            Log.i("Circles", "configRespostaHorizontalLayout: Círculos adicionados com sucesso")
-
             // Listener personalizado para alternar a visibilidade do círculo cheio
             frameLayout.setOnClickListener {
                 innerCircle.visibility = if (innerCircle.visibility == View.VISIBLE) View.GONE else View.VISIBLE
                 outerCircle.background = if (innerCircle.visibility == View.VISIBLE) {
                     ContextCompat.getDrawable(requireContext(), R.drawable.circle_outline_red)
                 } else ContextCompat.getDrawable(requireContext(), R.drawable.circle_outline_white)
+
+
+                //se o iner tiver visible vc adiciona e se o invisível vc remove
                 Log.i("Circles", "configRespostaHorizontalLayout: InnerCircle visibility é ${innerCircle.visibility}")
             }
         }
     }
-
-//    private fun config
 
     private fun configRespostaDropdown(question: Question, linearLayout: LinearLayout) {
         val textInputLayout = TextInputLayout(requireContext()).apply {
@@ -256,6 +243,8 @@ class GatewayFragment : Fragment() {
             )
             id = View.generateViewId() // Gera um ID único
             tag = "dropdown $dropdownCounter" // Define a tag incremental
+
+            dropDownList.add(this)
         }
         // Incrementa o contador
         dropdownCounter++
@@ -273,9 +262,21 @@ class GatewayFragment : Fragment() {
         linearLayout.addView(textInputLayout)
     }
 
-
     private fun configRespostaMultipleChoice(question: Question, linearLayout: LinearLayout) {
-        val radioGroup = RadioGroup(requireContext())
+//        val radioGroup = RadioGroup(requireContext())
+        val radioGroup = RadioGroup(requireContext()).apply {
+            // Adicione um listener para monitorar as mudanças na seleção
+            setOnCheckedChangeListener { group, checkedId ->
+                // Limpe a lista antes de adicionar o novo RadioButton selecionado
+                selectedRadioButtons.clear()
+
+                // Encontre o RadioButton selecionado e adicione-o à lista
+                val selectedRadioButton = findViewById<RadioButton>(checkedId)
+                selectedRadioButton?.let {
+                    selectedRadioButtons.add(it)
+                }
+            }
+        }
 
         question.options.forEach { option ->
             val radioButton = RadioButton(requireContext()).apply {
@@ -288,7 +289,7 @@ class GatewayFragment : Fragment() {
                     RadioGroup.LayoutParams.WRAP_CONTENT,
                     RadioGroup.LayoutParams.WRAP_CONTENT
                 ).apply {
-                    setPadding(17,0,0,0)
+                    setPadding(17, 0, 0, 0)
                 }
                 this.layoutParams = layoutParams
             }
@@ -325,17 +326,12 @@ class GatewayFragment : Fragment() {
                 50.dpToPx(requireContext()) // Método de extensão para converter dp para px
             )
             id = View.generateViewId() // Gera um ID único
+
             tag = "shortAnswer $shortAnswerCounter" // Define a tag incremental
+            editTextList.add(this)
         }
-        // Incrementa o contador
-        shortAnswerCounter++
-
-        Log.i("GatewayFrag", "setupObserver: o id desse componente é ${textInputEditText.id} \n e a tag é ${textInputEditText.tag}")
-
         // Adiciona o TextInputEditText ao TextInputLayout
         textInputLayout.addView(textInputEditText)
-
-        // Adiciona o TextInputLayout ao linearLayout
         linearLayout.addView(textInputLayout)
     }
 
@@ -358,28 +354,22 @@ class GatewayFragment : Fragment() {
             setBackgroundColor(resources.getColor(R.color.black))
             setBackgroundResource(R.drawable.bg_button_borda_vermelha)
             textSize = 13f
-            setPadding(50, 0, 0, 0)
-            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-            maxLines = 6
+            setPadding(50, 44, 0, 44)
+            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE
+            maxLines = Int.MAX_VALUE
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                50.dpToPx(requireContext()) // Método de extensão para converter dp para px
+                LinearLayout.LayoutParams.WRAP_CONTENT// Método de extensão para converter dp para px
             )
             id = View.generateViewId() // Gera um ID único
             tag = "shortAnswer $shortAnswerCounter" // Define a tag incremental
+            editTextLongList.add(this)
+
         }
-        // Incrementa o contador
-        shortAnswerCounter++
-
-        Log.i("GatewayFrag", "setupObserver: o id desse componente é ${textInputEditText.id} \n e a tag é ${textInputEditText.tag}")
-
         // Adiciona o TextInputEditText ao TextInputLayout
         textInputLayout.addView(textInputEditText)
-
-        // Adiciona o TextInputLayout ao linearLayout
         linearLayout.addView(textInputLayout)
     }
-
 
     private fun configPergunta(question: Question, linearLayout: LinearLayout) {
         val textView = TextView(context).apply {
@@ -396,14 +386,22 @@ class GatewayFragment : Fragment() {
         binding.apply {
 
             buttonInscrever.setOnClickListener {
-//                viewModel.entryTournament(
-//                    Entry(
-//                        requireContext().getPreferenceData().getUserId(),
-//                        tournament.id,
-//                        listOf("string")
-//                    )
-//                )
 
+                editTextList.forEach { editText ->
+                    Log.i("Respostas", "onClick: O texto da resposta curta  é ${editText.text.toString()}")
+                }
+
+                editTextLongList.forEach { editText ->
+                    Log.i("Respostas", "onClick: O texto da resposta Long  é ${editText.text.toString()}")
+                }
+
+                selectedRadioButtons.forEach { radioButton ->
+                    Log.i("Respostas", "onClick: O texto do radio Button selecionado  é ${radioButton.text}")
+                }
+
+                dropDownList.forEach { dropdown ->
+                    Log.i("Respostas", "onClick: O texto do dropdown é ${dropdown.text}")
+                }
             }
 
             back.setOnClickListener {
