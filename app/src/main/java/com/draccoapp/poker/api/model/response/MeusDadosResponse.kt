@@ -1,6 +1,7 @@
 package com.draccoapp.poker.api.model.response
 
 
+import com.draccoapp.poker.api.model.response.homeFrament.OverallInfosX
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -35,5 +36,7 @@ data class MeusDadosResponse(
     @Json(name = "status")
     val status: String,
     @Json(name = "tournamentsCount")
-    val tournamentsCount: Int
+    val tournamentsCount: Int,
+    @Json(name = "overallInfos")
+    val overallInfos: OverallInfosX
 )

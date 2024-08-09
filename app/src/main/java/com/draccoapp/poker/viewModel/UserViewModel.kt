@@ -64,6 +64,7 @@ class UserViewModel(
         _tournamentNext.value = generateTournaments()
     }
 
+
     fun getUserById(){
         _appState.postValue(DataState.Loading)
         viewModelScope.launch {

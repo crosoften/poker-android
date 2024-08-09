@@ -35,5 +35,7 @@ data class Myself(
     @Json(name = "status")
     val status: String,
     @Json(name = "tournamentsCount")
-    val tournamentsCount: Int
+    val tournamentsCount: Int,
+    @Json(name = "overallInfos")
+    val overallInfos: OverallInfosX
 )

@@ -5,7 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.draccoapp.poker.api.model.request.AnswerBody
 import com.draccoapp.poker.api.model.request.TournamentBodyNew
+import com.draccoapp.poker.api.model.response.AnswerResponse
 import com.draccoapp.poker.api.model.response.TournamentResponseNew
 import com.draccoapp.poker.api.model.response.UploadFileResponse
 import com.draccoapp.poker.api.model.response.tournamentForms.TournamentForms
@@ -32,6 +34,7 @@ class TournamentViewModel(
     val successCreateTournament = MutableLiveData<TournamentResponseNew>()
     val successUploadFile = MutableLiveData<UploadFileResponse>()
     val successGetTournamentForms = MutableLiveData<TournamentForms>()
+    val successSubscribeTournament = MutableLiveData<AnswerResponse>()
 
     val error: LiveData<String>
         get() = _error
@@ -49,7 +52,32 @@ class TournamentViewModel(
     private val _entry = MutableLiveData<Unit>()
 
 
+fun subscribeToTournament(idTounament : String, answerBody: AnswerBody){
+    repository.subscribeToTournament(idTournament = idTounament, answerBody = answerBody).enqueue(object : Callback<AnswerResponse> {
+        override fun onResponse(call: Call<AnswerResponse>, response: Response<AnswerResponse>) {
+            if (response.isSuccessful) {
+                successSubscribeTournament.postValue(response.body())
+                Log.i("TournamentViewModel", "onResponse: A resposta foi isSuccessfull")
+            } else {
+                try {
+                    val errorBody = response.errorBody()?.string()
+                    val erroLoginLimpo = limparMessage(errorBody.toString())
+                    Log.e("Error Body", "O erro  do servidor  LIMPOOO  foi ${erroLoginLimpo ?: "erro desconhecido"} ")
+                    mostrarToast(" $erroLoginLimpo ", PokerApplication.instance)
+                } catch (e: IOException) {
+                    Log.e("IOException", "Erro de leitura do response ->>", e)
+                }
+            }
+        }
 
+        override fun onFailure(call: Call<AnswerResponse>, t: Throwable) {
+            mostrarToast("Generic error", PokerApplication.instance)
+            Log.e("TournamentViewModel", "ONFAILUREEE  o erro na função solicitarTokenViewModel do CadastroViewModel foi $t")
+        }
+
+    })
+
+}
 
 
     fun getTournament(id: String) {
@@ -57,7 +85,7 @@ class TournamentViewModel(
             override fun onResponse(call: Call<TournamentForms>, response: Response<TournamentForms>) {
                 if (response.isSuccessful) {
                     successGetTournamentForms.postValue(response.body())
-                    Log.i("AuthViewModel", "onResponse: A resposta foi isSuccessfull")
+                    Log.i("TournamentViewModel", "onResponse: A resposta foi isSuccessfull")
                 } else {
                     try {
                         val errorBody = response.errorBody()?.string()
@@ -72,7 +100,7 @@ class TournamentViewModel(
 
             override fun onFailure(call: Call<TournamentForms>, t: Throwable) {
                 mostrarToast("Generic error", PokerApplication.instance)
-                Log.e("AuthViewModel", "ONFAILUREEE  o erro na função solicitarTokenViewModel do CadastroViewModel foi $t")
+                Log.e("TournamentViewModel", "ONFAILUREEE  o erro na função solicitarTokenViewModel do CadastroViewModel foi $t")
             }
 
         })

@@ -24,6 +24,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.draccoapp.poker.R
+import com.draccoapp.poker.api.model.request.AnswerBody
 import com.draccoapp.poker.api.model.response.tournamentForms.Question
 import com.draccoapp.poker.databinding.FragmentGatewayBinding
 import com.draccoapp.poker.utils.converterDataNextTournament
@@ -39,12 +40,17 @@ class GatewayFragment : Fragment() {
     private var _binding: FragmentGatewayBinding? = null
     private val binding get() = _binding!!
     private val viewModel: TournamentViewModel by viewModel()
-    var shortAnswerCounter = 1
-    var dropdownCounter = 1
+//    var shortAnswerCounter = 1
+//    var dropdownCounter = 1
+
     private val editTextList = mutableListOf<TextInputEditText>()
     private val editTextLongList = mutableListOf<TextInputEditText>()
-    private val selectedRadioButtons = mutableListOf<RadioButton>()
+    private val selectedRadioButtonsMap = mutableMapOf<Int, RadioButton>()
+
     private val dropDownList = mutableListOf<AutoCompleteTextView>()
+    private val selectionBoxTexts = mutableListOf<String>()
+    private var questionIdCounter = 0
+
 
 
     private val args by navArgs<GatewayFragmentArgs>()
@@ -91,7 +97,12 @@ class GatewayFragment : Fragment() {
             // Adiciona dinamicamente TextViews para cada pergunta
             questions.forEach { question ->
 
-                when (question.type) {
+                val questionId = generateQuestionId()
+
+                // Atualize a pergunta com o ID gerado
+                val questionWithId = question.copy(id = questionId)
+
+                when (questionWithId .type) {
                     "shortAnswer" -> {
                         configPergunta(question, linearLayout)
                         configRespostaShortAnswer(linearLayout)
@@ -104,7 +115,7 @@ class GatewayFragment : Fragment() {
 
                     "multipleChoice" -> {
                         configPergunta(question, linearLayout)
-                        configRespostaMultipleChoice(question, linearLayout)
+                        configRespostaMultipleChoice(question, linearLayout, questionId)
                     }
 
                     "selectionBox" -> {
@@ -124,7 +135,11 @@ class GatewayFragment : Fragment() {
             }
         }//observer
 
+        viewModel.successSubscribeTournament.observe(viewLifecycleOwner) {
 
+            findNavController().popBackStack(R.id.homeFragment, false)
+            mostrarToast("Torneio inscrito com sucesso", requireContext())
+        }
     }
 
 
@@ -206,6 +221,13 @@ class GatewayFragment : Fragment() {
 
 
                 //se o iner tiver visible vc adiciona e se o invisível vc remove
+                if (innerCircle.visibility == View.VISIBLE) {
+                    selectionBoxTexts.add(textView.text.toString())
+
+                } else {
+                    selectionBoxTexts.remove(textView.text.toString())
+                }
+
                 Log.i("Circles", "configRespostaHorizontalLayout: InnerCircle visibility é ${innerCircle.visibility}")
             }
         }
@@ -236,44 +258,37 @@ class GatewayFragment : Fragment() {
             setBackgroundResource(R.drawable.bg_button_borda_vermelha)
             textSize = 13f
             setPadding(50, 0, 0, 0)
-            inputType = InputType.TYPE_CLASS_TEXT
+            inputType = InputType.TYPE_NULL
+            isFocusable = false
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 50.dpToPx(requireContext()) // Método de extensão para converter dp para px
             )
-            id = View.generateViewId() // Gera um ID único
-            tag = "dropdown $dropdownCounter" // Define a tag incremental
-
+//            id = View.generateViewId() // Gera um ID único
             dropDownList.add(this)
         }
-        // Incrementa o contador
-        dropdownCounter++
-
-        Log.i("GatewayFrag", "setupObserver: o id desse componente é ${autoCompleteTextView.id} \n e a tag é ${autoCompleteTextView.tag}")
-
         // Cria um adaptador com as opções
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, question.options.map { it.option })
         autoCompleteTextView.setAdapter(adapter)
 
-        // Adiciona o AutoCompleteTextView ao TextInputLayout
         textInputLayout.addView(autoCompleteTextView)
-
-        // Adiciona o TextInputLayout ao linearLayout
         linearLayout.addView(textInputLayout)
     }
 
-    private fun configRespostaMultipleChoice(question: Question, linearLayout: LinearLayout) {
+    private fun configRespostaMultipleChoice(question: Question, linearLayout: LinearLayout, questionId: Int) {
 //        val radioGroup = RadioGroup(requireContext())
         val radioGroup = RadioGroup(requireContext()).apply {
+            id = questionId  // Adicione um ID único para o RadioGroup
+
             // Adicione um listener para monitorar as mudanças na seleção
             setOnCheckedChangeListener { group, checkedId ->
-                // Limpe a lista antes de adicionar o novo RadioButton selecionado
-                selectedRadioButtons.clear()
+                // Limpe a seleção anterior da questão atual
+                selectedRadioButtonsMap.remove(group.id)
 
                 // Encontre o RadioButton selecionado e adicione-o à lista
                 val selectedRadioButton = findViewById<RadioButton>(checkedId)
                 selectedRadioButton?.let {
-                    selectedRadioButtons.add(it)
+                    selectedRadioButtonsMap[group.id] = it
                 }
             }
         }
@@ -300,6 +315,8 @@ class GatewayFragment : Fragment() {
     }
 
     private fun configRespostaShortAnswer(linearLayout: LinearLayout) {
+
+
         val textInputLayout = TextInputLayout(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -327,7 +344,7 @@ class GatewayFragment : Fragment() {
             )
             id = View.generateViewId() // Gera um ID único
 
-            tag = "shortAnswer $shortAnswerCounter" // Define a tag incremental
+//            tag = "shortAnswer $shortAnswerCounter" // Define a tag incremental
             editTextList.add(this)
         }
         // Adiciona o TextInputEditText ao TextInputLayout
@@ -362,7 +379,6 @@ class GatewayFragment : Fragment() {
                 LinearLayout.LayoutParams.WRAP_CONTENT// Método de extensão para converter dp para px
             )
             id = View.generateViewId() // Gera um ID único
-            tag = "shortAnswer $shortAnswerCounter" // Define a tag incremental
             editTextLongList.add(this)
 
         }
@@ -373,7 +389,11 @@ class GatewayFragment : Fragment() {
 
     private fun configPergunta(question: Question, linearLayout: LinearLayout) {
         val textView = TextView(context).apply {
-            text = question.question.trim()
+            Log.i("QuestionReq", "configPergunta: question.required é : ${question.required}")
+            if (question.required) {
+                text = question.question.trim() + " *"
+            } else text = question.question.trim()
+
             textSize = 15f
             setTextColor(resources.getColor(R.color.white))
             setPadding(16, 16, 16, 16)
@@ -386,21 +406,46 @@ class GatewayFragment : Fragment() {
         binding.apply {
 
             buttonInscrever.setOnClickListener {
+                val answersList = mutableListOf<String>()
+
 
                 editTextList.forEach { editText ->
-                    Log.i("Respostas", "onClick: O texto da resposta curta  é ${editText.text.toString()}")
+                    val answer = editText.text.toString()
+                    Log.i("Respostas", "O texto da resposta curta é $answer")
+                    answersList.add(answer)
                 }
 
                 editTextLongList.forEach { editText ->
-                    Log.i("Respostas", "onClick: O texto da resposta Long  é ${editText.text.toString()}")
+                    val answer = editText.text.toString()
+                    Log.i("Respostas", "O texto da resposta longas é $answer")
+                    answersList.add(answer)
                 }
 
-                selectedRadioButtons.forEach { radioButton ->
-                    Log.i("Respostas", "onClick: O texto do radio Button selecionado  é ${radioButton.text}")
+                selectedRadioButtonsMap.values.forEach { radioButton ->
+                    val answer = radioButton.text.toString()
+                    Log.i("Respostas", "onClick: O texto do radio Button selecionado  é $answer")
+                    answersList.add(answer)
                 }
+//                Log.i("Respostas", "onClick: a lista de RADIO é $selectedRadioButtons")
+
 
                 dropDownList.forEach { dropdown ->
-                    Log.i("Respostas", "onClick: O texto do dropdown é ${dropdown.text}")
+                    val answer = dropdown.text.toString()
+                    Log.i("Respostas", "onClick: O texto do dropdown é $answer")
+                    answersList.add(answer)
+                }
+
+                Log.i("Respostas", "onClick: O texto do selectionBox é $selectionBoxTexts")
+                val joinedString = selectionBoxTexts.joinToString(separator = ", ")
+
+                answersList.add(joinedString)
+
+                val bodyAnswers = AnswerBody(answersList)
+                bodyAnswers.answer.forEach {
+                    Log.i("Respostas", "um único item foi ::  $it")
+                }
+                tournament.id?.let {
+                    viewModel.subscribeToTournament(idTounament = it, answerBody = bodyAnswers)
                 }
             }
 
@@ -415,6 +460,11 @@ class GatewayFragment : Fragment() {
     // Método de extensão para converter dp para px
     fun Int.dpToPx(context: Context): Int {
         return (this * context.resources.displayMetrics.density).toInt()
+    }
+
+    // Função para gerar IDs únicos
+    private fun generateQuestionId(): Int {
+        return questionIdCounter++
     }
 
     override fun onDestroyView() {

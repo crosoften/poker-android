@@ -6,6 +6,8 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Question(
+//    @Json(name = "id")
+    val id: Int?,  // Adicionando um campo para ID, pode ser opcional
     @Json(name = "description")
     val description: Any?,
     @Json(name = "imageUrl")

@@ -59,7 +59,7 @@ class TournamentAdapterNew(
                 binding.textDate.text = converterDataNextTournament(it)
             }
 
-Glide.with(context).load(nextTournament.imageUrl).into(binding.imageView7)
+            Glide.with(context).load(nextTournament.imageUrl).into(binding.imageView7)
 
 
             binding.root.setOnClickListener {

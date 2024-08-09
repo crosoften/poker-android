@@ -1,5 +1,6 @@
 package com.draccoapp.poker.repository
 
+import com.draccoapp.poker.api.model.request.AnswerBody
 import com.draccoapp.poker.api.model.request.TournamentBodyNew
 import com.draccoapp.poker.api.model.response.TournamentResponseNew
 import com.draccoapp.poker.api.model.response.UploadFileResponse
@@ -19,6 +20,8 @@ class TournamentRepository(
 
 
     fun getTournament(id: String) = service.getTournament(id)
+
+    fun subscribeToTournament(idTournament: String, answerBody: AnswerBody) = service.subscribeToTournament(idTournament, answerBody)
 
 
     suspend fun createTournament(body: TournamentBodyNew): Result<TournamentResponseNew?> =

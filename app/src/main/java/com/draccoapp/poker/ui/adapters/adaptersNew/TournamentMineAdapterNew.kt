@@ -1,16 +1,19 @@
 package com.draccoapp.poker.ui.adapters.adaptersNew
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.draccoapp.poker.api.model.response.homeFrament.Tournament
 import com.draccoapp.poker.databinding.ItemTournamentBinding
 import com.draccoapp.poker.utils.converterDataNextTournament
 
 
 class TournamentMineAdapterNew(
+    private val context : Context,
     private val onClick: (Tournament) -> Unit
 ): RecyclerView.Adapter<TournamentMineAdapterNew.ViewHolder>() {
 
@@ -49,26 +52,11 @@ class TournamentMineAdapterNew(
         fun bind(nextTournament: Tournament){
 
             binding.textTitle.text = nextTournament.title
-            nextTournament.startDatetime?.let {
+            nextTournament.startDatetime.let {
                 binding.textDate.text = converterDataNextTournament(it)
             }
 
-
-
-//            nextTournament.distance?.let { distance ->
-//                when(unit){
-//                    "metric" -> binding.textDistance.text = buildString {
-//                        append(String.format(Locale.US, "%.2f", distance))
-//                        append(binding.root.context.getString(R.string.km_de_voce))
-//                    }
-//                    "imperial" -> binding.textDistance.text = buildString {
-//                        append(String.format(Locale.US, "%.2f", distance))
-//                        append(binding.root.context.getString(R.string.mi_de_voce))
-//                    }
-//                }
-//            } ?: run {
-//                binding.textDistance.viewInvisible()
-//            }
+            Glide.with(context).load(nextTournament.imageUrl).into(binding.imageView7)
 
             binding.root.setOnClickListener {
                 onClick(nextTournament)

@@ -7,36 +7,7 @@
     android:background="@color/background"
     tools:context=".ui.fragments.tournament.GatewayFragment">
 
-
-    <ImageView
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:elevation="4dp"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="10dp"
-        android:src="@drawable/ic_left_arrow"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/white" />
-
-    <TextView
-        android:id="@+id/solicitation_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="4dp"
-        android:fontFamily="@font/poppins_bold"
-        android:text="@string/inscri_o"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/back"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/back" />
-
     <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
-
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -51,6 +22,33 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:elevation="4dp"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="10dp"
+                android:src="@drawable/ic_left_arrow"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/solicitation_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="4dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="@string/inscri_o"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/back"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/back" />
 
             <ImageView
                 android:id="@+id/imageView2"

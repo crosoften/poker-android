@@ -202,7 +202,7 @@ class HomeFragment : Fragment() {
 
     private fun setupRecycler() {
 
-        tournamentMineAdapter = TournamentMineAdapterNew(){
+        tournamentMineAdapter = TournamentMineAdapterNew(requireContext()){
            val nextTournamente = mapTournamentToNextTournament(it)
             findNavController()
                 .navigate(

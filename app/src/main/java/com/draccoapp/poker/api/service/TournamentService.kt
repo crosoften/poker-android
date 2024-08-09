@@ -1,6 +1,8 @@
 package com.draccoapp.poker.api.service
 
+import com.draccoapp.poker.api.model.request.AnswerBody
 import com.draccoapp.poker.api.model.request.TournamentBodyNew
+import com.draccoapp.poker.api.model.response.AnswerResponse
 import com.draccoapp.poker.api.model.response.TournamentResponseNew
 import com.draccoapp.poker.api.model.response.UploadFileResponse
 import com.draccoapp.poker.api.model.response.tournamentForms.TournamentForms
@@ -34,6 +36,11 @@ interface TournamentService {
     @POST("/upload-file")
     suspend fun uploadArquivos(@Part file: MultipartBody.Part?): UploadFileResponse
 
+    @POST("/tournaments/{idTournament}/subscribe")
+    fun subscribeToTournament(
+        @Path("idTournament") idTournament: String,
+        @Body answerBody: AnswerBody
+    ): Call<AnswerResponse>
 
 //    @Multipart
 //    @POST("tournament")
