@@ -210,5 +210,3 @@ fun getUnsafeOkHttpClient(preferences: Preferences): OkHttpClient {
 
     Log.i("TokenWill", "getUnsafeOkHttpClient:  usando o toke ${preferences.getToken()}")
 }
-
-

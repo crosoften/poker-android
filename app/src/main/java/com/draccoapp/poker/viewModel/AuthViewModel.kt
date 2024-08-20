@@ -127,7 +127,7 @@ class AuthViewModel(
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 mostrarToast("Generic error", PokerApplication.instance)
-                Log.e("CadastroViewModel", "ONFAILUREEE  o erro na função solicitarTokenViewModel do CadastroViewModel foi $t")
+                Log.e("CadastroViewModel", "ONFAILUREEE  o erro na função solicitarTokenViewModel do CadastroViewModel foi \n$t")
             }
 
         })
