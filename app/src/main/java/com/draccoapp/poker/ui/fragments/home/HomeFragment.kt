@@ -5,8 +5,6 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,11 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.draccoapp.poker.api.model.response.homeFrament.NextTournament
-import com.draccoapp.poker.api.model.response.homeFrament.TournamentsImIn
 import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.databinding.FragmentHomeBinding
-import com.draccoapp.poker.ui.adapters.TournamentAdapter
 import com.draccoapp.poker.ui.adapters.adaptersNew.TournamentAdapterNew
 import com.draccoapp.poker.ui.adapters.adaptersNew.TournamentMineAdapterNew
 import com.draccoapp.poker.utils.Preferences
