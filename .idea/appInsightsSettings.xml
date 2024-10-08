@@ -8,7 +8,7 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.crosoften.delivery_company_android" />
+                  <option name="appId" value="br.com.alodeputado.app" />
                 </ConnectionSetting>
               </option>
               <option name="failureTypes">

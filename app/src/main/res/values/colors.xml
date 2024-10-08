@@ -15,4 +15,6 @@
     <color name="vermelhoSnack">#fd7268</color>
     <color name="verdeSnack">#0c5b0a</color>
     <color name="background_chip">#1E7A21</color>
+    <color name="status_peding">#7C3828</color>
+    <color name="status_aproved">#1E7A21</color>
 </resources>

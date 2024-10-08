@@ -9,7 +9,7 @@ data class HomeFragmentResponse(
     @Json(name = "myself")
     val myself: Myself,
     @Json(name = "nextTournaments")
-    val nextTournaments: List<NextTournament>,
+    val nextTournaments: List<NextTournament>?,
     @Json(name = "tournamentsImIn")
-    val tournamentsImIn: List<TournamentsImIn>
+    val tournamentsImIn: List<TournamentsImIn>?
 )

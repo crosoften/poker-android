@@ -9,7 +9,7 @@ data class TournamentsImIn(
     @Json(name = "account")
     val account: Account,
     @Json(name = "answers")
-    val answers: List<Any>,
+    val answers: List<Answers>?,
     @Json(name = "id")
     val id: String,
     @Json(name = "status")

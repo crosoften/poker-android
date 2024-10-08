@@ -9,9 +9,9 @@ data class Location(
     @Json(name = "city")
     val city: String,
     @Json(name = "lat")
-    val lat: Any?,
+    val lat: String?,
     @Json(name = "lng")
-    val lng: Any?,
+    val lng: String?,
     @Json(name = "state")
     val state: String
 )

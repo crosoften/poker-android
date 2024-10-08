@@ -159,19 +159,22 @@ class RegisterProfileFragment : Fragment() {
 
 
         val editState = binding.editState
-        editState.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listaCorreta))
+    //    editState.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listaCorreta))
     }
 
 
     private fun openImagePicker() {
-        val options = arrayOf<CharSequence>(getString(R.string.camera), getString(R.string.galeria), getString(R.string.cancelar))
+        val options = arrayOf<CharSequence>(
+          //  getString(R.string.camera),
+            getString(R.string.galeria),
+            getString(R.string.cancelar))
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.selecionar_comprovante))
             .setItems(options) { dialog, item ->
                 when {
-                    options[item] == getString(R.string.camera) -> {
-                        checkCameraPermission()
-                    }
+//                    options[item] == getString(R.string.camera) -> {
+//                        checkCameraPermission()
+//                    }
 
                     options[item] == getString(R.string.galeria) -> {
                         val pickPhoto =
@@ -400,12 +403,12 @@ class RegisterProfileFragment : Fragment() {
         if (language == "pt") {
             val listaDePaisesPT = mutableListOf("Brasil", "Estados Unidos da América")
             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listaDePaisesPT)
-            editCountry.setAdapter(adapter)
+           // editCountry.setAdapter(adapter)
             adapter.notifyDataSetChanged()
         } else {
             val listaDePaisesEN = mutableListOf("Brazil", "United States of America")
             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listaDePaisesEN)
-            editCountry.setAdapter(adapter)
+          //  editCountry.setAdapter(adapter)
             adapter.notifyDataSetChanged()
         }
 
@@ -435,10 +438,14 @@ class RegisterProfileFragment : Fragment() {
 
     fun atualizarListaEstados(lista: List<String>) {
         val editState = binding.editState
-        editState.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, lista))
+       // editState.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, lista))
     }
+
+
 }
 
 fun validateEditTexts(vararg editTexts: EditText): Boolean {
     return editTexts.all { it.text.toString().isNotEmpty() }
 }
+
+

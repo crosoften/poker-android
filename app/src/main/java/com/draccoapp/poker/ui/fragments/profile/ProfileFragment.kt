@@ -42,6 +42,7 @@ class ProfileFragment : Fragment() {
 
     //    private val listaMeusTorneios = mutableListOf<TournamentsImIn>()
     private lateinit var preferences: Preferences
+    private var statusTour = ""
 
 
     override fun onCreateView(
@@ -86,7 +87,7 @@ class ProfileFragment : Fragment() {
 
     private fun atualizaListaDeTorneios(response: HomeFragmentResponse) {
         val listTournaments = mutableListOf<com.draccoapp.poker.api.model.response.homeFrament.Tournament>()
-        response.tournamentsImIn.forEach {
+        response.tournamentsImIn?.forEach {
             listTournaments.add(it.tournament)
         }
         applicantAdapter.updateList(listTournaments)

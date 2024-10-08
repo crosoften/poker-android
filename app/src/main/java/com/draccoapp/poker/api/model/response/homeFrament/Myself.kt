@@ -19,7 +19,7 @@ data class Myself(
     @Json(name = "id")
     val id: String,
     @Json(name = "imageUrl")
-    val imageUrl: String,
+    val imageUrl: String?,
     @Json(name = "location")
     val location: Location,
     @Json(name = "name")

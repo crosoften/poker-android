@@ -78,6 +78,10 @@
         <action
             android:id="@+id/action_detailTournamentFragment_to_tournamentUpdateFragment"
             app:destination="@id/tournamentUpdateFragment" />
+        <argument
+            android:name="status"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 
     <fragment

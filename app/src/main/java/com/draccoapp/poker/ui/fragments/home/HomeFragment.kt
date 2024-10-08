@@ -159,10 +159,10 @@ class HomeFragment : Fragment() {
             binding.txtLucroContratoAtual.text = response.myself.contractProfit.toString()
             binding.textView7.text = response.myself.ranking.toString()
 
-            nextTournamentAdapter.updateList(response.nextTournaments)
+            response.nextTournaments?.let { nextTournamentAdapter.updateList(it) }
 
             val listTournaments = mutableListOf<com.draccoapp.poker.api.model.response.homeFrament.Tournament>()
-            response.tournamentsImIn.forEach {
+            response.tournamentsImIn?.forEach {
                 listTournaments.add(it.tournament)
             }
 
@@ -203,7 +203,8 @@ class HomeFragment : Fragment() {
                 .navigate(
                     HomeFragmentDirections
                         .actionHomeFragmentToDetailTournamentFragment(
-                            nextTournamente
+                            nextTournamente,
+                            null
                         )
                 )
         }
@@ -218,7 +219,8 @@ class HomeFragment : Fragment() {
                 .navigate(
                     HomeFragmentDirections
                         .actionHomeFragmentToDetailTournamentFragment(
-                            it
+                            it,
+                            null
                         )
                 )
         }

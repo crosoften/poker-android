@@ -1,5 +1,7 @@
 package com.draccoapp.poker.ui.fragments.tournament
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -59,6 +61,20 @@ class DetailTournamentFragment : Fragment() {
 //                error(R.drawable.ic_wallpaper)
 //            }
 //        }
+
+        if (tournament.status == "pending"){
+            binding.tvStatus.text = "Inscrito"
+            binding.tvStatus.backgroundTintList = resources.getColorStateList(R.color.status_peding)
+        } else {
+            binding.tvStatus.backgroundTintList = resources.getColorStateList(R.color.status_aproved)
+            binding.tvStatus.text = "Validada"
+        }
+
+
+        binding.buttonLink.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(tournament.eventUrl))
+            startActivity(intent)
+        }
 
         Glide.with(requireContext())
             .load(tournament.imageUrl)
