@@ -11,17 +11,17 @@ data class LocationXXX(
     @Json(name = "country")
     val country: String,
     @Json(name = "lat")
-    val lat: Any?,
+    val lat: String?,
     @Json(name = "lng")
-    val lng: Any?,
+    val lng: String?,
     @Json(name = "neighborhood")
-    val neighborhood: Any?,
+    val neighborhood: String?,
     @Json(name = "number")
-    val number: Any?,
+    val number: String?,
     @Json(name = "state")
     val state: String,
     @Json(name = "street")
-    val street: Any?,
+    val street: String?,
     @Json(name = "zipCode")
-    val zipCode: Any?
+    val zipCode: String?
 )

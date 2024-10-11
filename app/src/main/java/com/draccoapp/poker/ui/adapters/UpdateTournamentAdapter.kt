@@ -5,31 +5,32 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.draccoapp.poker.api.model.response.updateTournament.UpdateTournamentData
 import com.draccoapp.poker.data.Tournament
 import com.draccoapp.poker.databinding.ItemTournamentBinding
 import com.draccoapp.poker.databinding.ItemUpdateTournamentBinding
 
 class UpdateTournamentAdapter(
-    private val onClick: (Tournament) -> Unit
+    private val onClick: (UpdateTournamentData) -> Unit
 ): RecyclerView.Adapter<UpdateTournamentAdapter.ViewHolder>() {
 
-    private var updateList: AsyncListDiffer<Tournament> = AsyncListDiffer(this, DiffCallBack)
+    private var updateList: AsyncListDiffer<UpdateTournamentData> = AsyncListDiffer(this, DiffCallBack)
 
-    fun updateList(list: List<Tournament>){
+    fun updateList(list: List<UpdateTournamentData?>){
         updateList.submitList(list)
     }
 
-    object DiffCallBack : DiffUtil.ItemCallback<Tournament>() {
+    object DiffCallBack : DiffUtil.ItemCallback<UpdateTournamentData>() {
         override fun areItemsTheSame(
-            oldItem: Tournament,
-            newItem: Tournament
+            oldItem: UpdateTournamentData,
+            newItem: UpdateTournamentData
         ): Boolean {
             return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: Tournament,
-            newItem: Tournament
+            oldItem: UpdateTournamentData,
+            newItem: UpdateTournamentData
         ): Boolean {
             return oldItem == newItem
         }
@@ -41,7 +42,7 @@ class UpdateTournamentAdapter(
 
         private val distance = arrayListOf(5, 10, 20, 30, 40, 50)
 
-        fun bind(tournament: Tournament){
+        fun bind(tournament: UpdateTournamentData){
 
 //            binding.textTitle.text = tournament.title
 //            binding.textDate.text = tournament.dataFull

@@ -6,6 +6,8 @@ import com.draccoapp.poker.api.model.response.AnswerResponse
 import com.draccoapp.poker.api.model.response.TournamentResponseNew
 import com.draccoapp.poker.api.model.response.UploadFileResponse
 import com.draccoapp.poker.api.model.response.tournamentForms.TournamentForms
+import com.draccoapp.poker.api.model.response.tournamentInIm.TournamentInImResponse
+import com.draccoapp.poker.api.model.response.updateTournament.UpdateTournament
 import com.draccoapp.poker.api.modelOld.request.Entry
 import com.draccoapp.poker.api.modelOld.response.ApplicanteTournamentResponse
 import com.draccoapp.poker.api.modelOld.response.Tournament
@@ -69,4 +71,18 @@ interface TournamentService {
     suspend fun entryTournament(
         @Body entry: Entry
     ): Response<Unit>
+
+    @GET("/rankings")
+    fun getUpdate(
+        @Query("subscriptionId") subscriptionId: String,
+        @Query("page") page: Int = 1,
+        @Query("size") size: Int = 100,
+    ): Call<UpdateTournament>
+
+    @GET("/accounts/myself/subscriptions")
+    fun getTounamentImIn(
+        @Query("page") page: Int = 1,
+        @Query("size") size: Int = 100,
+    ): Call<TournamentInImResponse>
+
 }

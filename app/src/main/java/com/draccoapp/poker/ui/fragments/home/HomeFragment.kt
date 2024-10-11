@@ -15,13 +15,16 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.draccoapp.poker.api.model.response.homeFrament.NextTournament
 import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.databinding.FragmentHomeBinding
 import com.draccoapp.poker.ui.adapters.adaptersNew.TournamentAdapterNew
 import com.draccoapp.poker.ui.adapters.adaptersNew.TournamentMineAdapterNew
 import com.draccoapp.poker.utils.Preferences
+import com.draccoapp.poker.utils.mapTournamentInImTournament
 import com.draccoapp.poker.utils.mapTournamentToNextTournament
 import com.draccoapp.poker.viewModel.HomeViewModel
+import com.draccoapp.poker.viewModel.TournamentViewModel
 import com.draccoapp.poker.viewModel.UserViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -33,13 +36,16 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val TAG = "HomeFragment"
-    private val viewModel: UserViewModel by viewModel()
     private val homeViewModel: HomeViewModel by viewModel()
+    private val viewModel: TournamentViewModel by viewModel()
+
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private lateinit var tournamentMineAdapter: TournamentMineAdapterNew
     private lateinit var nextTournamentAdapter: TournamentAdapterNew
+    private lateinit var nextTournamentData: List<NextTournament>
+
     private var listApplicant: MutableList<Tournament> = mutableListOf()
     private var listNext: MutableList<Tournament> = mutableListOf()
 
@@ -54,7 +60,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel.getTounamentImIn()
         setupLocation()
         checkPermissions()
         setupObserver()
@@ -146,6 +152,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupObserver() {
+        viewModel.successTournamentInIm.observe(viewLifecycleOwner) { response ->
+            response.data?.let { tournamentMineAdapter.updateList(it) }
+        }
+
+
         homeViewModel.successHomeFragment.observe(viewLifecycleOwner) { response ->
             Log.i(TAG, "setupObserver: Os dados todos da home foram $response")
 
@@ -161,12 +172,16 @@ class HomeFragment : Fragment() {
 
             response.nextTournaments?.let { nextTournamentAdapter.updateList(it) }
 
-            val listTournaments = mutableListOf<com.draccoapp.poker.api.model.response.homeFrament.Tournament>()
-            response.tournamentsImIn?.forEach {
-                listTournaments.add(it.tournament)
+//            val listTournaments = mutableListOf<com.draccoapp.poker.api.model.response.homeFrament.Tournament>()
+//            response.tournamentsImIn?.forEach {
+//                listTournaments.add(it.tournament)
+//            }
+
+            nextTournamentData = response.nextTournaments.let{
+                it!!
             }
 
-            tournamentMineAdapter.updateList(listTournaments)
+//            tournamentMineAdapter.updateList(listTournaments)
 
 
         }
@@ -198,13 +213,14 @@ class HomeFragment : Fragment() {
     private fun setupRecycler() {
 
         tournamentMineAdapter = TournamentMineAdapterNew(requireContext()){
-           val nextTournamente = mapTournamentToNextTournament(it)
+           val nextTournamente = mapTournamentInImTournament(it)
             findNavController()
                 .navigate(
                     HomeFragmentDirections
                         .actionHomeFragmentToDetailTournamentFragment(
                             nextTournamente,
-                            null
+                            null,
+                            it.id!!
                         )
                 )
         }
@@ -220,7 +236,8 @@ class HomeFragment : Fragment() {
                     HomeFragmentDirections
                         .actionHomeFragmentToDetailTournamentFragment(
                             it,
-                            null
+                            null,
+                            "null"
                         )
                 )
         }

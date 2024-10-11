@@ -24,6 +24,7 @@ import com.draccoapp.poker.ui.fragments.login.LoginFragment
 import com.draccoapp.poker.utils.Preferences
 import com.draccoapp.poker.utils.SharedUtils
 import com.draccoapp.poker.viewModel.HomeViewModel
+import com.draccoapp.poker.viewModel.TournamentViewModel
 import com.draccoapp.poker.viewModel.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
@@ -37,6 +38,8 @@ class ProfileFragment : Fragment() {
 
     private val viewModel by viewModel<UserViewModel>()
     private val homeViewModel by viewModel<HomeViewModel>()
+    private val viewModelTournament: TournamentViewModel by viewModel()
+
 
     private lateinit var applicantAdapter: TournamentMineAdapterNew
 
@@ -56,7 +59,7 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModelTournament.getTounamentImIn()
         setupObserver()
         onclick()
         setupRecycler()
@@ -67,8 +70,12 @@ class ProfileFragment : Fragment() {
 
     private fun setupObserver() {
 
+        viewModelTournament.successTournamentInIm.observe(viewLifecycleOwner) { response ->
+            response.data?.let { applicantAdapter.updateList(it) }
+        }
+
         homeViewModel.successHomeFragment.observe(viewLifecycleOwner) { response ->
-            atualizaListaDeTorneios(response)
+           // atualizaListaDeTorneios(response)
 
             //CURRENT CONTRACT INFOS
             binding.textName.text = response.myself.name
@@ -85,13 +92,13 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun atualizaListaDeTorneios(response: HomeFragmentResponse) {
-        val listTournaments = mutableListOf<com.draccoapp.poker.api.model.response.homeFrament.Tournament>()
-        response.tournamentsImIn?.forEach {
-            listTournaments.add(it.tournament)
-        }
-        applicantAdapter.updateList(listTournaments)
-    }
+//    private fun atualizaListaDeTorneios(response: HomeFragmentResponse) {
+//        val listTournaments = mutableListOf<com.draccoapp.poker.api.model.response.homeFrament.Tournament>()
+//        response.tournamentsImIn?.forEach {
+//            listTournaments.add(it.tournament)
+//        }
+//        applicantAdapter.updateList(listTournaments)
+//    }
 
     private fun setupUI(response: User) {
         binding.apply {

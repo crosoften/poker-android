@@ -82,6 +82,9 @@
             android:name="status"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="idSub"
+            app:argType="string" />
     </fragment>
 
     <fragment
@@ -173,5 +176,8 @@
         <action
             android:id="@+id/action_tournamentUpdateFragment_to_detailUpdateFragment"
             app:destination="@id/detailUpdateFragment" />
+        <argument
+            android:name="subscriptionId"
+            app:argType="string" />
     </fragment>
 </navigation>

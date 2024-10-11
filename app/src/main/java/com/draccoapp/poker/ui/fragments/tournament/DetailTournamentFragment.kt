@@ -30,6 +30,8 @@ class DetailTournamentFragment : Fragment() {
 
     private val args by navArgs<DetailTournamentFragmentArgs>()
 
+
+
     private val tournament by lazy {
         args.tournament
     }
@@ -89,6 +91,10 @@ class DetailTournamentFragment : Fragment() {
         tournament.startDatetime.let {
             binding.textView14.text = converterDataNextTournament(it.toString())
             binding.textView20.text = converterDataNextTournament(it.toString())
+        }
+
+        tournament.finalDatetime.let {
+            binding.dateFinish.text = converterDataNextTournament(it.toString())
         }
 
         tournament.prize.let {
@@ -161,7 +167,7 @@ class DetailTournamentFragment : Fragment() {
                 findNavController()
                     .navigate(
                         DetailTournamentFragmentDirections
-                            .actionDetailTournamentFragmentToTournamentUpdateFragment()
+                            .actionDetailTournamentFragmentToTournamentUpdateFragment(args.idSub)
                     )
             }
 

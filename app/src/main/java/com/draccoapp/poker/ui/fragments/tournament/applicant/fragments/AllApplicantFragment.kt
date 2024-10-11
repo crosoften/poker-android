@@ -7,11 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.draccoapp.poker.api.model.response.homeFrament.NextTournament
+import com.draccoapp.poker.api.model.response.homeFrament.TournamentsImIn
 import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.databinding.FragmentAllApplicantBinding
 import com.draccoapp.poker.extensions.showSnackBarRed
+import com.draccoapp.poker.ui.adapters.TournamentImInListAdapter
 import com.draccoapp.poker.ui.adapters.TournamentListAdapter
 import com.draccoapp.poker.ui.fragments.tournament.applicant.ApplicantTournamentFragmentDirections
+import com.draccoapp.poker.viewModel.HomeViewModel
 import com.draccoapp.poker.viewModel.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -23,8 +27,9 @@ class AllApplicantFragment : Fragment() {
 
     private val TAG = "AllApplicantFragment"
     private val viewModel : UserViewModel by viewModel()
+    private val homeViewModel: HomeViewModel by viewModel()
 
-    private lateinit var applicantAdapter: TournamentListAdapter
+    private lateinit var applicantAdapter: TournamentImInListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +42,7 @@ class AllApplicantFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        homeViewModel.getHomeFragment()
         setupObserver()
         onclick()
         setupRecycler()
@@ -53,10 +58,15 @@ class AllApplicantFragment : Fragment() {
     private fun setupObserver() {
 
 //        viewModel.getTournamentsJoinedByUser()
+        homeViewModel.successHomeFragment.observe(viewLifecycleOwner) { response ->
+
+            response.tournamentsImIn?.let { applicantAdapter.updateList(it) }
+
+        }
 
         viewModel.tournamentApplicant.observe(viewLifecycleOwner) { response ->
-            applicantAdapter.updateList(response)
-            applicantAdapter.setUnit(viewModel.getUnit())
+//            applicantAdapter.updateList(response)
+//            applicantAdapter.setUnit(viewModel.getUnit())
         }
 
         viewModel.error.observe(viewLifecycleOwner) { error ->
@@ -68,7 +78,7 @@ class AllApplicantFragment : Fragment() {
 
     private fun setupRecycler() {
 
-        applicantAdapter = TournamentListAdapter(::onClickTournament)
+        applicantAdapter = TournamentImInListAdapter(::onClickTournament)
 
         binding.recycler.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -76,7 +86,7 @@ class AllApplicantFragment : Fragment() {
         }
     }
 
-    private fun onClickTournament(tournament: Tournament){
+    private fun onClickTournament(tournament: TournamentsImIn){
 //        findNavController()
 //            .navigate(
 //                ApplicantTournamentFragmentDirections

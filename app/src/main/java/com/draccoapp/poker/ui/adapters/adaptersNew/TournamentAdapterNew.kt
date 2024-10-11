@@ -2,6 +2,7 @@ package com.draccoapp.poker.ui.adapters.adaptersNew
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -58,6 +59,8 @@ class TournamentAdapterNew(
             nextTournament.startDatetime?.let {
                 binding.textDate.text = converterDataNextTournament(it)
             }
+
+            binding.icCamera.visibility = View.INVISIBLE
 
             Glide.with(context).load(nextTournament.imageUrl).into(binding.imageView7)
 

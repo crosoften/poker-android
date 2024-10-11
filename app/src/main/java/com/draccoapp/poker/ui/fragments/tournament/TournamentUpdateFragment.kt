@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.draccoapp.poker.R
+import com.draccoapp.poker.api.model.response.updateTournament.UpdateTournamentData
 import com.draccoapp.poker.data.Tournament
 import com.draccoapp.poker.data.randomTournament
 import com.draccoapp.poker.databinding.FragmentAboutBinding
@@ -16,8 +18,10 @@ import com.draccoapp.poker.databinding.FragmentTournamentUpdateBinding
 import com.draccoapp.poker.ui.adapters.TournamentAdapter
 import com.draccoapp.poker.ui.adapters.UpdateTournamentAdapter
 import com.draccoapp.poker.ui.fragments.profile.ProfileFragmentDirections
+import com.draccoapp.poker.viewModel.TournamentViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class TournamentUpdateFragment : Fragment() {
@@ -26,6 +30,11 @@ class TournamentUpdateFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var updateAdapter: UpdateTournamentAdapter
+
+    private val viewModel: TournamentViewModel by viewModel()
+
+    private val args: TournamentUpdateFragmentArgs by navArgs()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,11 +47,18 @@ class TournamentUpdateFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel.getFavorites(args.subscriptionId)
         onclick()
         setupRecycler()
-        initModels()
+        setupObserver()
 
+
+    }
+
+    private fun setupObserver() {
+        viewModel.successUpdateTournament.observe(viewLifecycleOwner) {
+            it.data?.let { it1 -> updateAdapter.updateList(it1) }
+        }
     }
 
     private fun onclick() {
@@ -59,19 +75,7 @@ class TournamentUpdateFragment : Fragment() {
         }
     }
 
-    private fun initModels() {
 
-        val numTournamentToAdd = 10
-
-        lifecycleScope.launch {
-            val tournamentToAdd = (1..numTournamentToAdd).map { randomTournament() }
-
-            launch(Dispatchers.Main) {
-                updateAdapter.updateList(tournamentToAdd)
-            }
-        }
-
-    }
 
     private fun setupRecycler() {
 
@@ -83,9 +87,10 @@ class TournamentUpdateFragment : Fragment() {
         }
 
 
+
     }
 
-    private fun onClickTournament(tournament: Tournament){
+    private fun onClickTournament(tournament: UpdateTournamentData){
         findNavController()
             .navigate(
                 TournamentUpdateFragmentDirections

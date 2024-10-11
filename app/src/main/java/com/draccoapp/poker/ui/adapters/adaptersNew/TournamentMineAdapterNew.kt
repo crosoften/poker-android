@@ -8,20 +8,21 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.draccoapp.poker.api.model.response.homeFrament.Tournament
+import com.draccoapp.poker.api.model.response.tournamentInIm.TournamentInImData
 import com.draccoapp.poker.databinding.ItemTournamentBinding
 import com.draccoapp.poker.utils.converterDataNextTournament
 
 
 class TournamentMineAdapterNew(
     private val context : Context,
-    private val onClick: (Tournament) -> Unit
+    private val onClick: (TournamentInImData) -> Unit
 ): RecyclerView.Adapter<TournamentMineAdapterNew.ViewHolder>() {
 
-    private var tournamentList: AsyncListDiffer<Tournament> = AsyncListDiffer(this, DiffCallBack)
+    private var tournamentList: AsyncListDiffer<TournamentInImData> = AsyncListDiffer(this, DiffCallBack)
 
     private var unit = "km"
 
-    fun updateList(list: List<Tournament>){
+    fun updateList(list: List<TournamentInImData>){
         tournamentList.submitList(list)
     }
 
@@ -29,17 +30,17 @@ class TournamentMineAdapterNew(
         this.unit = unit
     }
 
-    object DiffCallBack : DiffUtil.ItemCallback<Tournament>() {
+    object DiffCallBack : DiffUtil.ItemCallback<TournamentInImData>() {
         override fun areItemsTheSame(
-            oldItem: Tournament,
-            newItem: Tournament
+            oldItem: TournamentInImData,
+            newItem: TournamentInImData
         ): Boolean {
             return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: Tournament,
-            newItem: Tournament
+            oldItem: TournamentInImData,
+            newItem: TournamentInImData
         ): Boolean {
             return oldItem == newItem
         }
@@ -49,14 +50,14 @@ class TournamentMineAdapterNew(
         private val binding: ItemTournamentBinding
     ): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(nextTournament: Tournament){
+        fun bind(nextTournament: TournamentInImData){
 
-            binding.textTitle.text = nextTournament.title
-            nextTournament.startDatetime.let {
-                binding.textDate.text = converterDataNextTournament(it)
+            binding.textTitle.text = nextTournament.tournament?.title
+            nextTournament.tournament?.startDatetime.let {
+                binding.textDate.text = it?.let { it1 -> converterDataNextTournament(it1) }
             }
 
-            Glide.with(context).load(nextTournament.imageUrl).into(binding.imageView7)
+            Glide.with(context).load(nextTournament.tournament?.imageUrl).into(binding.imageView7)
 
             binding.root.setOnClickListener {
                 onClick(nextTournament)

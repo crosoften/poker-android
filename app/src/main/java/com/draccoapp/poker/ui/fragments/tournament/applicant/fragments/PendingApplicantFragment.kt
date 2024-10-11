@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.draccoapp.poker.api.model.response.homeFrament.NextTournament
 import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.databinding.FragmentPendingApplicantBinding
 import com.draccoapp.poker.extensions.showSnackBarRed
@@ -52,8 +53,8 @@ class PendingApplicantFragment : Fragment() {
 //        viewModel.getTournamentsJoinedByUser("pending")
 
         viewModel.tournamentApplicant.observe(viewLifecycleOwner) { response ->
-            applicantAdapter.updateList(response)
-            applicantAdapter.setUnit(viewModel.getUnit())
+//            applicantAdapter.updateList(response)
+//            applicantAdapter.setUnit(viewModel.getUnit())
         }
 
         viewModel.error.observe(viewLifecycleOwner) { error ->
@@ -74,7 +75,7 @@ class PendingApplicantFragment : Fragment() {
         }
     }
 
-    private fun onClickTournament(tournament: Tournament){
+    private fun onClickTournament(tournament: NextTournament){
 //        findNavController()
 //            .navigate(
 //                ApplicantTournamentFragmentDirections

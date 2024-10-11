@@ -129,4 +129,8 @@ class TournamentRepository(
             }
         }
 
+
+    fun getUpdate(subscriptionId: String) = service.getUpdate(subscriptionId)
+    fun getTounamentImIn() = service.getTounamentImIn()
+
 }

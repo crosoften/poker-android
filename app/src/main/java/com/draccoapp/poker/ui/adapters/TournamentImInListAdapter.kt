@@ -8,21 +8,22 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.response.homeFrament.NextTournament
+import com.draccoapp.poker.api.model.response.homeFrament.TournamentsImIn
 import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.databinding.ItemTournamentListBinding
 import com.draccoapp.poker.extensions.viewInvisible
 import com.draccoapp.poker.utils.converterDataNextTournament
 import java.util.Locale
 
-class TournamentListAdapter(
-    private val onClick: (NextTournament) -> Unit
-): RecyclerView.Adapter<TournamentListAdapter.ViewHolder>() {
+class TournamentImInListAdapter(
+    private val onClick: (TournamentsImIn) -> Unit
+): RecyclerView.Adapter<TournamentImInListAdapter.ViewHolder>() {
 
-    private var tournamentList: AsyncListDiffer<NextTournament> = AsyncListDiffer(this, DiffCallBack)
+    private var tournamentList: AsyncListDiffer<TournamentsImIn> = AsyncListDiffer(this, DiffCallBack)
 
     private var unit = "km"
 
-    fun updateList(list: List<NextTournament>){
+    fun updateList(list: List<TournamentsImIn>){
         tournamentList.submitList(list)
     }
 
@@ -30,17 +31,17 @@ class TournamentListAdapter(
         this.unit = unit
     }
 
-    object DiffCallBack : DiffUtil.ItemCallback<NextTournament>() {
+    object DiffCallBack : DiffUtil.ItemCallback<TournamentsImIn>() {
         override fun areItemsTheSame(
-            oldItem: NextTournament,
-            newItem: NextTournament
+            oldItem: TournamentsImIn,
+            newItem: TournamentsImIn
         ): Boolean {
             return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: NextTournament,
-            newItem: NextTournament
+            oldItem: TournamentsImIn,
+            newItem: TournamentsImIn
         ): Boolean {
             return oldItem == newItem
         }
@@ -50,16 +51,16 @@ class TournamentListAdapter(
         private val binding: ItemTournamentListBinding
     ): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(tournament: NextTournament){
+        fun bind(tournament: TournamentsImIn){
 
-            binding.textTitleList.text = tournament.title
-            binding.textDateList.text = tournament.startDatetime?.let {
+            binding.textTitleList.text = tournament.tournament.title
+            binding.textDateList.text = tournament.tournament.startDatetime?.let {
                 converterDataNextTournament(
                     it
                 )
             }
 
-            tournament.imageUrl.let { url ->
+            tournament.tournament.imageUrl.let { url ->
                 binding.imageView5.load(url) {
                     crossfade(true)
                     placeholder(R.drawable.ic_wallpaper)

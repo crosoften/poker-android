@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.draccoapp.poker.api.model.response.homeFrament.NextTournament
 import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.databinding.FragmentNextTournamentBinding
 import com.draccoapp.poker.extensions.showSnackBarRed
 import com.draccoapp.poker.ui.adapters.TournamentListAdapter
+import com.draccoapp.poker.viewModel.HomeViewModel
 import com.draccoapp.poker.viewModel.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -21,6 +23,7 @@ class NextTournamentFragment : Fragment() {
     private val binding get() = _binding!!
     private val TAG = "NextTournamentFragment"
     private val viewModel : UserViewModel by viewModel()
+    private val homeViewModel: HomeViewModel by viewModel()
 
     private lateinit var nextAdapter: TournamentListAdapter
 
@@ -35,7 +38,7 @@ class NextTournamentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        homeViewModel.getHomeFragment()
         setupObserver()
         onclick()
         setupRecycler()
@@ -54,11 +57,14 @@ class NextTournamentFragment : Fragment() {
     private fun setupObserver() {
 
 //        viewModel.getTournamentsAvailableToUser()
-
-        viewModel.tournamentsByUser.observe(viewLifecycleOwner) { response ->
-            nextAdapter.updateList(response)
-            nextAdapter.setUnit(viewModel.getUnit())
+        homeViewModel.successHomeFragment.observe(viewLifecycleOwner) { response ->
+            response.nextTournaments?.let { nextAdapter.updateList(it) }
         }
+
+//        viewModel.tournamentsByUser.observe(viewLifecycleOwner) { response ->
+//            nextAdapter.updateList(response)
+//            nextAdapter.setUnit(viewModel.getUnit())
+//        }
 
         viewModel.error.observe(viewLifecycleOwner) { error ->
             error?.let {
@@ -77,7 +83,7 @@ class NextTournamentFragment : Fragment() {
         }
     }
 
-    private fun onClickTournament(tournament: Tournament){
+    private fun onClickTournament(tournament: NextTournament){
 //        findNavController()
 //            .navigate(
 //                NextTournamentFragmentDirections

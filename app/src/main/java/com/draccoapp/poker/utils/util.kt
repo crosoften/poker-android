@@ -8,6 +8,7 @@ import com.draccoapp.poker.api.model.response.homeFrament.LocationX
 import com.draccoapp.poker.api.model.response.homeFrament.LocationXXX
 import com.draccoapp.poker.api.model.response.homeFrament.NextTournament
 import com.draccoapp.poker.api.model.response.homeFrament.Tournament
+import com.draccoapp.poker.api.model.response.tournamentInIm.TournamentInImData
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -37,7 +38,17 @@ fun mapTournamentToNextTournament(tournament: Tournament): NextTournament {
         formId = tournament.formId?.toString(),
         id = tournament.id,
         imageUrl = tournament.imageUrl?.toString(),
-        location = null,
+        location = LocationX(
+            city = tournament.location.city.toString(),
+            country = tournament.location.country.toString(),
+            lat = tournament.location.lat.toString(),
+            lng = tournament.location.lng.toString(),
+            neighborhood = tournament.location.neighborhood.toString(),
+            number = tournament.location.number.toString(),
+            state = tournament.location.state.toString(),
+            street = tournament.location.street.toString(),
+            zipCode = tournament.location.zipCode.toString(),
+        ),
         prize = tournament.prize,
         rules = tournament.rules?.toString(),
         startDatetime = tournament.startDatetime,
@@ -45,6 +56,35 @@ fun mapTournamentToNextTournament(tournament: Tournament): NextTournament {
         time = tournament.time?.toString(),
         title = tournament.title,
         type = tournament.type
+    )
+}
+
+fun mapTournamentInImTournament(tournament: TournamentInImData): NextTournament {
+    return NextTournament(
+        description = tournament.tournament?.description,
+        eventUrl = tournament.tournament?.eventUrl,
+        finalDatetime = tournament.tournament?.finalDatetime?.toString(),
+        formId = tournament.tournament?.formId?.toString(),
+        id = tournament.tournament?.id,
+        imageUrl = tournament.tournament?.imageUrl?.toString(),
+        location = LocationX(
+            city = tournament.tournament?.location?.city.toString(),
+            country = tournament.tournament?.location?.country.toString(),
+            lat = tournament.tournament?.location?.lat.toString(),
+            lng = tournament.tournament?.location?.lng.toString(),
+            neighborhood = tournament.tournament?.location?.neighborhood.toString(),
+            number = tournament.tournament?.location?.number.toString(),
+            state = tournament.tournament?.location?.state.toString(),
+            street = tournament.tournament?.location?.street.toString(),
+            zipCode = tournament.tournament?.location?.zipCode.toString(),
+        ),
+        prize = tournament.tournament?.prize ?: 0,
+        rules = tournament.tournament?.rules?.toString(),
+        startDatetime = tournament.tournament?.startDatetime,
+        status = tournament.tournament?.status,
+        time = tournament.tournament?.time?.toString(),
+        title = tournament.tournament?.title,
+        type = tournament.tournament?.type
     )
 }
 

@@ -11,11 +11,14 @@ import com.draccoapp.poker.api.model.response.AnswerResponse
 import com.draccoapp.poker.api.model.response.TournamentResponseNew
 import com.draccoapp.poker.api.model.response.UploadFileResponse
 import com.draccoapp.poker.api.model.response.tournamentForms.TournamentForms
+import com.draccoapp.poker.api.model.response.tournamentInIm.TournamentInImResponse
+import com.draccoapp.poker.api.model.response.updateTournament.UpdateTournament
 import com.draccoapp.poker.api.modelOld.request.Entry
 import com.draccoapp.poker.api.model.type.DataState
 import com.draccoapp.poker.repository.TournamentRepository
 import com.draccoapp.poker.utils.PokerApplication
 import com.draccoapp.poker.utils.Preferences
+import com.draccoapp.poker.utils.ResponseParser
 import com.draccoapp.poker.utils.limparMessage
 import com.draccoapp.poker.utils.mostrarToast
 import kotlinx.coroutines.launch
@@ -35,6 +38,8 @@ class TournamentViewModel(
     val successUploadFile = MutableLiveData<UploadFileResponse>()
     val successGetTournamentForms = MutableLiveData<TournamentForms>()
     val successSubscribeTournament = MutableLiveData<AnswerResponse>()
+    val successUpdateTournament = MutableLiveData<UpdateTournament>()
+    val successTournamentInIm = MutableLiveData<TournamentInImResponse>()
 
     val error: LiveData<String>
         get() = _error
@@ -78,6 +83,50 @@ fun subscribeToTournament(idTounament : String, answerBody: AnswerBody){
     })
 
 }
+
+    fun getFavorites(subscriptionId: String) {
+        val request = repository.getUpdate(subscriptionId)
+        request.enqueue(object : Callback<UpdateTournament> {
+            override fun onResponse(
+                call: Call<UpdateTournament>,
+                response: Response<UpdateTournament>
+            ) {
+                if (response.isSuccessful) {
+                    successUpdateTournament.postValue(response.body())
+                } else {
+                    _error.postValue(ResponseParser.parseError(response))
+                }
+            }
+
+            override fun onFailure(call: Call<UpdateTournament>, t: Throwable) {
+                _error.postValue(t.message)
+            }
+
+        })
+
+    }
+
+    fun getTounamentImIn() {
+        val request = repository.getTounamentImIn()
+        request.enqueue(object : Callback<TournamentInImResponse> {
+            override fun onResponse(
+                call: Call<TournamentInImResponse>,
+                response: Response<TournamentInImResponse>
+            ) {
+                if (response.isSuccessful) {
+                    successTournamentInIm.postValue(response.body())
+                } else {
+                    _error.postValue(ResponseParser.parseError(response))
+                }
+            }
+
+            override fun onFailure(call: Call<TournamentInImResponse>, t: Throwable) {
+                _error.postValue(t.message)
+            }
+
+        })
+
+    }
 
 
     fun getTournament(id: String) {
