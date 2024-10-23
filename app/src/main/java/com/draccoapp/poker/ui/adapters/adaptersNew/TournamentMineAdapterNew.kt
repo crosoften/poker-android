@@ -10,12 +10,15 @@ import com.bumptech.glide.Glide
 import com.draccoapp.poker.api.model.response.homeFrament.Tournament
 import com.draccoapp.poker.api.model.response.tournamentInIm.TournamentInImData
 import com.draccoapp.poker.databinding.ItemTournamentBinding
+import com.draccoapp.poker.extensions.getPreferenceData
 import com.draccoapp.poker.utils.converterDataNextTournament
+import com.draccoapp.poker.utils.converterDistance
 
 
 class TournamentMineAdapterNew(
     private val context : Context,
-    private val onClick: (TournamentInImData) -> Unit
+    private val onClick: (TournamentInImData) -> Unit,
+    private val onClickUpdate: (TournamentInImData) -> Unit
 ): RecyclerView.Adapter<TournamentMineAdapterNew.ViewHolder>() {
 
     private var tournamentList: AsyncListDiffer<TournamentInImData> = AsyncListDiffer(this, DiffCallBack)
@@ -61,6 +64,13 @@ class TournamentMineAdapterNew(
 
             binding.root.setOnClickListener {
                 onClick(nextTournament)
+            }
+
+            val type = context.getPreferenceData().getLanguage()
+            binding.textDistance.text = converterDistance(nextTournament.tournament?.location?.distance, type)
+
+            binding.icCamera.setOnClickListener {
+                onClickUpdate(nextTournament)
             }
         }
     }

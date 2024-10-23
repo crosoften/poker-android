@@ -14,8 +14,8 @@ android {
         applicationId = "com.draccoapp.poker"
         minSdk = 26
         targetSdk = 34
-        versionCode = 2
-        versionName = "1.0.0.2"
+        versionCode = 3
+        versionName = "1.0.0.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -81,4 +81,6 @@ dependencies {
     implementation ("androidx.paging:paging-common-ktx:3.3.1")
 
     implementation ("com.squareup.okhttp3:logging-interceptor:4.9.1")
+    implementation ("com.google.android.gms:play-services-maps:18.0.2")// Ou versão mais recente
+
 }

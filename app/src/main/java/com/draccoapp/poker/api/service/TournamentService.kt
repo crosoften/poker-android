@@ -1,8 +1,10 @@
 package com.draccoapp.poker.api.service
 
+import com.draccoapp.poker.api.model.request.AddUpdadeTournament
 import com.draccoapp.poker.api.model.request.AnswerBody
 import com.draccoapp.poker.api.model.request.TournamentBodyNew
 import com.draccoapp.poker.api.model.response.AnswerResponse
+import com.draccoapp.poker.api.model.response.DetailsUpdateTournament
 import com.draccoapp.poker.api.model.response.TournamentResponseNew
 import com.draccoapp.poker.api.model.response.UploadFileResponse
 import com.draccoapp.poker.api.model.response.tournamentForms.TournamentForms
@@ -81,8 +83,20 @@ interface TournamentService {
 
     @GET("/accounts/myself/subscriptions")
     fun getTounamentImIn(
+        @Query("lat") lat: String,
+        @Query("lng") lng: String,
         @Query("page") page: Int = 1,
         @Query("size") size: Int = 100,
     ): Call<TournamentInImResponse>
+
+    @POST("/rankings")
+    fun createUpdate(
+     @Body body: AddUpdadeTournament
+    ): Call<AnswerResponse>
+
+    @GET("/rankings/{id}")
+    fun getUpdateDetails(
+        @Path("id") id: String,
+    ): Call<DetailsUpdateTournament>
 
 }

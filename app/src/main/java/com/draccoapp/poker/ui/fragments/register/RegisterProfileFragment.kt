@@ -30,7 +30,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.draccoapp.poker.R
 import com.draccoapp.poker.databinding.FragmentRegisterProfileBinding
-import com.draccoapp.poker.ui.fragments.tournament.TAG
+import com.draccoapp.poker.ui.fragments.tournament.TournamentFragment.Companion.TAG
 import com.draccoapp.poker.utils.Constants.Companion.RegisterCity
 import com.draccoapp.poker.utils.Constants.Companion.RegisterCountry
 import com.draccoapp.poker.utils.Constants.Companion.RegisterDateBirth

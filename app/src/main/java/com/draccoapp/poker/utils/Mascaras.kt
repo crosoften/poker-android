@@ -12,6 +12,7 @@ object MaskEditUtil {
     const val FORMAT_CEP = "#####-###"
     const val FORMAT_DATE = "##/##/####"
     const val FORMAT_EXPIRATION = "##/##"
+    const val FORMAT_HOUR = "##:##"
     const val FORMAT_SECURITY_CODE = "###"
 
     private const val MAX_CPF_LENGTH = 11

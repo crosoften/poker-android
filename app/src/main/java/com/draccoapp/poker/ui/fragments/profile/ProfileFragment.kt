@@ -190,9 +190,7 @@ class ProfileFragment : Fragment() {
 
     private fun setupRecycler() {
 
-        applicantAdapter = TournamentMineAdapterNew(requireContext()) {
-            //click no card
-        }
+        applicantAdapter = TournamentMineAdapterNew(requireContext(),{},{})
 
         binding.recyclerDone.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)

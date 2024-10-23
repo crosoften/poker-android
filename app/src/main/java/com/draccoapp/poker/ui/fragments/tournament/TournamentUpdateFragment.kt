@@ -52,6 +52,12 @@ class TournamentUpdateFragment : Fragment() {
         setupRecycler()
         setupObserver()
 
+        if (args.status != "approved"){
+            binding.imageView4.visibility = View.GONE
+        }else{
+            binding.imageView4.visibility = View.VISIBLE
+        }
+
 
     }
 
@@ -68,6 +74,14 @@ class TournamentUpdateFragment : Fragment() {
             back.setOnClickListener {
                 findNavController()
                     .popBackStack()
+            }
+
+            imageView4.setOnClickListener {
+                findNavController()
+                    .navigate(
+                        TournamentUpdateFragmentDirections
+                            .actionTournamentUpdateFragmentToAddUpdateFragment(args.subscriptionId)
+                    )
             }
 
 
@@ -94,7 +108,7 @@ class TournamentUpdateFragment : Fragment() {
         findNavController()
             .navigate(
                 TournamentUpdateFragmentDirections
-                    .actionTournamentUpdateFragmentToDetailUpdateFragment()
+                    .actionTournamentUpdateFragmentToDetailUpdateFragment(tournament.id!!)
             )
     }
 

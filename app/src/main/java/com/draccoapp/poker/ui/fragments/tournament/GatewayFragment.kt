@@ -136,9 +136,11 @@ class GatewayFragment : Fragment() {
         }//observer
 
         viewModel.successSubscribeTournament.observe(viewLifecycleOwner) {
-
-            findNavController().popBackStack(R.id.homeFragment, false)
-            mostrarToast("Torneio inscrito com sucesso", requireContext())
+            findNavController().navigate(
+                GatewayFragmentDirections.actionGatewayFragmentToSubscribeTournamentFragment()
+            )
+           // findNavController().popBackStack(R.id.homeFragment, false)
+           // mostrarToast("Torneio inscrito com sucesso", requireContext())
         }
     }
 

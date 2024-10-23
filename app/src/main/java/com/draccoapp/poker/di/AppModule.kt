@@ -142,13 +142,13 @@ val repositoryModule = module {
         UserRepository(get(), get())
     }
     single {
-        TournamentRepository(get(), get())
+        TournamentRepository(get(), get(), get())
     }
     single {
         RegisterRepository(get())
     }
     single {
-        GlobalRepository(get())
+        GlobalRepository(get(), get())
     }
 
 }

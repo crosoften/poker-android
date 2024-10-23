@@ -5,10 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.draccoapp.poker.api.model.response.updateTournament.UpdateTournamentData
 import com.draccoapp.poker.data.Tournament
 import com.draccoapp.poker.databinding.ItemTournamentBinding
 import com.draccoapp.poker.databinding.ItemUpdateTournamentBinding
+import com.draccoapp.poker.utils.converterDataNextTournament
 
 class UpdateTournamentAdapter(
     private val onClick: (UpdateTournamentData) -> Unit
@@ -44,12 +46,11 @@ class UpdateTournamentAdapter(
 
         fun bind(tournament: UpdateTournamentData){
 
-//            binding.textTitle.text = tournament.title
-//            binding.textDate.text = tournament.dataFull
-//            binding.textDistance.text = buildString {
-//                append(distance.random())
-//                append(" km de você")
-//            }
+            binding.textTitleList.text = tournament.title
+            binding.textValueList.text = tournament.message
+            binding.textDate.text = tournament.date?.let { converterDataNextTournament(it) }
+            binding.imageContractList.load(tournament.proofUrl)
+
 
             binding.root.setOnClickListener {
                 onClick(tournament)

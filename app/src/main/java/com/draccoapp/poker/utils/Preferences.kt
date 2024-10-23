@@ -7,13 +7,14 @@ import com.draccoapp.poker.api.model.response.Login2FAResponse
 import com.draccoapp.poker.api.model.response.Login2faResponseNew
 import com.draccoapp.poker.api.model.response.LoginResponse
 import com.draccoapp.poker.api.modelOld.response.User
+import com.google.android.gms.maps.model.LatLng
 
 class Preferences(context: Context) {
 
 
     var preferences: SharedPreferences
     var editor: SharedPreferences.Editor
-    private var MODE_PRIVATE : Int = 0
+    private var MODE_PRIVATE: Int = 0
 
     init {
         preferences = context.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE)
@@ -37,9 +38,11 @@ class Preferences(context: Context) {
         const val KEY_LANGUAGE = "user_language"
         const val KEY_UNITS = "user_units"
         const val KEY_IMAGE = "user_image"
+        const val KEY_LOCATION_LAT = "key_location_lat"
+        const val KEY_LOCATION_LNG = "key_location_lng"
     }
 
-//    fun createSession(login: SingInResponse){
+    //    fun createSession(login: SingInResponse){
 //        editor.putBoolean(IS_LOGIN, true)
 //        editor.putString(KEY_ACCESS_TOKEN, login.accessToken)
 //        editor.putString(KEY_TOKEN_REFRESH, login.refreshToken)
@@ -75,14 +78,22 @@ class Preferences(context: Context) {
 //        editor.apply()
 //    }
 //
-//    fun setMe(response: DeliverymanResponse) {
-//        editor.putString(KEY_CPF, response.deliveryman.document)
-//        editor.putString(KEY_PHONE, response.deliveryman.phone)
-//        editor.putString(KEY_IMAGE, response.image)
-//        editor.commit()
-//        editor.apply()
-//    }
-//
+    fun location(location: LatLng) {
+        editor.putString(KEY_LOCATION_LAT, location.latitude.toString())
+        editor.putString(KEY_LOCATION_LNG, location.longitude.toString())
+        editor.commit()
+        editor.apply()
+    }
+
+    fun getLatitude(): String {
+        return preferences.getString(KEY_LOCATION_LAT, "").toString()
+    }
+
+    fun getLongitude(): String {
+        return preferences.getString(KEY_LOCATION_LNG, "").toString()
+    }
+
+    //
 //    fun updateMe(name: String, cpf: String, phone: String) {
 //        editor.putString(KEY_NAME, name)
 //        editor.putString(KEY_CPF, cpf)
@@ -108,7 +119,7 @@ class Preferences(context: Context) {
 //    }
 //
 //
-    fun getToken() : String {
+    fun getToken(): String {
         return preferences.getString(KEY_ACCESS_TOKEN, null).orEmpty()
     }
 
@@ -122,7 +133,7 @@ class Preferences(context: Context) {
         editor.apply()
     }
 
-    fun getLanguage() : String {
+    fun getLanguage(): String {
         return preferences.getString(KEY_LANGUAGE, "").orEmpty()
 
     }
@@ -133,7 +144,7 @@ class Preferences(context: Context) {
         editor.apply()
     }
 
-    fun getCountry() : String {
+    fun getCountry(): String {
         return preferences.getString(KEY_COUNTRY, "").orEmpty()
     }
 
@@ -174,7 +185,8 @@ class Preferences(context: Context) {
         editor.commit()
         editor.apply()
     }
-//
+
+    //
 //    fun getRefreshToken() : String {
 //        return preferences.getString(KEY_TOKEN_REFRESH, "").orEmpty()
 //    }

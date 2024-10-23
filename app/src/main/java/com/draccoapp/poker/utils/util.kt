@@ -48,6 +48,7 @@ fun mapTournamentToNextTournament(tournament: Tournament): NextTournament {
             state = tournament.location.state.toString(),
             street = tournament.location.street.toString(),
             zipCode = tournament.location.zipCode.toString(),
+            distance = tournament.location.distance.toString(),
         ),
         prize = tournament.prize,
         rules = tournament.rules?.toString(),
@@ -77,6 +78,7 @@ fun mapTournamentInImTournament(tournament: TournamentInImData): NextTournament 
             state = tournament.tournament?.location?.state.toString(),
             street = tournament.tournament?.location?.street.toString(),
             zipCode = tournament.tournament?.location?.zipCode.toString(),
+            distance = tournament.tournament?.location?.distance.toString(),
         ),
         prize = tournament.tournament?.prize ?: 0,
         rules = tournament.tournament?.rules?.toString(),
@@ -105,6 +107,24 @@ fun converterDataNextTournament(dataHoraString: String): String {
     } catch (e: Exception) {
         e.printStackTrace()
         "N/A" // ou lançar uma exceção, dependendo do contexto do seu app
+    }
+}
+
+fun converterDistance(distance: String?, type: String): String {
+    if (distance == null) return "Unknown distance"
+
+    val distanceValue = distance.toIntOrNull() ?: return "Invalid distance"
+
+    return when (type.uppercase()) {
+        "PT" -> {
+            val distanceInKm = distanceValue / 1000.0
+            String.format("%.1f km de distância", distanceInKm)
+        }
+        "EN" -> {
+            val distanceInMiles = distanceValue / 1609.34
+            String.format("%.1f Miles away", distanceInMiles)
+        }
+        else -> "Invalid type"
     }
 }
 

@@ -1,5 +1,6 @@
 package com.draccoapp.poker.repository
 
+import com.draccoapp.poker.api.model.request.AddUpdadeTournament
 import com.draccoapp.poker.api.model.request.AnswerBody
 import com.draccoapp.poker.api.model.request.TournamentBodyNew
 import com.draccoapp.poker.api.model.response.TournamentResponseNew
@@ -8,6 +9,7 @@ import com.draccoapp.poker.api.modelOld.request.Entry
 import com.draccoapp.poker.api.modelOld.response.ApplicanteTournamentResponse
 import com.draccoapp.poker.api.modelOld.response.TournamentResponse
 import com.draccoapp.poker.api.service.TournamentService
+import com.draccoapp.poker.utils.Preferences
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
@@ -15,11 +17,14 @@ import java.lang.Exception
 
 class TournamentRepository(
     private val service: TournamentService,
+    private val preferences: Preferences,
     private val dispatcher: CoroutineDispatcher
 ) {
 
 
     fun getTournament(id: String) = service.getTournament(id)
+    fun getUpdateDetails(id: String) = service.getUpdateDetails(id)
+    fun createUpdate(body: AddUpdadeTournament) = service.createUpdate(body)
 
     fun subscribeToTournament(idTournament: String, answerBody: AnswerBody) = service.subscribeToTournament(idTournament, answerBody)
 
@@ -131,6 +136,10 @@ class TournamentRepository(
 
 
     fun getUpdate(subscriptionId: String) = service.getUpdate(subscriptionId)
-    fun getTounamentImIn() = service.getTounamentImIn()
+    fun getTounamentImIn(
+    ) = service.getTounamentImIn(
+        lat = preferences.getLatitude(),
+        lng = preferences.getLongitude()
+    )
 
 }

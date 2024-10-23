@@ -18,7 +18,10 @@ interface GlobalService {
     fun getMeusDados(): Call<MeusDadosResponse>
 
     @GET("/accounts/myself/home")
-    fun getHomeFragment(): Call<HomeFragmentResponse>
+    fun getHomeFragment(
+        @Query("lat") lat: String,
+        @Query("lng") lng: String
+    ): Call<HomeFragmentResponse>
 
     @GET("/contracts")
     suspend fun listarContractsPaginados(@Query("page") page: Int, @Query("size") size: Int = 10): ContractResponse

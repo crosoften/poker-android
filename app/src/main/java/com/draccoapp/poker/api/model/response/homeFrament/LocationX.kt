@@ -23,5 +23,8 @@ data class LocationX(
     @Json(name = "street")
     val street: String,
     @Json(name = "zipCode")
-    val zipCode: String
+    val zipCode: String,
+    @Json(name = "distance")
+    val distance: String
+
 )

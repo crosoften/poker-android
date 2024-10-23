@@ -11,8 +11,10 @@ import com.bumptech.glide.Glide
 import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.response.homeFrament.NextTournament
 import com.draccoapp.poker.databinding.ItemTournamentBinding
+import com.draccoapp.poker.extensions.getPreferenceData
 import com.draccoapp.poker.extensions.viewInvisible
 import com.draccoapp.poker.utils.converterDataNextTournament
+import com.draccoapp.poker.utils.converterDistance
 import java.util.Locale
 
 
@@ -65,11 +67,16 @@ class TournamentAdapterNew(
             Glide.with(context).load(nextTournament.imageUrl).into(binding.imageView7)
 
 
+            val type = context.getPreferenceData().getLanguage()
+            binding.textDistance.text = converterDistance(nextTournament.location?.distance, type)
+
             binding.root.setOnClickListener {
                 onClick(nextTournament)
             }
         }
     }
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(

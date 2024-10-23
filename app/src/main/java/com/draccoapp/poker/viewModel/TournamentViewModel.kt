@@ -5,9 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.draccoapp.poker.api.model.request.AddUpdadeTournament
 import com.draccoapp.poker.api.model.request.AnswerBody
 import com.draccoapp.poker.api.model.request.TournamentBodyNew
 import com.draccoapp.poker.api.model.response.AnswerResponse
+import com.draccoapp.poker.api.model.response.DetailsUpdateTournament
 import com.draccoapp.poker.api.model.response.TournamentResponseNew
 import com.draccoapp.poker.api.model.response.UploadFileResponse
 import com.draccoapp.poker.api.model.response.tournamentForms.TournamentForms
@@ -40,6 +42,8 @@ class TournamentViewModel(
     val successSubscribeTournament = MutableLiveData<AnswerResponse>()
     val successUpdateTournament = MutableLiveData<UpdateTournament>()
     val successTournamentInIm = MutableLiveData<TournamentInImResponse>()
+    val successAddUpdate = MutableLiveData<AnswerResponse>()
+    val successGetDetailsUpdadte = MutableLiveData<DetailsUpdateTournament>()
 
     val error: LiveData<String>
         get() = _error
@@ -121,6 +125,49 @@ fun subscribeToTournament(idTounament : String, answerBody: AnswerBody){
             }
 
             override fun onFailure(call: Call<TournamentInImResponse>, t: Throwable) {
+                _error.postValue(t.message)
+            }
+
+        })
+
+    }
+
+    fun createUpdate(body: AddUpdadeTournament) {
+        val request = repository.createUpdate(body)
+        request.enqueue(object : Callback<AnswerResponse> {
+            override fun onResponse(
+                call: Call<AnswerResponse>,
+                response: Response<AnswerResponse>
+            ) {
+                if (response.isSuccessful) {
+                    successAddUpdate.postValue(response.body())
+                } else {
+                    _error.postValue(ResponseParser.parseError(response))
+                }
+            }
+
+            override fun onFailure(call: Call<AnswerResponse>, t: Throwable) {
+                _error.postValue(t.message)
+            }
+
+        })
+
+    }
+fun getUpdateDetails(id: String) {
+        val request = repository.getUpdateDetails(id)
+        request.enqueue(object : Callback<DetailsUpdateTournament> {
+            override fun onResponse(
+                call: Call<DetailsUpdateTournament>,
+                response: Response<DetailsUpdateTournament>
+            ) {
+                if (response.isSuccessful) {
+                    successGetDetailsUpdadte.postValue(response.body())
+                } else {
+                    _error.postValue(ResponseParser.parseError(response))
+                }
+            }
+
+            override fun onFailure(call: Call<DetailsUpdateTournament>, t: Throwable) {
                 _error.postValue(t.message)
             }
 

@@ -30,6 +30,7 @@ import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.request.TournamentBodyNew
 import com.draccoapp.poker.databinding.FragmentTournamentBinding
 import com.draccoapp.poker.utils.DecimalDigitsFilter
+import com.draccoapp.poker.utils.MaskEditUtil
 import com.draccoapp.poker.utils.Preferences
 import com.draccoapp.poker.utils.mostrarToast
 import com.draccoapp.poker.utils.showSnackbarGreen
@@ -50,7 +51,7 @@ import java.util.Date
 import java.util.Locale
 import kotlin.math.roundToInt
 
-const val TAG = "TournamentFragment"
+
 
 class TournamentFragment : Fragment() {
 
@@ -59,9 +60,7 @@ class TournamentFragment : Fragment() {
     private val viewModel: TournamentViewModel by viewModel()
 
     private lateinit var preferences: Preferences
-    private lateinit var listaDeEstadosBrasileiros: List<String>
-    private lateinit var listaDeEstadosEUA: List<String>
-    private lateinit var proofUrl: String
+    private  var proofUrl: String = ""
 
     private var currentPhotoPath: String? = null
     private var fotoSelecionada: MultipartBody.Part? = null
@@ -80,69 +79,17 @@ class TournamentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setup()
         setupObservers()
-        inicializaListaDeEstados()
         configMoedaAtual()
-        configEditState()
         configCasasDecimaisPreco()
+        mascaraDataNascimento()
 
     }
 
-
-    private fun configEditCountry() {
-        val language = preferences.getLanguage()
-        Log.i(TAG, "configMoedaAtual: A linguagem no preferences atual é   $language")
-
-        val editCountry = binding.editCountry
-
-        if (language == "pt") {
-            val listaDePaisesPT = mutableListOf<String>("Brasil", "Estados Unidos da América")
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listaDePaisesPT)
-            editCountry.setAdapter(adapter)
-            adapter.notifyDataSetChanged()
-        } else {
-            val listaDePaisesEN = mutableListOf<String>("Brazil", "United States of America")
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listaDePaisesEN)
-            editCountry.setAdapter(adapter)
-            adapter.notifyDataSetChanged()
-        }
-
-
-        binding.editCountry.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                val country = s.toString()
-                val listaCorreta = if (country == "Brasil" || country == "Brazil") {
-                    listaDeEstadosBrasileiros
-                } else {
-                    listaDeEstadosEUA
-                }
-                atualizarListaEstados(listaCorreta)
-            }
-        })
-
+    private fun mascaraDataNascimento() {
+        binding.editStartDate.addTextChangedListener(MaskEditUtil.mask(binding.editStartDate, MaskEditUtil.FORMAT_DATE))
+        binding.editFinishDate.addTextChangedListener(MaskEditUtil.mask(binding.editFinishDate, MaskEditUtil.FORMAT_DATE))
+        binding.editTime.addTextChangedListener(MaskEditUtil.mask(binding.editTime, MaskEditUtil.FORMAT_HOUR))
     }
-
-    fun atualizarListaEstados(lista: List<String>) {
-        val editState = binding.editState
-        editState.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, lista))
-    }
-
-
-    private fun configEditState() {
-        val listaCorreta = if (binding.editCountry.text.toString() == "Brasil" || binding.editCountry.text.toString() == "Brazil") {
-            listaDeEstadosBrasileiros
-        } else {
-            listaDeEstadosEUA
-        }
-
-
-        val editState = binding.editState
-        editState.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listaCorreta))
-    }
-
 
     private fun configMoedaAtual() {
         val language = preferences.getLanguage()
@@ -158,35 +105,49 @@ class TournamentFragment : Fragment() {
         }
 
         binding.buttonConfirmar.setOnClickListener {
+
             val editName = binding.editName.text.toString()
             val editAward = binding.editAward.text.toString()
             var editAwardInt: Int = 0
             editAward?.let {
                 editAwardInt = arredondarValor(editAward)
             }
+
+            val editStart = binding.editStartDate.text.toString()
+            val editEnd = binding.editFinishDate.text.toString()
+            val editTime = binding.editTime.text.toString()
+            val editdescription = binding.editDescripiton.text.toString()
             val editCountry = binding.editCountry.text.toString()
             val editState = binding.editState.text.toString()
             val editCity = binding.editCity.text.toString()
+            val editNeighborood = binding.editNeighborhood.text.toString()
+            val editStreet = binding.editNeighborhood.text.toString()
+            val editNumber = binding.editNumber.text.toString()
+            val editZipcode = binding.editZipcode.text.toString()
             val editLink = binding.editLink.text.toString()
 
             val body = TournamentBodyNew(
                 title = editName,
                 prize = editAwardInt,
+                startDatetime = editStart,
+                finalDatetime = editEnd,
+                time = editTime,
+                description = editdescription,
                 country = editCountry,
                 state = editState,
                 city = editCity,
-                eventUrl = editLink,
-                proofUrl = proofUrl
+                neighborhood = editNeighborood,
+                street = editStreet,
+                number = editNumber,
+                zipCode = editZipcode,
+                eventUrl = if (editLink.isNullOrEmpty()) "null" else editLink,
+                proofUrl = if (proofUrl.isNullOrEmpty()) "null" else proofUrl
             )
-            Log.i(TAG, "setup: o body do torneio é $body")
-            if (proofUrl.isNullOrBlank()) {
-                binding.root.showSnackbarRed(getString(R.string.necessario_adicionar_um_comprovante))
-            } else if (!todosOsCamposForamPreenchidos()) {
+             if (!todosOsCamposForamPreenchidos()) {
                 binding.root.showSnackbarRed(getString(R.string.necessario_preencher_todos_os_campos_acima))
             } else {
                 viewModel.createTournament(body = body)
             }
-
 
         }
     }
@@ -216,15 +177,15 @@ class TournamentFragment : Fragment() {
         val editCountry = binding.editCountry
         val editState = binding.editState
         val editCity = binding.editCity
-        val editLink = binding.editLink
+
 
         return editAward.text.toString().isNotEmpty() &&
                 editName.text.toString().isNotEmpty() &&
                 editAward.text.toString().isNotEmpty() &&
                 editCountry.text.toString().isNotEmpty() &&
                 editState.text.toString().isNotEmpty() &&
-                editCity.text.toString().isNotEmpty() &&
-                editLink.text.toString().isNotEmpty()
+                editCity.text.toString().isNotEmpty()
+
     }
 
     private fun openImagePicker() {
@@ -379,11 +340,7 @@ class TournamentFragment : Fragment() {
         return if (valor.isNullOrBlank()) 0 else valor.toDouble().roundToInt()
     }
 
-    private fun inicializaListaDeEstados() {
-        listaDeEstadosBrasileiros = viewModel.listaDeEstadosBrasileiros
-        listaDeEstadosEUA = viewModel.listaDeEstadosEUA
-        proofUrl = ""
-    }
+
 
     private fun configCasasDecimaisPreco() {
         val editAward = binding.editAward
@@ -396,13 +353,16 @@ class TournamentFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        configEditCountry()
-    }
+         }
 
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        const val TAG = "TournamentFragment"
     }
 
 }

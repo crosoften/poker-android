@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_homeFragment_to_nextTournamentFragment"
             app:destination="@id/nextTournamentFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_addUpdateFragment"
+            app:destination="@id/addUpdateFragment" />
     </fragment>
     <fragment
         android:id="@+id/coachFragment"
@@ -85,6 +88,12 @@
         <argument
             android:name="idSub"
             app:argType="string" />
+        <argument
+            android:name="origins"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_detailTournamentFragment_to_finishTournamentFragment"
+            app:destination="@id/finishTournamentFragment" />
     </fragment>
 
     <fragment
@@ -158,15 +167,19 @@
         android:id="@+id/addUpdateFragment"
         android:name="com.draccoapp.poker.ui.fragments.tournament.AddUpdateFragment"
         android:label="AddUpdateFragment"
-        tools:layout="@layout/fragment_add_update" />
+        tools:layout="@layout/fragment_add_update" >
+        <argument
+            android:name="idTournament"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/detailUpdateFragment"
         android:name="com.draccoapp.poker.ui.fragments.tournament.DetailUpdateFragment"
         android:label="DetailUpdateFragment"
         tools:layout="@layout/fragment_detail_update">
-        <action
-            android:id="@+id/action_detailUpdateFragment_to_addUpdateFragment"
-            app:destination="@id/addUpdateFragment" />
+        <argument
+            android:name="idUpdate"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/tournamentUpdateFragment"
@@ -178,6 +191,20 @@
             app:destination="@id/detailUpdateFragment" />
         <argument
             android:name="subscriptionId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_tournamentUpdateFragment_to_addUpdateFragment"
+            app:destination="@id/addUpdateFragment" />
+        <argument
+            android:name="status"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/finishTournamentFragment"
+        android:name="com.draccoapp.poker.ui.fragments.tournament.FinishTournamentFragment"
+        android:label="FinishTournamentFragment" >
+        <argument
+            android:name="idTournament"
             app:argType="string" />
     </fragment>
 </navigation>
