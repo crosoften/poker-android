@@ -25,7 +25,7 @@ class AdapterPaginacao :
         val item = getItem(position)
         if (item != null) {
             holder.nomeContrato.text = item.title
-            holder.value.text = item.value.toString()
+//            holder.value.text = item.value.toString()
             holder.status.text = item.status
         }
     }

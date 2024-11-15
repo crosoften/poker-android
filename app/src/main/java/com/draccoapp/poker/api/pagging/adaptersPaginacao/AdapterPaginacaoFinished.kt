@@ -25,7 +25,7 @@ class AdapterPaginacaoFinished :
         val item = getItem(position)
         if (item != null && item.status == "finished") {
             holder.nomeContrato.text = item.title
-            holder.value.text = item.value.toString()
+//            holder.value.text = item.value.toString()
             holder.status.text = item.status
             holder.itemView.visibility = View.VISIBLE
         } else {

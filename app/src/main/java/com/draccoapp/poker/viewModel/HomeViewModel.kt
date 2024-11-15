@@ -25,12 +25,10 @@ class HomeViewModel(private val repository: GlobalRepository) : ViewModel() {
             override fun onResponse(call: Call<HomeFragmentResponse>, response: Response<HomeFragmentResponse>) {
                 if (response.isSuccessful) {
                     successHomeFragment.postValue(response.body())
-                    Log.i("HomeViewModel", "onResponse: A resposta foi isSuccessfull")
                 } else {
                     try {
                         val errorBody = response.errorBody()?.string()
                         val erroLoginLimpo = limparMessage(errorBody.toString())
-                        Log.e("Error Body", "O erro  do servidor  LIMPOOO  foi ${erroLoginLimpo ?: "erro desconhecido"} ")
                         mostrarToast(" $erroLoginLimpo ", PokerApplication.instance)
                     } catch (e: IOException) {
                         Log.e("IOException", "Erro de leitura do response ->>", e)

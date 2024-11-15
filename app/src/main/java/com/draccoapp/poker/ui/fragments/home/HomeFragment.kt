@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.response.homeFrament.NextTournament
 import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.databinding.FragmentHomeBinding
@@ -80,8 +81,6 @@ class HomeFragment : Fragment() {
         setupRecycler()
         val preferences = Preferences(requireContext())
         Log.i("TokenWill", "onViewCreated: Token no homefrag é   ${preferences.getToken()}")
-
-
     }
 
     fun location(){
@@ -220,11 +219,11 @@ class HomeFragment : Fragment() {
 
         homeViewModel.successHomeFragment.observe(viewLifecycleOwner) { response ->
             Log.i(TAG, "setupObserver: Os dados todos da home foram $response")
-
-
             binding.textName.text = response.myself.name
 
-            Glide.with(requireContext()).load(response.myself.imageUrl).into(binding.shapeableImageView)
+            Glide.with(requireContext()).load(response.myself.imageUrl)
+                .placeholder(R.drawable.ic_profile)
+                .into(binding.shapeableImageView)
             binding.textView6.text = response.myself.playerLevel
             binding.txtTempoRestanteContrato.text = response.myself.contractExpiresIn
             binding.txtSeusTorneios.text = response.myself.tournamentsCount.toString()
