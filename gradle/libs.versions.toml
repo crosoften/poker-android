@@ -1,5 +1,5 @@
 [versions]
-agp = "8.3.2"
+agp = "8.7.2"
 kotlin = "1.9.10"
 core-ktx = "1.12.0"
 junit = "4.13.2"
@@ -24,6 +24,7 @@ paging = "3.2.1"
 kspVersion = "1.9.10-1.0.13"
 kotlinPlugin = "1.8.10"
 playServicesLocation = "21.1.0"
+socketIoClient = "2.1.1"
 
 
 [libraries]
@@ -52,6 +53,7 @@ pagingCommonKtx = { group = "androidx.paging", name = "paging-common-ktx", versi
 moshiKotlinKsp = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshiKotlin" }
 retrofitConverterMoshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+socket-io-client = { group = "io.socket", name = "socket.io-client", version.ref = "socketIoClient" }
 
 
 [plugins]

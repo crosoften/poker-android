@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.draccoapp.poker.api.model.response.MeusDadosResponse
 import com.draccoapp.poker.api.model.response.homeFrament.HomeFragmentResponse
+import com.draccoapp.poker.api.service.chatSocket.ChatSocketService
 import com.draccoapp.poker.repository.GlobalRepository
 import com.draccoapp.poker.utils.PokerApplication
 import com.draccoapp.poker.utils.limparMessage
@@ -18,7 +19,6 @@ class HomeViewModel(private val repository: GlobalRepository) : ViewModel() {
 
     val successMeusDados = MutableLiveData<MeusDadosResponse>()
     val successHomeFragment = MutableLiveData<HomeFragmentResponse>()
-
 
     fun getHomeFragment() {
         repository.getHomeFragment().enqueue(object : Callback<HomeFragmentResponse> {

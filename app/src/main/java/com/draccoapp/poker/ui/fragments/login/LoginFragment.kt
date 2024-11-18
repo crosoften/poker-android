@@ -15,8 +15,10 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.draccoapp.poker.R
+import com.draccoapp.poker.api.model.ChatMessageSend
 import com.draccoapp.poker.api.model.request.Login
 import com.draccoapp.poker.api.model.request.Login2faBodyNew
+import com.draccoapp.poker.api.service.chatSocket.ChatSocketService
 import com.draccoapp.poker.databinding.FragmentLoginBinding
 import com.draccoapp.poker.ui.activities.MainActivity
 import com.draccoapp.poker.utils.Constants
@@ -24,6 +26,7 @@ import com.draccoapp.poker.utils.Preferences
 import com.draccoapp.poker.utils.Validation
 import com.draccoapp.poker.utils.mostrarToast
 import com.draccoapp.poker.viewModel.AuthViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
 
@@ -31,7 +34,7 @@ private const val TAG = "LoginFragment"
 
 class LoginFragment : Fragment() {
 
-
+    private val socket: ChatSocketService by inject()
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<AuthViewModel>()
@@ -52,10 +55,21 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        socket.connect()
+
+        socket.onMessageReceived { message ->
+            Log.i("socketTest", "onViewCreated: $message")
+        }
         setupObserver()
         onClick()
         setupUI()
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+//        socketService.disconnect()
+        socket.disconnect()
     }
 
     private fun setupObserver() {
@@ -106,7 +120,10 @@ class LoginFragment : Fragment() {
         val spannableString = SpannableString(text)
 
         spannableString.setSpan(
-            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.primary)), 26, text.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.primary)),
+            26,
+            text.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
 
         binding.labelCreate.text = spannableString
@@ -124,6 +141,14 @@ class LoginFragment : Fragment() {
 
         binding.apply {
             buttonEnter.setOnClickListener {
+
+                socket.sendMessage(
+                    ChatMessageSend(
+                        chatId = "67373908ea3afdcf0c9e78fc",
+                        content = "123456"
+                    )
+                )
+
 
                 if (validateOfFields()) {
                     Log.i(TAG, "onClick: Chamando viewModel.login")
@@ -208,7 +233,8 @@ class LoginFragment : Fragment() {
     private fun closeKeyboard() {
         val view: View? = activity?.currentFocus
         if (view != null) {
-            val imm: InputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm: InputMethodManager =
+                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }

@@ -7,8 +7,8 @@ interface ChatService{
 
     @GET("/chats")
     suspend fun getAllChats() : Unit
-    @GET("/chats/{id}")
 
+    @GET("/chats/{id}")
     suspend fun getChatById(
         @Path("id") chatId: Int
     ): Unit

@@ -6,6 +6,7 @@ import com.draccoapp.poker.api.service.GlobalService
 import com.draccoapp.poker.api.service.RegisterService
 import com.draccoapp.poker.api.service.TournamentService
 import com.draccoapp.poker.api.service.UserService
+import com.draccoapp.poker.api.service.chatSocket.ChatSocketService
 import com.draccoapp.poker.repository.AuthRepository
 import com.draccoapp.poker.repository.GlobalRepository
 import com.draccoapp.poker.repository.RegisterRepository
@@ -130,6 +131,7 @@ val serviceModule = module {
         get<Retrofit>(Retrofit::class).create(GlobalService::class.java)
     }
 
+    single<ChatSocketService> { ChatSocketService(get()) }
 }
 val repositoryModule = module {
 
@@ -199,7 +201,6 @@ fun getUnsafeOkHttpClient(preferences: Preferences): OkHttpClient {
                 .header(
                     "Authorization",
                     "Bearer ${preferences.getToken()}"
-//                    "Bearer ${Constants.USER_TOKEN}"
                 )
                 .build()
             chain.proceed(newRequest)
