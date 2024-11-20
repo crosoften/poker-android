@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="15dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/message_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="09:00"
+        android:textSize="10sp"
+        android:textColor="@color/white"
+        android:layout_marginEnd="20dp"
+        app:fontFamily="@font/poppins"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:padding="12dp"
+        android:layout_marginStart="60dp"
+        android:background="@drawable/shape_chat_sent_message"
+        app:layout_constraintTop_toBottomOf="@id/message_time"
+        app:layout_constraintEnd_toEndOf="@id/message_time"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/message_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Lorem Ipsum Dolor Sit Amet, Consectetur Adipisicing Elit, Sed Do Eiusmod Tempor Incididunt Ut Labore Et Dolore Magna Aliqua. Ut Enim Ad Minim Veniam, Quis Nostrud Exercitation Ullamc Lorem Ipsum Dolor Sit Amet, Consectetur Adipisicing Elit, Sed Do Eiusmod Tempor Incididunt Ut Labore Et Dolore Magna Aliqua. Ut Enim Ad Minim Veniam, Quis Nostrud Exercitation Ullamc"
+            android:textSize="12sp"
+            android:textAlignment="textStart"
+            android:textColor="@color/white"
+            android:layout_marginEnd="20dp"
+            app:fontFamily="@font/poppins_light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

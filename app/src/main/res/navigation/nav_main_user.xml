@@ -27,7 +27,11 @@
         android:id="@+id/coachFragment"
         android:name="com.draccoapp.poker.ui.fragments.coach.CoachFragment"
         android:label="fragment_coach"
-        tools:layout="@layout/fragment_coach" />
+        tools:layout="@layout/fragment_coach" >
+        <action
+            android:id="@+id/action_coachFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.draccoapp.poker.ui.fragments.profile.ProfileFragment"
@@ -206,5 +210,11 @@
         <argument
             android:name="idTournament"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.draccoapp.poker.ui.fragments.coach.ChatFragment"
+        android:label="ChatFragment" >
+        <argument android:name="chatId" app:argType="string"/>
     </fragment>
 </navigation>

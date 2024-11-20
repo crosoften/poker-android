@@ -114,43 +114,42 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
             tools:itemCount="2"
-            tools:listitem="@layout/item_rv_chat_messages" />
+            tools:listitem="@layout/item_chat_message_received" />
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tl_input_message"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:hint="@string/hint_digit_your_message"
             android:layout_margin="20dp"
+            android:hint="@string/hint_digit_your_message"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_send_message"
-            >
+            app:layout_constraintStart_toStartOf="parent">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-
+                android:textColor="@color/white"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <ImageButton
             android:id="@+id/btn_send_message"
-            android:contentDescription="send message"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/outline_send_24"
-            app:tint="@color/white"
-            android:backgroundTint="#DC282D"
             android:layout_marginEnd="20dp"
             android:background="@drawable/shape_corner_medium"
+            android:backgroundTint="#DC282D"
+            android:contentDescription="send message"
+            android:src="@drawable/outline_send_24"
             app:layout_constraintBottom_toBottomOf="@id/tl_input_message"
-            app:layout_constraintTop_toTopOf="@id/tl_input_message"
             app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="@id/tl_input_message"
+            app:tint="@color/white" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

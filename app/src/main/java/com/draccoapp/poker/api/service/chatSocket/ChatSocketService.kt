@@ -17,21 +17,16 @@ class ChatSocketService(
 
     fun connect() {
         val options = IO.Options()
-        Log.i("socketTest", "connect: ${preferences.getToken()}")
-//        val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzM2MTAwYjJjOTdjMzlhMzAyNWJiOTAiLCJyb2xlIjoicGxheWVyIiwiaWF0IjoxNzMxOTM1OTEzfQ.iB_QjkRASf4tjZoucoxlNqOcAFycl_phzh0mv8PZqBc"
         options.extraHeaders = mapOf("Authorization" to listOf(preferences.getToken()))
 
         socket = IO.socket("https://propath.standardbacking.com:8080", options)
         socket?.connect()
 
-        // Eventos de conexão, desconexão e recebimento de mensagens
         socket?.on(Socket.EVENT_CONNECT) {
             Log.i("socketTest", "connect: conectado")
-            socket?.emit(event, "{\"chatId\":\"67373908ea3afdcf0c9e78fc\", \"content\":\"123456aa\"}")
         }
         socket?.on(Socket.EVENT_DISCONNECT) {
             Log.i("socketTest", "desconectado")
-
         }
         socket?.on(Socket.EVENT_CONNECT_ERROR) { args ->
             Log.e("socketTest", "Erro ao conectar: ${args[0]}")
@@ -57,10 +52,8 @@ class ChatSocketService(
     }
 
     fun sendMessage(message: ChatMessageSend) {
-        val gson = Gson()
-        val jsonMessage = gson.toJson(message)
-        Log.e("socketTest", "sendMessage: $jsonMessage")
-        socket?.emit(event, "{\"chatId\":\"67373908ea3afdcf0c9e78fc\", \"content\":\"123456\"}")
+        val jsonMessage = JSONObject("{\"chatId\":\"${message.chatId}\", \"content\":\"${message.content}\"}")
+        socket?.emit(event, jsonMessage)
     }
 
     fun disconnect() {

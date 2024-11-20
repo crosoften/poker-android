@@ -12,5 +12,5 @@ interface ChatService{
     @GET("/chats/{id}")
     suspend fun getChatById(
         @Path("id") chatId: String
-    ): Unit
+    ): ChatResponse
 }

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.draccoapp.poker.api.model.response.chat.ChatResponse
 import com.draccoapp.poker.databinding.FragmentCoachBinding
@@ -30,7 +31,9 @@ class CoachFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupObservers()
+        setupClickListeners()
     }
+
 
     private fun setupObservers() {
         viewModel.chats.observe(viewLifecycleOwner) { chatsList ->
@@ -42,10 +45,19 @@ class CoachFragment : Fragment() {
         }
     }
 
+    private fun setupClickListeners(){
+        binding.back.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+    }
+
     private fun chatRvSetup(chats: List<ChatResponse>) {
         binding.apply {
             rvChatList.layoutManager = LinearLayoutManager(requireContext())
-            rvChatList.adapter = ChatListAdapter(chats) {}
+            rvChatList.adapter = ChatListAdapter(chats) { chatInfos ->
+                findNavController().navigate(CoachFragmentDirections.actionCoachFragmentToChatFragment(chatInfos.id))
+            }
         }
     }
 

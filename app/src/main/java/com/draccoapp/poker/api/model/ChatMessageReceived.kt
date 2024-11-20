@@ -1,5 +1,8 @@
 package com.draccoapp.poker.api.model
 
+import com.squareup.moshi.JsonClass
+
+@JsonClass(generateAdapter = true)
 data class ChatMessageReceived(
     val id: String,
     val chatId: String,

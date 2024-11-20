@@ -17,7 +17,7 @@ class ChatListAdapter(
         fun bind(chatItem: ChatResponse){
             binding.apply {
                 chatUserName.text = chatItem.playerName
-                chatLastMessage.text = chatItem.messages[0].content
+                if(chatItem.messages.isNotEmpty()) chatLastMessage.text = chatItem.messages[0].content
                 chatQuantityMessage.text = String.format(Locale.getDefault(), "%d", chatItem.unreadMessages)
 //                chatReceiveTime.text = chatItem.messages[0].createdAt
 
