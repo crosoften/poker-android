@@ -18,8 +18,8 @@ class ChatSocketService(
     fun connect() {
         val options = IO.Options()
         Log.i("socketTest", "connect: ${preferences.getToken()}")
-        val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzM2MTAwYjJjOTdjMzlhMzAyNWJiOTAiLCJyb2xlIjoicGxheWVyIiwiaWF0IjoxNzMxOTM1OTEzfQ.iB_QjkRASf4tjZoucoxlNqOcAFycl_phzh0mv8PZqBc"
-        options.extraHeaders = mapOf("Authorization" to listOf(token))
+//        val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzM2MTAwYjJjOTdjMzlhMzAyNWJiOTAiLCJyb2xlIjoicGxheWVyIiwiaWF0IjoxNzMxOTM1OTEzfQ.iB_QjkRASf4tjZoucoxlNqOcAFycl_phzh0mv8PZqBc"
+        options.extraHeaders = mapOf("Authorization" to listOf(preferences.getToken()))
 
         socket = IO.socket("https://propath.standardbacking.com:8080", options)
         socket?.connect()

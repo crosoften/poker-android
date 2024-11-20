@@ -138,6 +138,7 @@
     <string name="camera_permission_denied">Permissão da câmera negada</string>
     <string name="_40_km_de_voc">40 km de você</string>
     <string name="zip_code">CEP</string>
+    <string name="hint_digit_your_message">Digite sua mensagem</string>
 
 
 </resources>

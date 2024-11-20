@@ -8,6 +8,7 @@ import com.draccoapp.poker.api.service.TournamentService
 import com.draccoapp.poker.api.service.UserService
 import com.draccoapp.poker.api.service.chatSocket.ChatSocketService
 import com.draccoapp.poker.repository.AuthRepository
+import com.draccoapp.poker.repository.CoachRepository
 import com.draccoapp.poker.repository.GlobalRepository
 import com.draccoapp.poker.repository.RegisterRepository
 import com.draccoapp.poker.repository.TournamentRepository
@@ -16,6 +17,7 @@ import com.draccoapp.poker.utils.Constants
 import com.draccoapp.poker.utils.PokerApplication
 import com.draccoapp.poker.utils.Preferences
 import com.draccoapp.poker.viewModel.AuthViewModel
+import com.draccoapp.poker.viewModel.CoachViewModel
 import com.draccoapp.poker.viewModel.ContractViewModel
 import com.draccoapp.poker.viewModel.HomeViewModel
 import com.draccoapp.poker.viewModel.RegisterViewModel
@@ -36,34 +38,6 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 private const val CONNECTION_TIMEOUT = 30 * 1000
-
-//DEV DANILO USAVA
-//val netWorkModule = module {
-//    single<OkHttpClient> {
-//        OkHttpClient.Builder().addInterceptor { chain ->
-//            val newRequest = chain.request().newBuilder()
-//                .header("accept", "application/json")
-//                .header(
-//                    "Authorization",
-//                    "Bearer ${
-//                        get<Preferences>(Preferences::class).getToken()
-//                    }"
-//                )
-//                .build()
-//            chain.proceed(newRequest)
-//        }.connectTimeout(
-//            CONNECTION_TIMEOUT.toLong(),
-//            TimeUnit.MINUTES
-//        ).readTimeout(1, TimeUnit.MINUTES).build()
-//    }
-//    single<Retrofit> {
-//        Retrofit.Builder()
-//            .baseUrl(Constants.BASE_URL)
-//            .client(get())
-//            .addConverterFactory(MoshiConverterFactory.create())
-//            .build()
-//    }
-//}
 
 val netWorkModule = module {
     single {
@@ -86,26 +60,6 @@ val netWorkModule = module {
             .build()
     }
 }
-
-
-//DEV WILLIAM ANTERIORMENTE
-//val netWorkModule = module {
-//    single {
-//        Preferences(PokerApplication.instance) // Substitua isso pela forma correta de obter a instância de Preferences no seu caso
-//    }
-//    single<OkHttpClient> {
-//        val preferences: Preferences = get()
-//        getUnsafeOkHttpClient(preferences)
-//    }
-//    single<Retrofit> {
-//        Retrofit.Builder()
-//            .baseUrl(Constants.BASE_URL)
-//            .client(get())
-//            .addConverterFactory(MoshiConverterFactory.create())
-//            .build()
-//    }
-//}
-
 
 val databaseModule = module {
 
@@ -152,7 +106,9 @@ val repositoryModule = module {
     single {
         GlobalRepository(get(), get())
     }
-
+    single {
+        CoachRepository(get())
+    }
 }
 val viewModelModule = module {
     viewModel {
@@ -172,6 +128,9 @@ val viewModelModule = module {
     }
     viewModel {
         ContractViewModel(get())
+    }
+    viewModel {
+        CoachViewModel(get())
     }
 }
 

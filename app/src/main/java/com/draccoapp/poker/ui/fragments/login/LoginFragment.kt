@@ -54,22 +54,13 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        socket.connect()
-
-        socket.onMessageReceived { message ->
-            Log.i("socketTest", "onViewCreated: $message")
-        }
         setupObserver()
         onClick()
         setupUI()
-
     }
 
     override fun onDestroy() {
         super.onDestroy()
-//        socketService.disconnect()
-        socket.disconnect()
     }
 
     private fun setupObserver() {
@@ -141,15 +132,6 @@ class LoginFragment : Fragment() {
 
         binding.apply {
             buttonEnter.setOnClickListener {
-
-                socket.sendMessage(
-                    ChatMessageSend(
-                        chatId = "67373908ea3afdcf0c9e78fc",
-                        content = "123456"
-                    )
-                )
-
-
                 if (validateOfFields()) {
                     Log.i(TAG, "onClick: Chamando viewModel.login")
                     viewModel.login(
