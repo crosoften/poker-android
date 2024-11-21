@@ -4,10 +4,11 @@ import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.draccoapp.poker.api.model.response.contract.Contract
+import com.draccoapp.poker.api.service.ContractService
 import com.draccoapp.poker.api.service.GlobalService
 import java.io.IOException
 
-class Paginacao(val quoteApi: GlobalService) : PagingSource<Int, Contract>() {
+class Paginacao(private val contractService: ContractService) : PagingSource<Int, Contract>() {
     override fun getRefreshKey(state: PagingState<Int, Contract>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
@@ -20,7 +21,7 @@ class Paginacao(val quoteApi: GlobalService) : PagingSource<Int, Contract>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Contract> {
         return try {
             val position = params.key ?: 1
-            val response = quoteApi.listarContractsPaginados(position)
+            val response = contractService.listarContractsPaginados(position)
 
             return LoadResult.Page(
                 data = response.data,

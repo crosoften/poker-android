@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.draccoapp.poker.R
+import com.draccoapp.poker.databinding.FragmentAllContractBinding
 import com.draccoapp.poker.databinding.FragmentApplicantTournamentBinding
 import com.draccoapp.poker.databinding.FragmentContractBinding
 import com.draccoapp.poker.ui.adapters.ViewPagerContractListAdapter

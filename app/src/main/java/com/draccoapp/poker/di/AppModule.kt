@@ -3,6 +3,7 @@ package com.draccoapp.poker.di
 import android.util.Log
 import com.draccoapp.poker.api.service.AuthService
 import com.draccoapp.poker.api.service.ChatService
+import com.draccoapp.poker.api.service.ContractService
 import com.draccoapp.poker.api.service.GlobalService
 import com.draccoapp.poker.api.service.RegisterService
 import com.draccoapp.poker.api.service.TournamentService
@@ -10,6 +11,7 @@ import com.draccoapp.poker.api.service.UserService
 import com.draccoapp.poker.api.service.chatSocket.ChatSocketService
 import com.draccoapp.poker.repository.AuthRepository
 import com.draccoapp.poker.repository.CoachRepository
+import com.draccoapp.poker.repository.ContractRepository
 import com.draccoapp.poker.repository.GlobalRepository
 import com.draccoapp.poker.repository.RegisterRepository
 import com.draccoapp.poker.repository.TournamentRepository
@@ -88,6 +90,9 @@ val serviceModule = module {
     single {
         get<Retrofit>(Retrofit::class).create(ChatService::class.java)
     }
+    single {
+        get<Retrofit>(Retrofit::class).create(ContractService::class.java)
+    }
 
     single<ChatSocketService> { ChatSocketService(get()) }
 }
@@ -113,6 +118,9 @@ val repositoryModule = module {
     single {
         CoachRepository(get())
     }
+    single {
+        ContractRepository(get())
+    }
 }
 val viewModelModule = module {
     viewModel {
@@ -135,6 +143,9 @@ val viewModelModule = module {
     }
     viewModel {
         CoachViewModel(get(), get())
+    }
+    viewModel {
+        ContractViewModel(get())
     }
 }
 

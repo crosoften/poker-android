@@ -28,47 +28,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:fontFamily="@font/montserrat_bold"
             android:text="@string/title"
             android:textColor="@color/white"
             android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/chip_list"
             app:layout_constraintStart_toEndOf="@+id/image_contract_list"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="@+id/text_title_list"
-            app:layout_constraintTop_toBottomOf="@+id/text_title_list">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:text="$ "
-                android:textColor="@color/white"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/text_value_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/montserrat_bold"
-                android:text="100,00"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
-
-
-        </LinearLayout>
-
-
-        <com.google.android.material.chip.Chip
+          <com.google.android.material.chip.Chip
             android:id="@+id/chip_list"
             android:layout_width="wrap_content"
             android:layout_height="38dp"
@@ -81,6 +51,7 @@
             android:textSize="11sp"
             android:text="Status"
             app:chipStrokeColor="@color/background_chip"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

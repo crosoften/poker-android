@@ -12,8 +12,7 @@ import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.response.contract.Contract
 import com.google.android.material.chip.Chip
 
-class AdapterPaginacao :
-    PagingDataAdapter<Contract, AdapterPaginacao.QuoteViewHolder>(COMPARATOR) {
+class AdapterPaginacao : PagingDataAdapter<Contract, AdapterPaginacao.QuoteViewHolder>(COMPARATOR) {
 
     class QuoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nomeContrato = itemView.findViewById<TextView>(R.id.text_title_list)

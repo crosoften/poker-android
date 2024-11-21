@@ -41,13 +41,7 @@ class ContractListAdapter(
 
 
         fun bind(contract: Contract){
-
             binding.textTitleList.text = contract.title
-            binding.textValueList.text = buildString {
-                append(binding.root.context.getString(R.string.valor))
-                append("\$ 100000,00")
-            }
-
             binding.root.setOnClickListener {
                 onClick(contract)
             }

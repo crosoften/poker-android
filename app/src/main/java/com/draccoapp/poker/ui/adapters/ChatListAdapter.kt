@@ -2,6 +2,7 @@ package com.draccoapp.poker.ui.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.draccoapp.poker.api.model.response.chat.ChatResponse
@@ -18,6 +19,7 @@ class ChatListAdapter(
             binding.apply {
                 chatUserName.text = chatItem.playerName
                 if(chatItem.messages.isNotEmpty()) chatLastMessage.text = chatItem.messages[0].content
+                else chatLastMessage.visibility = View.GONE
                 chatQuantityMessage.text = String.format(Locale.getDefault(), "%d", chatItem.unreadMessages)
 //                chatReceiveTime.text = chatItem.messages[0].createdAt
 

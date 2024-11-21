@@ -108,8 +108,6 @@ class RegisterPasswordFragment : Fragment() {
 
                     viewModel.registerStep3(registerStep3Body)
                 }
-
-
             }
 
         }
