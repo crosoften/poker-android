@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.response.homeFrament.Tournament
 import com.draccoapp.poker.api.model.response.tournamentInIm.TournamentInImData
 import com.draccoapp.poker.databinding.ItemTournamentBinding
@@ -60,7 +61,9 @@ class TournamentMineAdapterNew(
                 binding.textDate.text = it?.let { it1 -> converterDataNextTournament(it1) }
             }
 
-            Glide.with(context).load(nextTournament.tournament?.imageUrl).into(binding.imageView7)
+            Glide.with(context).load(nextTournament.tournament?.imageUrl)
+                .placeholder(R.drawable.img_placeholder_poker)
+                .into(binding.imageView7)
 
             binding.root.setOnClickListener {
                 onClick(nextTournament)

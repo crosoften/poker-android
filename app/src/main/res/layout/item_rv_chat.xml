@@ -63,21 +63,28 @@
         app:layout_constraintTop_toTopOf="@id/chat_user_name"
         tools:text="1 min" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/chat_quantity_message"
+    <FrameLayout
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:background="@drawable/circle_shape"
-        android:backgroundTint="#DB3F43"
-        android:paddingTop="2dp"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="10sp"
-        app:fontFamily="@font/poppins_bold"
+        android:backgroundTint="@color/bordaVermelha"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/chat_last_message"
-        tools:ignore="SmallSp"
-        tools:text="3" />
+        >
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/chat_quantity_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            app:fontFamily="@font/poppins_bold"
+            tools:ignore="SmallSp"
+            tools:text="3" />
+
+    </FrameLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

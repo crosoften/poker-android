@@ -167,6 +167,10 @@ class TournamentFragment : Fragment() {
                 binding.imageView6.visibility = View.GONE
             }
         }
+
+        viewModel.error.observe(viewLifecycleOwner) {
+            mostrarToast(it, requireContext())
+        }
     }
 
 

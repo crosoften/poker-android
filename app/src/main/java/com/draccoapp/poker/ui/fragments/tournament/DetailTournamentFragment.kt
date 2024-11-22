@@ -59,16 +59,6 @@ class DetailTournamentFragment : Fragment() {
 
 
     private fun setupUI() {
-
-
-//        tournament.eventUrl.let {
-//            binding.imageView2.load(it) {
-//                crossfade(true)
-//                placeholder(R.drawable.ic_wallpaper)
-//                error(R.drawable.ic_wallpaper)
-//            }
-//        }
-
         if (args.origins == "next"){
             binding.tvAttTour.visibility = View.GONE
             binding.btnReport.visibility = View.GONE
@@ -93,14 +83,12 @@ class DetailTournamentFragment : Fragment() {
             } else {
                 Toast.makeText(requireContext(), "Link não encontrado", Toast.LENGTH_SHORT).show()
             }
-
         }
 
         Glide.with(requireContext())
             .load(tournament.imageUrl)
+            .placeholder(R.drawable.img_placeholder_poker)
             .into(binding.imageView2)
-
-        Log.i("ImagemUrl", "setupUI: eventUrl ${tournament.imageUrl}")
 
         tournament.title.let {
             binding.textView13.text = it

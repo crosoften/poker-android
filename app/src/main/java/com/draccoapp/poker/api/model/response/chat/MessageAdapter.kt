@@ -7,6 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.ChatMessageReceived
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import kotlin.text.format
 
 class MessageAdapter(private val messages: List<ChatMessageReceived>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
@@ -29,8 +33,15 @@ class MessageAdapter(private val messages: List<ChatMessageReceived>) : Recycler
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val message = messages[position]
         when (holder) {
-            is MessageViewHolder -> holder.messageTextView.text = message.content
-            is ReceivedMessageViewHolder -> holder.messageTextView.text = message.content
+            is MessageViewHolder -> {
+                holder.messageTextView.text = message.content
+                holder.time.text = formatDateTimeToHHMM(message.createdAt)
+
+            }
+            is ReceivedMessageViewHolder -> {
+                holder.messageTextView.text = message.content
+                holder.time.text = formatDateTimeToHHMM(message.createdAt)
+            }
         }
     }
 
@@ -39,8 +50,17 @@ class MessageAdapter(private val messages: List<ChatMessageReceived>) : Recycler
 
 class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val messageTextView: TextView = itemView.findViewById(R.id.message_content)
+    val time: TextView = itemView.findViewById(R.id.message_time)
 }
 
 class ReceivedMessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val messageTextView: TextView = itemView.findViewById(R.id.message_content)
+    val time: TextView = itemView.findViewById(R.id.message_time)
+}
+
+fun formatDateTimeToHHMM(dateTimeString: String): String {
+    val instant = Instant.parse(dateTimeString)
+    val formatter = DateTimeFormatter.ofPattern("HH:mm")
+        .withZone(ZoneId.systemDefault())
+    return formatter.format(instant)
 }

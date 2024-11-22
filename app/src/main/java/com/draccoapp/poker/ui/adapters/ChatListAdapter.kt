@@ -1,13 +1,17 @@
 package com.draccoapp.poker.ui.adapters
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.draccoapp.poker.api.model.response.chat.ChatResponse
 import com.draccoapp.poker.databinding.ItemRvChatBinding
+import java.time.Clock
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.Locale
+import kotlin.time.Duration
 
 class ChatListAdapter(
     private val chats: List<ChatResponse>,
@@ -17,11 +21,10 @@ class ChatListAdapter(
     inner class ViewHolder(private val binding: ItemRvChatBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(chatItem: ChatResponse){
             binding.apply {
-                chatUserName.text = chatItem.playerName
+                chatUserName.text = chatItem.type
                 if(chatItem.messages.isNotEmpty()) chatLastMessage.text = chatItem.messages[0].content
                 else chatLastMessage.visibility = View.GONE
                 chatQuantityMessage.text = String.format(Locale.getDefault(), "%d", chatItem.unreadMessages)
-//                chatReceiveTime.text = chatItem.messages[0].createdAt
 
                 root.setOnClickListener { onChatClickListener(chatItem) }
             }

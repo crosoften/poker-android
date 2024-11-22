@@ -31,10 +31,8 @@ import com.draccoapp.poker.ui.adapters.adaptersNew.TournamentAdapterNew
 import com.draccoapp.poker.ui.adapters.adaptersNew.TournamentMineAdapterNew
 import com.draccoapp.poker.utils.Preferences
 import com.draccoapp.poker.utils.mapTournamentInImTournament
-import com.draccoapp.poker.utils.mapTournamentToNextTournament
 import com.draccoapp.poker.viewModel.HomeViewModel
 import com.draccoapp.poker.viewModel.TournamentViewModel
-import com.draccoapp.poker.viewModel.UserViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
@@ -272,15 +270,15 @@ class HomeFragment : Fragment() {
 
     private fun setupRecycler() {
 
-        tournamentMineAdapter = TournamentMineAdapterNew(requireContext(),{
-           val nextTournamente = mapTournamentInImTournament(it)
+        tournamentMineAdapter = TournamentMineAdapterNew(requireContext(),{ tournament ->
+           val nextTournamente = mapTournamentInImTournament(tournament)
             findNavController()
                 .navigate(
                     HomeFragmentDirections
                         .actionHomeFragmentToDetailTournamentFragment(
                             nextTournamente,
                             "approved",
-                            it.id!!,
+                            tournament.id!!,
                             "sub"
                         )
                 )
