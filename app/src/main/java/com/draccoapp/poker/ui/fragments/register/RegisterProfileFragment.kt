@@ -40,6 +40,7 @@ import com.draccoapp.poker.utils.Constants.Companion.RegisterName
 import com.draccoapp.poker.utils.Constants.Companion.RegisterState
 import com.draccoapp.poker.utils.MaskEditUtil
 import com.draccoapp.poker.utils.Preferences
+import com.draccoapp.poker.utils.Validation.validateEditTexts
 import com.draccoapp.poker.utils.converterDataNasc
 import com.draccoapp.poker.utils.mostrarToast
 import com.draccoapp.poker.viewModel.RegisterViewModel
@@ -442,10 +443,6 @@ class RegisterProfileFragment : Fragment() {
     }
 
 
-}
-
-fun validateEditTexts(vararg editTexts: EditText): Boolean {
-    return editTexts.all { it.text.toString().isNotEmpty() }
 }
 
 

@@ -1,5 +1,7 @@
 package com.draccoapp.poker.utils
 
+import android.widget.EditText
+
 object Validation {
 
     fun isEmailValid(email: String?): Boolean {
@@ -14,4 +16,8 @@ object Validation {
             .matches()
     }
 
+    fun validateEditTexts(vararg editTexts: EditText): Boolean {
+        return editTexts.all { it.text.toString().isNotEmpty() }
+    }
 }
+

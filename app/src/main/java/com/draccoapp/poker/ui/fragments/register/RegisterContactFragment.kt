@@ -13,6 +13,7 @@ import com.draccoapp.poker.databinding.FragmentRegisterContactBinding
 import com.draccoapp.poker.utils.Constants.Companion.RegisterEmail
 import com.draccoapp.poker.utils.Constants.Companion.RegisterPhone
 import com.draccoapp.poker.utils.MaskEditUtil
+import com.draccoapp.poker.utils.Validation.validateEditTexts
 import com.draccoapp.poker.utils.mostrarToast
 import com.draccoapp.poker.viewModel.RegisterViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -43,8 +44,6 @@ class RegisterContactFragment : Fragment() {
 
     private fun setupObserves() {
         viewModel.successRegisterStep1.observe(viewLifecycleOwner) {
-//            mostrarToast("Código enviar para o email", requireContext())
-
             if (firstTimeMovingToDoneFragment) {
                 firstTimeMovingToDoneFragment = false
                 findNavController()
@@ -53,8 +52,6 @@ class RegisterContactFragment : Fragment() {
                             .actionRegisterContactFragmentToRegisterCodeFragment()
                     )
             }
-
-
         }
 
     }
@@ -90,13 +87,6 @@ class RegisterContactFragment : Fragment() {
                 } else {
                     viewModel.registerStep1(RegisterStep1Body(email = email.text.toString(), phone = phoneLimpo))
                 }
-
-//                findNavController()
-//                    .navigate(
-//                        RegisterContactFragmentDirections
-//                            .actionRegisterContactFragmentToRegisterCodeFragment()
-//                    )
-
             }
         }
     }
