@@ -3,9 +3,9 @@ package com.draccoapp.poker.utils
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import com.draccoapp.poker.api.model.response.Login2FAResponse
 import com.draccoapp.poker.api.model.response.Login2faResponseNew
 import com.draccoapp.poker.api.model.response.LoginResponse
+import com.draccoapp.poker.api.model.response.homeFrament.Myself
 import com.draccoapp.poker.api.modelOld.response.User
 import com.google.android.gms.maps.model.LatLng
 
@@ -38,24 +38,25 @@ class Preferences(context: Context) {
         const val KEY_LANGUAGE = "user_language"
         const val KEY_UNITS = "user_units"
         const val KEY_IMAGE = "user_image"
+        const val KEY_CONTRACT_ACTIVE = "contract_active"
         const val KEY_LOCATION_LAT = "key_location_lat"
         const val KEY_LOCATION_LNG = "key_location_lng"
     }
 
-    //    fun createSession(login: SingInResponse){
-//        editor.putBoolean(IS_LOGIN, true)
-//        editor.putString(KEY_ACCESS_TOKEN, login.accessToken)
-//        editor.putString(KEY_TOKEN_REFRESH, login.refreshToken)
-//        editor.putInt(KEY_EXPIRES_IN, login.expiresIn)
-//        editor.putString(KEY_EMAIL, login.user.email)
-//        editor.putString(KEY_NAME, login.user.name)
-//        login.user.image?.let {
-//            editor.putString(KEY_IMAGE, login.user.image)
-//        }
-//        editor.commit()
-//        editor.apply()
-//    }
-//
+    fun createSession( userData: Myself, onSessionCreated: () -> Unit) {
+        Log.i("dadosTeste", "createSession: $userData")
+        editor.putBoolean(IS_LOGIN, true)
+        editor.putString(KEY_EMAIL, userData.email)
+        editor.putString(KEY_NAME, userData.name)
+        editor.putString(KEY_IMAGE, userData.imageUrl)
+        editor.putBoolean(KEY_CONTRACT_ACTIVE, userData.currentContract != null)
+
+        editor.commit()
+        editor.apply()
+        onSessionCreated()
+    }
+
+    //
 //    fun isFirstAccess(): Boolean {
 //        return preferences.getBoolean(KEY_FIRST_ACCESS, false)
 //
@@ -89,10 +90,14 @@ class Preferences(context: Context) {
         return preferences.getString(KEY_LOCATION_LAT, "").toString()
     }
 
+
     fun getLongitude(): String {
         return preferences.getString(KEY_LOCATION_LNG, "").toString()
     }
 
+    fun getContractStatus(): Boolean {
+        return preferences.getBoolean(KEY_CONTRACT_ACTIVE, false)
+    }
     //
 //    fun updateMe(name: String, cpf: String, phone: String) {
 //        editor.putString(KEY_NAME, name)
@@ -152,12 +157,6 @@ class Preferences(context: Context) {
         Log.i("TokenWill", "saveToken: no preferences   token a ser salvo é ${token.accessToken}")
         editor.putBoolean(IS_LOGIN, true)
         editor.putString(KEY_ACCESS_TOKEN, token.accessToken)
-        editor.commit()
-        editor.apply()
-    }
-
-    fun saveID(token: LoginResponse) {
-        editor.putString(KEY_ID, token.key)
         editor.commit()
         editor.apply()
     }

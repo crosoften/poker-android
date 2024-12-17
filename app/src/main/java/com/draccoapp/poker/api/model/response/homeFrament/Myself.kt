@@ -1,6 +1,7 @@
 package com.draccoapp.poker.api.model.response.homeFrament
 
 
+import com.draccoapp.poker.api.model.response.CurrentContract
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -12,6 +13,8 @@ data class Myself(
     val contractExpiresIn: String,
     @Json(name = "contractProfit")
     val contractProfit: Double,
+    @Json(name = "currentContract")
+    val currentContract: CurrentContract?,
     @Json(name = "email")
     val email: String,
     @Json(name = "gender")

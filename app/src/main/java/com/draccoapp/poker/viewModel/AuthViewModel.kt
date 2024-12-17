@@ -17,8 +17,10 @@ import com.draccoapp.poker.api.model.response.Login2faResponseNew
 import com.draccoapp.poker.api.model.response.LoginResponse
 import com.draccoapp.poker.api.model.response.ValidateCodeResponse
 import com.draccoapp.poker.api.model.response.ValidateFieldsResponse
+import com.draccoapp.poker.api.model.response.homeFrament.HomeFragmentResponse
 import com.draccoapp.poker.api.model.type.DataState
 import com.draccoapp.poker.repository.AuthRepository
+import com.draccoapp.poker.repository.GlobalRepository
 import com.draccoapp.poker.utils.PokerApplication
 import com.draccoapp.poker.utils.Preferences
 import com.draccoapp.poker.utils.limparMessage
@@ -31,6 +33,7 @@ import java.io.IOException
 
 class AuthViewModel(
     private val repository: AuthRepository,
+    private val globalRepository: GlobalRepository,
     private val preferences: Preferences
 ) : ViewModel() {
 
@@ -81,8 +84,8 @@ class AuthViewModel(
 //        preferences.saveToken(token)
     }
 
-    private fun saveKey(key: LoginResponse) {
-        preferences.saveID(key)
+    private fun saveKey(key: String) {
+//        preferences.saveToken(key)
     }
 
     fun getKey(): String {
@@ -97,7 +100,9 @@ class AuthViewModel(
         repository.login(body).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful) {
-                    _successLogin.postValue(response.body())
+                    response.body()?.let {
+                        _successLogin.postValue(it)
+                    }
                     Log.i("CadastroViewModel", "onResponse: A resposta foi isSuccessfull")
                 } else {
                     // Verifica o código de status HTTP
@@ -107,7 +112,10 @@ class AuthViewModel(
                             try {
                                 val errorBody = response.errorBody()?.string()
                                 val erroLoginLimpo = limparMessage(errorBody.toString())
-                                Log.e("Error Body", "O erro do servidor foi ${erroLoginLimpo ?: "erro desconhecido"} ")
+                                Log.e(
+                                    "Error Body",
+                                    "O erro do servidor foi ${erroLoginLimpo ?: "erro desconhecido"} "
+                                )
                                 mostrarToast("$erroLoginLimpo", PokerApplication.instance)
                             } catch (e: IOException) {
                                 Log.e("IOException", "Erro de leitura do response ->>", e)
@@ -119,7 +127,10 @@ class AuthViewModel(
                         }
 
                         else -> {
-                            mostrarToast("Erro de código ${response.code()}", PokerApplication.instance)
+                            mostrarToast(
+                                "Erro de código ${response.code()}",
+                                PokerApplication.instance
+                            )
                         }
                     }
                 }
@@ -127,11 +138,33 @@ class AuthViewModel(
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 mostrarToast("Generic error", PokerApplication.instance)
-                Log.e("CadastroViewModel", "ONFAILUREEE  o erro na função solicitarTokenViewModel do CadastroViewModel foi \n$t")
+                Log.e(
+                    "CadastroViewModel",
+                    "ONFAILUREEE  o erro na função solicitarTokenViewModel do CadastroViewModel foi \n$t"
+                )
             }
 
         })
 
+    }
+
+    fun getHomeFragment(onSessionCreated: () -> Unit) {
+        globalRepository.getHomeFragment().enqueue(object : Callback<HomeFragmentResponse> {
+            override fun onResponse(
+                call: Call<HomeFragmentResponse>,
+                response: Response<HomeFragmentResponse>
+            ) {
+                if (response.isSuccessful) {
+                    response.body()?.let { preferences.createSession(it.myself, onSessionCreated) }
+                } else {
+                    Log.e("HomeViewModel", "Erro MySelf ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<HomeFragmentResponse>, t: Throwable) {
+                Log.e("HomeViewModel", "ONFAILUREEE  o erro na função getMeusDados foi $t")
+            }
+        })
     }
 
 
@@ -145,15 +178,25 @@ class AuthViewModel(
 
     fun login2faNew(body: Login2faBodyNew) {
         repository.login2faNew(body).enqueue(object : Callback<Login2faResponseNew> {
-            override fun onResponse(call: Call<Login2faResponseNew>, response: Response<Login2faResponseNew>) {
+            override fun onResponse(
+                call: Call<Login2faResponseNew>,
+                response: Response<Login2faResponseNew>
+            ) {
                 if (response.isSuccessful) {
-                    successLogin2fa.postValue(response.body())
-                    Log.i("AuthViewModel", "onResponse: A resposta foi isSuccessfull")
+                    response.body()?.let {
+                        preferences.saveToken(it)
+                        getHomeFragment(){
+                            successLogin2fa.postValue(it)
+                        }
+                    }
                 } else {
                     try {
                         val errorBody = response.errorBody()?.string()
                         val erroLoginLimpo = limparMessage(errorBody.toString())
-                        Log.e("Error Body", "O erro  do servidor  LIMPOOO  foi ${erroLoginLimpo ?: "erro desconhecido"} ")
+                        Log.e(
+                            "Error Body",
+                            "O erro  do servidor  LIMPOOO  foi ${erroLoginLimpo ?: "erro desconhecido"} "
+                        )
                         mostrarToast(" $erroLoginLimpo ", PokerApplication.instance)
                     } catch (e: IOException) {
                         Log.e("IOException", "Erro de leitura do response ->>", e)
@@ -162,8 +205,11 @@ class AuthViewModel(
             }
 
             override fun onFailure(call: Call<Login2faResponseNew>, t: Throwable) {
-        mostrarToast("Generic error", PokerApplication.instance)
-                Log.e("AuthViewModel", "ONFAILUREEE  o erro na função solicitarTokenViewModel do CadastroViewModel foi $t")
+                mostrarToast("Generic error", PokerApplication.instance)
+                Log.e(
+                    "AuthViewModel",
+                    "ONFAILUREEE  o erro na função solicitarTokenViewModel do CadastroViewModel foi $t"
+                )
             }
 
         })
@@ -182,7 +228,10 @@ class AuthViewModel(
                     _appState.value = DataState.Success
                     it?.let { accessToken ->
                         saveToken(accessToken)
-                        Log.i("PrefsToken", "login2fa: o token q ta sendo salvo em preferences é $accessToken ")
+                        Log.i(
+                            "PrefsToken",
+                            "login2fa: o token q ta sendo salvo em preferences é $accessToken "
+                        )
                     }
                 },
                 onFailure = {

@@ -67,19 +67,13 @@ class LoginFragment : Fragment() {
 
         viewModel.successLogin.observe(viewLifecycleOwner) { response ->
             response?.let {
-
                 viewModel.login2faNew(Login2faBodyNew(code = "1234", key = response.key))
-                Log.i("TokenWill", "O IDD do usuário logado é     Id =   ${response.key}")
             }
         }
 
         viewModel.successLogin2fa.observe(viewLifecycleOwner) { response ->
             response?.let {
-                //salvar toker no preferences
-                preferences.saveToken(response)
                 Constants.USER_TOKEN = response.accessToken
-
-
                 startActivity(Intent(requireContext(), MainActivity::class.java))
                 requireActivity().finishAffinity()
             }
@@ -133,7 +127,6 @@ class LoginFragment : Fragment() {
         binding.apply {
             buttonEnter.setOnClickListener {
                 if (validateOfFields()) {
-                    Log.i(TAG, "onClick: Chamando viewModel.login")
                     viewModel.login(
                         Login(
                             credential = email, password = password

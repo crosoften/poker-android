@@ -47,10 +47,14 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import java.util.Date
 import java.util.Locale
 import kotlin.math.roundToInt
-
+import kotlin.text.format
 
 
 class TournamentFragment : Fragment() {
@@ -98,6 +102,16 @@ class TournamentFragment : Fragment() {
         binding.txtMoedaAtual.text = moedaAtual
     }
 
+    fun converterStringParaFormatoIso(dataString: String, formatoEntrada: String = "dd/MM/yyyy"): String {
+        return try {
+            val data = LocalDate.parse(dataString, DateTimeFormatter.ofPattern(formatoEntrada))
+            data.format(DateTimeFormatter.ISO_LOCAL_DATE)
+        } catch (e: DateTimeParseException) {
+            // Tratar exceção caso a data seja inválida
+            "" // Ou retornar a data original, lançar uma exceção, etc.
+        }
+    }
+
 
     private fun setup() {
         binding.imageView6.setOnClickListener {
@@ -129,8 +143,8 @@ class TournamentFragment : Fragment() {
             val body = TournamentBodyNew(
                 title = editName,
                 prize = editAwardInt,
-                startDatetime = editStart,
-                finalDatetime = editEnd,
+                startDatetime = converterStringParaFormatoIso(editStart),
+                finalDatetime = converterStringParaFormatoIso(editEnd),
                 time = editTime,
                 description = editdescription,
                 country = editCountry,
