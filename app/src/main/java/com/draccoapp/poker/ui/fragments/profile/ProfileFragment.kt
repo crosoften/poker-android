@@ -2,7 +2,6 @@ package com.draccoapp.poker.ui.fragments.profile
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,17 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.bumptech.glide.Glide
 import com.draccoapp.poker.R
-import com.draccoapp.poker.api.model.response.homeFrament.HomeFragmentResponse
-import com.draccoapp.poker.api.model.response.homeFrament.TournamentsImIn
-import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.api.modelOld.response.User
 import com.draccoapp.poker.databinding.FragmentProfileBinding
 import com.draccoapp.poker.ui.activities.AccountActivity
-import com.draccoapp.poker.ui.adapters.TournamentAdapter
 import com.draccoapp.poker.ui.adapters.adaptersNew.TournamentMineAdapterNew
-import com.draccoapp.poker.ui.fragments.login.LoginFragment
 import com.draccoapp.poker.utils.Preferences
-import com.draccoapp.poker.utils.SharedUtils
 import com.draccoapp.poker.viewModel.HomeViewModel
 import com.draccoapp.poker.viewModel.TournamentViewModel
 import com.draccoapp.poker.viewModel.UserViewModel
@@ -211,17 +204,15 @@ class ProfileFragment : Fragment() {
         setLocale("en")
     }
 
-    fun setLocale(lang: String?) {
-        val myLocale = Locale(lang)
+    private fun setLocale(language: String?) {
+        val myLocale = Locale(language)
         val res = resources
         val dm = res.displayMetrics
         val conf = res.configuration
         conf.locale = myLocale
         res.updateConfiguration(conf, dm)
 
-        // Recriar o LoginFragment usando o NavController
-        val navController = findNavController()
-        navController.navigate(R.id.profileFragment)
+        requireActivity().recreate()
     }
 
 

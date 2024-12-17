@@ -26,6 +26,7 @@ import com.bumptech.glide.Glide
 import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.request.AnswerBody
 import com.draccoapp.poker.api.model.response.tournamentForms.Question
+import com.draccoapp.poker.api.model.type.DataState
 import com.draccoapp.poker.databinding.FragmentGatewayBinding
 import com.draccoapp.poker.utils.converterDataNextTournament
 import com.draccoapp.poker.utils.mostrarToast
@@ -80,13 +81,14 @@ class GatewayFragment : Fragment() {
 
     private fun setupUI() {
         Glide.with(requireContext()).load(tournament.imageUrl).into(binding.imageView2)
-
         tournament.title.let { binding.textView13.text = it }
         tournament.startDatetime.let { binding.textView14.text = converterDataNextTournament(it.toString()) }
         tournament.prize.let { binding.textView16.text = it.toString() }
     }
 
     private fun setupObserver() {
+        viewModel.appState.observe(viewLifecycleOwner){ state -> handleLoadingState(state) }
+
         viewModel.successGetTournamentForms.observe(viewLifecycleOwner) {
             val questions = it.form.questions
             Log.i(TAG, "setupObserver: As questions são $questions")
@@ -139,11 +141,28 @@ class GatewayFragment : Fragment() {
             findNavController().navigate(
                 GatewayFragmentDirections.actionGatewayFragmentToSubscribeTournamentFragment()
             )
-           // findNavController().popBackStack(R.id.homeFragment, false)
-           // mostrarToast("Torneio inscrito com sucesso", requireContext())
         }
     }
 
+    private fun handleLoadingState(state: DataState?) {
+        when (state) {
+            DataState.Success -> hideLoading()
+            DataState.Loading -> showLoading()
+            DataState.Error -> hideLoading()
+            DataState.Idle -> hideLoading()
+            else -> {}
+        }
+    }
+
+    private fun showLoading() {
+        binding.loadingIndicator.visibility = View.VISIBLE
+        binding.mainContainer.visibility = View.INVISIBLE
+    }
+
+    private fun hideLoading() {
+        binding.loadingIndicator.visibility = View.GONE
+        binding.mainContainer.visibility = View.VISIBLE
+    }
 
     private fun configRespostaHorizontalLayoutWithCircles(question: Question, parentLinearLayout: LinearLayout) {
         question.options.forEach { option ->

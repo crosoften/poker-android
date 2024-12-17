@@ -37,8 +37,4 @@ data class TournamentBodyNew(
     val state: String?,
     @SerializedName("country")
     val country: String?,
-    @SerializedName("lat")
-    val lat: String? = "-48.215536",
-    @SerializedName("lng")
-    val lng: String? = "-18.215536"
 )

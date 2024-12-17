@@ -41,7 +41,7 @@
     <string name="por_favor_insira_todos_os_d_gitos">Please enter all digits.</string>
     <string name="autentica_o_dois_fatores">Two-factor authentication</string>
     <string name="insira_o_c_digo_para_realizar_o_login">Enter the code to log in</string>
-    <string name="para_realizar_o_login_insira_o_token_que_voc_recebeu_por_e_mail">To log in, enter the token you received by email:</string>
+    <string name="para_realizar_o_login_insira_o_token_que_voc_recebeu_por_e_mail">To login, enter the token you received by email:</string>
     <string name="sobre">About</string>
     <string name="dicas_de_seguran_a">Security tips</string>
     <string name="contato">Contact</string>
@@ -83,16 +83,16 @@
     <string name="street">Street</string>
     <string name="number">Number</string>
     <string name="zipcode">Zipcode</string>
-    <string name="time">Hora de Inicio</string>
+    <string name="time">Start time</string>
     <string name="description_torneio">Description</string>
     <string name="date_start">Start date</string>
     <string name="date_finish">Final date</string>
     <string name="validados">Validated</string>
     <string name="atualiza_o_do_torneio">TOURNAMENT UPDATE</string>
     <string name="titulo">Title</string>
-    <string name="titulo_finish">Pontuação no torneio</string>
+    <string name="titulo_finish">Tournament score</string>
     <string name="informe_o_titulo">Enter the title</string>
-    <string name="informe_o_rank">Classificação no torneio</string>
+    <string name="informe_o_rank">Tournament ranking</string>
     <string name="mensagem">Message</string>
     <string name="escreva_sua_mensagem">Write your message</string>
     <string name="torneio">TOURNAMENT</string>
@@ -138,7 +138,5 @@
     <string name="camera_permission_denied">Camera permission denied</string>
     <string name="_40_km_de_voc">40 km from you</string>
     <string name="zip_code">Zip Code</string>
-
-
-
+    <string name="hint_digit_your_message">Digit your message</string>
 </resources>

@@ -19,23 +19,25 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.response.homeFrament.NextTournament
+import com.draccoapp.poker.api.model.type.DataState
 import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.databinding.FragmentHomeBinding
 import com.draccoapp.poker.extensions.getPreferenceData
 import com.draccoapp.poker.ui.adapters.adaptersNew.TournamentAdapterNew
 import com.draccoapp.poker.ui.adapters.adaptersNew.TournamentMineAdapterNew
-import com.draccoapp.poker.utils.Preferences
 import com.draccoapp.poker.utils.mapTournamentInImTournament
 import com.draccoapp.poker.viewModel.HomeViewModel
 import com.draccoapp.poker.viewModel.TournamentViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -77,21 +79,25 @@ class HomeFragment : Fragment() {
         setupObserver()
         onclick()
         setupRecycler()
-        val preferences = Preferences(requireContext())
-        Log.i("TokenWill", "onViewCreated: Token no homefrag é   ${preferences.getToken()}")
     }
 
-    fun location(){
-        locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    fun location() {
+        locationManager =
+            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
         // Verifique se a permissão de localização foi concedida
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             // Obter a última localização conhecida
-            val lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-            Log.e("gps",lastKnownLocation.toString())
+            val lastKnownLocation =
+                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            Log.e("gps", lastKnownLocation.toString())
 
             // Verificar se a última localização conhecida é válida
             if (lastKnownLocation != null) {
-                Log.e("gps","dentro do if")
+                Log.e("gps", "dentro do if")
                 currentLocation = LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude)
                 requireContext().getPreferenceData().location(currentLocation)
                 homeViewModel.getHomeFragment()
@@ -101,7 +107,7 @@ class HomeFragment : Fragment() {
                 locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, object :
                     LocationListener {
                     override fun onLocationChanged(location: Location) {
-                        Log.e("gps","dentro do else")
+                        Log.e("gps", "dentro do else")
                         currentLocation = LatLng(location.latitude, location.longitude)
                         requireContext().getPreferenceData().location(currentLocation)
                         homeViewModel.getHomeFragment()
@@ -123,7 +129,8 @@ class HomeFragment : Fragment() {
             }
         } else {
             // Solicitar permissão de localização, se necessário
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            ActivityCompat.requestPermissions(
+                requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 PERMISSION_REQUEST_LOCATION
             )
         }
@@ -134,7 +141,7 @@ class HomeFragment : Fragment() {
     private fun checkPermissions() {
         if (ActivityCompat.checkSelfPermission(
                 requireActivity().applicationContext,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 requireActivity().applicationContext,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION
@@ -142,7 +149,7 @@ class HomeFragment : Fragment() {
         ) {
             locationPermissions.launch(
                 arrayOf(
-                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
                     android.Manifest.permission.ACCESS_COARSE_LOCATION
                 )
             )
@@ -156,13 +163,13 @@ class HomeFragment : Fragment() {
         ActivityResultContracts.RequestMultiplePermissions()
     ) {
         when {
-            it.getOrDefault(android.Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+            it.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && ActivityCompat.checkSelfPermission(
                         requireContext(),
-                        android.Manifest.permission.ACCESS_FINE_LOCATION
+                        Manifest.permission.ACCESS_FINE_LOCATION
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
-                    permissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                 }
             }
 
@@ -210,44 +217,60 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupObserver() {
-        viewModel.successTournamentInIm.observe(viewLifecycleOwner) { response ->
-            response.data?.let { tournamentMineAdapter.updateList(it) }
+        lifecycleScope.launch {
+            homeViewModel.appState.collect { state ->
+                when(state){
+                    DataState.Success -> hideLoading()
+                    DataState.Loading -> showLoading()
+                    DataState.Error -> hideLoading()
+                    DataState.Idle -> hideLoading()
+                }
+            }
         }
 
+        observeTournaments()
+        observeViewData()
+    }
 
+    private fun showLoading() {
+        binding.apply {
+            loadingIndicator.visibility = View.VISIBLE
+            mainContainer.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun hideLoading() {
+        binding.apply {
+            loadingIndicator.visibility = View.GONE
+            mainContainer.visibility = View.VISIBLE
+        }
+    }
+
+    private fun observeViewData() {
         homeViewModel.successHomeFragment.observe(viewLifecycleOwner) { response ->
-            Log.i(TAG, "setupObserver: Os dados todos da home foram $response")
             binding.textName.text = response.myself.name
 
             Glide.with(requireContext()).load(response.myself.imageUrl)
                 .placeholder(R.drawable.ic_profile)
                 .into(binding.shapeableImageView)
-            binding.textView6.text = response.myself.playerLevel
+            binding.tvPlayerLevelValue.text = response.myself.playerLevel
             binding.txtTempoRestanteContrato.text = response.myself.contractExpiresIn
             binding.txtSeusTorneios.text = response.myself.tournamentsCount.toString()
             binding.txtLucroContratoAtual.text = response.myself.contractProfit.toString()
-            binding.textView7.text = response.myself.ranking.toString()
-
+            binding.tvPlayerRakingValue.text = response.myself.ranking.toString()
             response.nextTournaments?.let { nextTournamentAdapter.updateList(it) }
+            nextTournamentData = response?.nextTournaments ?: emptyList()
+        }
+    }
 
-//            val listTournaments = mutableListOf<com.draccoapp.poker.api.model.response.homeFrament.Tournament>()
-//            response.tournamentsImIn?.forEach {
-//                listTournaments.add(it.tournament)
-//            }
-
-            nextTournamentData = response.nextTournaments.let{
-                it!!
-            }
-
-//            tournamentMineAdapter.updateList(listTournaments)
-
-
+    private fun observeTournaments() {
+        viewModel.successTournamentInIm.observe(viewLifecycleOwner) { response ->
+            response.data?.let { tournamentMineAdapter.updateList(it) }
         }
     }
 
 
     private fun onclick() {
-
         binding.apply {
             btnApplicantSeeAll.setOnClickListener {
                 findNavController()
@@ -270,8 +293,8 @@ class HomeFragment : Fragment() {
 
     private fun setupRecycler() {
 
-        tournamentMineAdapter = TournamentMineAdapterNew(requireContext(),{ tournament ->
-           val nextTournamente = mapTournamentInImTournament(tournament)
+        tournamentMineAdapter = TournamentMineAdapterNew(requireContext(), { tournament ->
+            val nextTournamente = mapTournamentInImTournament(tournament)
             findNavController()
                 .navigate(
                     HomeFragmentDirections
@@ -299,7 +322,8 @@ class HomeFragment : Fragment() {
         })
 
         binding.recyclerDone.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = tournamentMineAdapter
         }
 
@@ -317,11 +341,11 @@ class HomeFragment : Fragment() {
         }
 
         binding.recyclerNext.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = nextTournamentAdapter
         }
     }
-
 
 
     override fun onDestroyView() {
@@ -331,6 +355,7 @@ class HomeFragment : Fragment() {
 
 
     }
+
     companion object {
         const val LOCATION_PERMISSION_REQUEST_CODE = 1001
         private const val PERMISSION_REQUEST_LOCATION = 1001

@@ -141,7 +141,7 @@ class TournamentFragment : Fragment() {
                 number = editNumber,
                 zipCode = editZipcode,
                 eventUrl = if (editLink.isNullOrEmpty()) "null" else editLink,
-                proofUrl = if (proofUrl.isNullOrEmpty()) "null" else proofUrl
+                proofUrl = if (proofUrl.isNullOrEmpty()) "null" else proofUrl,
             )
              if (!todosOsCamposForamPreenchidos()) {
                 binding.root.showSnackbarRed(getString(R.string.necessario_preencher_todos_os_campos_acima))

@@ -177,19 +177,21 @@ fun getUpdateDetails(id: String) {
 
 
     fun getTournament(id: String) {
+        _appState.postValue(DataState.Loading)
         repository.getTournament(id).enqueue(object : Callback<TournamentForms> {
             override fun onResponse(call: Call<TournamentForms>, response: Response<TournamentForms>) {
                 if (response.isSuccessful) {
                     successGetTournamentForms.postValue(response.body())
-                    Log.i("TournamentViewModel", "onResponse: A resposta foi isSuccessfull")
+                    _appState.postValue(DataState.Success)
                 } else {
                     try {
                         val errorBody = response.errorBody()?.string()
                         val erroLoginLimpo = limparMessage(errorBody.toString())
-                        Log.e("Error Body", "O erro  do servidor  LIMPOOO  foi ${erroLoginLimpo ?: "erro desconhecido"} ")
                         mostrarToast(" $erroLoginLimpo ", PokerApplication.instance)
+                        _appState.postValue(DataState.Error)
                     } catch (e: IOException) {
                         Log.e("IOException", "Erro de leitura do response ->>", e)
+                        _appState.postValue(DataState.Error)
                     }
                 }
             }

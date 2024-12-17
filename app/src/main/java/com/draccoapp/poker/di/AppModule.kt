@@ -136,7 +136,7 @@ val viewModelModule = module {
         RegisterViewModel(get())
     }
     viewModel {
-        HomeViewModel(get())
+        HomeViewModel(get(), get())
     }
     viewModel {
         ContractViewModel(get())
