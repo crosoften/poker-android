@@ -28,14 +28,25 @@ class MainActivity : AppCompatActivity() {
 
         navController = navHostFragment.findNavController()
         binding.navView.setupWithNavController(navController)
-        hideTournamentCaseDosntHaveContract()
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            hideTournamentCaseDosntHaveContract()
             when(destination.id){
-                R.id.homeFragment -> binding.navView.visibility = View.VISIBLE
-                R.id.tournamentFragment -> binding.navView.visibility = View.VISIBLE
-                R.id.coachFragment -> binding.navView.visibility = View.VISIBLE
-                R.id.profileFragment -> binding.navView.visibility = View.VISIBLE
-                else -> binding.navView.visibility = View.GONE
+                R.id.homeFragment -> {
+                    binding.navView.visibility = View.VISIBLE
+                }
+                R.id.tournamentFragment -> {
+                    binding.navView.visibility = View.VISIBLE
+                }
+                R.id.coachFragment -> {
+                    binding.navView.visibility = View.VISIBLE
+                }
+                R.id.profileFragment -> {
+                    binding.navView.visibility = View.VISIBLE
+                }
+                else -> {
+                    binding.navView.visibility = View.GONE
+                }
             }
         }
 
