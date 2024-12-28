@@ -167,15 +167,6 @@ class AuthViewModel(
         })
     }
 
-
-//    override fun onResponse(call: Call<Login2FAResponse>, response: Response<Login2FAResponse>) {
-
-//
-//    }
-//
-//    override fun onFailure(call: Call<Login2FAResponse>, t: Throwable) {
-//    }
-
     fun login2faNew(body: Login2faBodyNew) {
         repository.login2faNew(body).enqueue(object : Callback<Login2faResponseNew> {
             override fun onResponse(

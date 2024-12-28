@@ -11,9 +11,9 @@ data class LocationX(
     @Json(name = "country")
     val country: String,
     @Json(name = "lat")
-    val lat: Any?,
+    val lat: String,
     @Json(name = "lng")
-    val lng: Any?,
+    val lng: String,
     @Json(name = "neighborhood")
     val neighborhood: String,
     @Json(name = "number")

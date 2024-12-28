@@ -15,6 +15,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+import kotlin.math.*
 
 fun mostrarToast(message: String, context: Context) {
     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -126,6 +127,24 @@ fun converterDistance(distance: String?, type: String): String {
         }
         else -> "Invalid type"
     }
+}
+
+fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+    val R = 6371 // Raio da Terra em quilômetros
+
+    val dLat = deg2rad(lat2 - lat1)
+    val dLon = deg2rad(lon2 - lon1)
+
+    val a = sin(dLat/2).pow(2) + cos(deg2rad(lat1)) * cos(deg2rad(lat2)) * sin(dLon/2).pow(2)
+    val c = 2 * atan2(sqrt(a), sqrt(1-a))
+
+    val distance = R * c
+
+    return distance
+}
+
+private fun deg2rad(deg: Double): Double {
+    return deg * (Math.PI/180)
 }
 
 

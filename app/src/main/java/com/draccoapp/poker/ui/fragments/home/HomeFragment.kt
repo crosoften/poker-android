@@ -26,7 +26,6 @@ import com.bumptech.glide.Glide
 import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.response.homeFrament.NextTournament
 import com.draccoapp.poker.api.model.type.DataState
-import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.databinding.FragmentHomeBinding
 import com.draccoapp.poker.extensions.getPreferenceData
 import com.draccoapp.poker.ui.adapters.adaptersNew.TournamentAdapterNew
@@ -48,17 +47,11 @@ class HomeFragment : Fragment() {
     private val TAG = "HomeFragment"
     private val homeViewModel: HomeViewModel by viewModel()
     private val viewModel: TournamentViewModel by viewModel()
-
-
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private lateinit var tournamentMineAdapter: TournamentMineAdapterNew
     private lateinit var nextTournamentAdapter: TournamentAdapterNew
     private lateinit var nextTournamentData: List<NextTournament>
-
-    private var listApplicant: MutableList<Tournament> = mutableListOf()
-    private var listNext: MutableList<Tournament> = mutableListOf()
-
     private lateinit var currentLocation: LatLng
     private lateinit var locationManager: LocationManager
 
@@ -74,68 +67,43 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         location()
+        setupRecycler()
         setupLocation()
         checkPermissions()
         setupObserver()
         onclick()
-        setupRecycler()
     }
 
     fun location() {
         locationManager =
             requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        // Verifique se a permissão de localização foi concedida
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            // Obter a última localização conhecida
-            val lastKnownLocation =
-                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-            Log.e("gps", lastKnownLocation.toString())
-
-            // Verificar se a última localização conhecida é válida
+            val lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
             if (lastKnownLocation != null) {
-                Log.e("gps", "dentro do if")
                 currentLocation = LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude)
                 requireContext().getPreferenceData().location(currentLocation)
                 homeViewModel.getHomeFragment()
                 viewModel.getTounamentImIn()
             } else {
-                // Caso a última localização não esteja disponível, solicite uma nova atualização de localização
-                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, object :
-                    LocationListener {
-                    override fun onLocationChanged(location: Location) {
+                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER,
+                    { location ->
                         Log.e("gps", "dentro do else")
                         currentLocation = LatLng(location.latitude, location.longitude)
                         requireContext().getPreferenceData().location(currentLocation)
                         homeViewModel.getHomeFragment()
                         viewModel.getTounamentImIn()
-                    }
-
-                    override fun onProviderDisabled(provider: String) {
-                        // Tratamento quando o provedor de localização está desativado
-                    }
-
-                    override fun onProviderEnabled(provider: String) {
-                        // Tratamento quando o provedor de localização é ativado
-                    }
-
-                    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-                        // Tratamento de mudanças de status do provedor de localização
-                    }
-                }, null)
+                    }, null)
             }
         } else {
-            // Solicitar permissão de localização, se necessário
             ActivityCompat.requestPermissions(
                 requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 PERMISSION_REQUEST_LOCATION
             )
         }
-
-        // Restante do seu código aqui...
     }
 
     private fun checkPermissions() {
@@ -205,12 +173,8 @@ class HomeFragment : Fragment() {
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
                 if (location != null) {
-//                    viewModel.updateLocation(
-//                        UpdateLocation(
-//                            location.latitude,
-//                            location.longitude
-//                        )
-//                    )
+                    nextTournamentAdapter.updateLocation(location)
+                    Log.i("localizacao", "setLocation: $location")
                 }
             }
 
@@ -292,7 +256,29 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecycler() {
+        setupMyTournamentRecycler()
 
+        nextTournamentAdapter = TournamentAdapterNew(requireContext(), location = null) {
+            findNavController()
+                .navigate(
+                    HomeFragmentDirections
+                        .actionHomeFragmentToDetailTournamentFragment(
+                            it,
+                            null,
+                            "null",
+                            "next"
+                        )
+                )
+        }
+
+        binding.recyclerNext.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = nextTournamentAdapter
+        }
+    }
+
+    private fun setupMyTournamentRecycler() {
         tournamentMineAdapter = TournamentMineAdapterNew(requireContext(), { tournament ->
             val nextTournamente = mapTournamentInImTournament(tournament)
             findNavController()
@@ -317,33 +303,12 @@ class HomeFragment : Fragment() {
             } else {
                 Toast.makeText(requireContext(), "Torneio fechado", Toast.LENGTH_SHORT).show()
             }
-
-
         })
 
         binding.recyclerDone.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = tournamentMineAdapter
-        }
-
-        nextTournamentAdapter = TournamentAdapterNew(requireContext()) {
-            findNavController()
-                .navigate(
-                    HomeFragmentDirections
-                        .actionHomeFragmentToDetailTournamentFragment(
-                            it,
-                            null,
-                            "null",
-                            "next"
-                        )
-                )
-        }
-
-        binding.recyclerNext.apply {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = nextTournamentAdapter
         }
     }
 

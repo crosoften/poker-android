@@ -1,6 +1,8 @@
 package com.draccoapp.poker.ui.adapters.adaptersNew
 
 import android.content.Context
+import android.location.Location
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,30 +10,35 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.draccoapp.poker.R
 import com.draccoapp.poker.api.model.response.homeFrament.NextTournament
 import com.draccoapp.poker.databinding.ItemTournamentBinding
 import com.draccoapp.poker.extensions.getPreferenceData
-import com.draccoapp.poker.extensions.viewInvisible
+import com.draccoapp.poker.utils.calculateDistance
 import com.draccoapp.poker.utils.converterDataNextTournament
 import com.draccoapp.poker.utils.converterDistance
-import java.util.Locale
 
 
 class TournamentAdapterNew(
-    private val context : Context,
+    private val context: Context,
+    location: Location?,
     private val onClick: (NextTournament) -> Unit
-): RecyclerView.Adapter<TournamentAdapterNew.ViewHolder>() {
+) : RecyclerView.Adapter<TournamentAdapterNew.ViewHolder>() {
 
-    private var tournamentList: AsyncListDiffer<NextTournament> = AsyncListDiffer(this, DiffCallBack)
+    private var tournamentList: AsyncListDiffer<NextTournament> =
+        AsyncListDiffer(this, DiffCallBack)
+    private var userLocation: Location? = location
 
     private var unit = "km"
 
-    fun updateList(list: List<NextTournament>){
+    fun updateList(list: List<NextTournament>) {
         tournamentList.submitList(list)
     }
 
-    fun setUnit(unit: String){
+    fun updateLocation(location: Location) {
+        userLocation = location
+    }
+
+    fun setUnit(unit: String) {
         this.unit = unit
     }
 
@@ -53,9 +60,9 @@ class TournamentAdapterNew(
 
     inner class ViewHolder(
         private val binding: ItemTournamentBinding
-    ): RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(nextTournament: NextTournament){
+        fun bind(nextTournament: NextTournament) {
 
             binding.textTitle.text = nextTournament.title
             nextTournament.startDatetime?.let {
@@ -65,9 +72,24 @@ class TournamentAdapterNew(
             binding.icCamera.visibility = View.INVISIBLE
 
             Glide.with(context).load(nextTournament.imageUrl).into(binding.imageView7)
-
-
             val type = context.getPreferenceData().getLanguage()
+
+
+            userLocation?.let {
+                val latitude = it.latitude
+                val longitude = it.longitude
+
+                val distance = calculateDistance(
+                    latitude,
+                    longitude,
+                    nextTournament.location.lat.toDouble(),
+                    nextTournament.location.lng.toDouble()
+                )
+
+                Log.i("localizacao", "bind: $distance")
+            }
+            Log.i("localizacao", "torneio: ${nextTournament}")
+
             binding.textDistance.text = converterDistance(nextTournament.location?.distance, type)
 
             binding.root.setOnClickListener {
@@ -75,7 +97,6 @@ class TournamentAdapterNew(
             }
         }
     }
-
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

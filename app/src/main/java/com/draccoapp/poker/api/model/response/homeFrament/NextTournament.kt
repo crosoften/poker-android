@@ -21,7 +21,7 @@ data class NextTournament(
     @Json(name = "imageUrl")
     val imageUrl: String?,
     @Json(name = "location")
-    val location: LocationX?,
+    val location: LocationX,
     @Json(name = "prize")
     val prize: Int,
     @Json(name = "rules")
