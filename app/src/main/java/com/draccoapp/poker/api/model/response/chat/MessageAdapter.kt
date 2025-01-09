@@ -1,5 +1,6 @@
 package com.draccoapp.poker.api.model.response.chat
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,16 +11,18 @@ import com.draccoapp.poker.api.model.ChatMessageReceived
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import kotlin.text.format
 
-class MessageAdapter(private val messages: List<ChatMessageReceived>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MessageAdapter(private val messages: List<ChatMessageReceived>, private val userId: String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         private const val SENT_MESSAGE = 0
         private const val RECEIVED_MESSAGE = 1
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (messages[position].sentByPlayer) SENT_MESSAGE else RECEIVED_MESSAGE
+        Log.i("isSentByPlayer", "getItemViewType: ${userId == messages[position].sentById}")
+        Log.i("isSentByPlayer", "userId: ${userId}")
+        Log.i("isSentByPlayer", "messageId: ${messages[position].sentById}")
+        return if(userId == messages[position].sentById) SENT_MESSAGE else RECEIVED_MESSAGE
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

@@ -1,6 +1,7 @@
 package com.draccoapp.poker.ui.fragments.coach
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -30,10 +31,14 @@ class CoachFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupObservers()
         setupClickListeners()
+        setupObservers()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadChats()
+    }
 
     private fun setupObservers() {
         viewModel.chats.observe(viewLifecycleOwner) { chatsList ->

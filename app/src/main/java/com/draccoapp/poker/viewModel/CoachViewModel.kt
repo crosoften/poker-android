@@ -49,7 +49,7 @@ class CoachViewModel(
         }
     }
 
-    private fun loadChats() {
+    fun loadChats() {
         try {
             viewModelScope.launch {
                 chats.postValue(repository.getAllChats())

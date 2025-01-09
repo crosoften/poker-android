@@ -6,12 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.draccoapp.poker.api.model.response.chat.ChatResponse
 import com.draccoapp.poker.databinding.ItemRvChatBinding
-import java.time.Clock
-import java.time.Instant
-import java.time.ZoneId
-import java.time.ZonedDateTime
 import java.util.Locale
-import kotlin.time.Duration
 
 class ChatListAdapter(
     private val chats: List<ChatResponse>,
@@ -21,10 +16,12 @@ class ChatListAdapter(
     inner class ViewHolder(private val binding: ItemRvChatBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(chatItem: ChatResponse){
             binding.apply {
-                chatUserName.text = chatItem.type
+                chatUserName.text = chatItem.title
                 if(chatItem.messages.isNotEmpty()) chatLastMessage.text = chatItem.messages[0].content
                 else chatLastMessage.visibility = View.GONE
-                chatQuantityMessage.text = String.format(Locale.getDefault(), "%d", chatItem.unreadMessages)
+
+                if(chatItem.unreadMessages == 0) chatQuantityMessageContainer.visibility = View.GONE
+                else chatQuantityMessage.text = String.format(Locale.getDefault(), "%d", chatItem.unreadMessages)
 
                 root.setOnClickListener { onChatClickListener(chatItem) }
             }

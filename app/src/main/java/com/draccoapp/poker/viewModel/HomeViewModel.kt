@@ -28,6 +28,7 @@ class HomeViewModel(private val repository: GlobalRepository, private val prefer
     val appState : StateFlow<DataState> = _appState.asStateFlow()
 
     fun getHomeFragment() {
+        getMeusDados()
         _appState.value = DataState.Loading
         repository.getHomeFragment().enqueue(object : Callback<HomeFragmentResponse> {
             override fun onResponse(call: Call<HomeFragmentResponse>, response: Response<HomeFragmentResponse>) {
@@ -59,6 +60,7 @@ class HomeViewModel(private val repository: GlobalRepository, private val prefer
         repository.getMeusDados().enqueue(object : Callback<MeusDadosResponse> {
             override fun onResponse(call: Call<MeusDadosResponse>, response: Response<MeusDadosResponse>) {
                 if (response.isSuccessful) {
+                    preferences.saveUserId(response.body()!!.id)
                     successMeusDados.postValue(response.body())
                     Log.i("HomeViewModel", "onResponse: A resposta foi isSuccessfull")
                 } else {

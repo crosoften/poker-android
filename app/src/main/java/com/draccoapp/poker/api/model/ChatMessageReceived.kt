@@ -6,10 +6,8 @@ import com.squareup.moshi.JsonClass
 data class ChatMessageReceived(
     val id: String,
     val chatId: String,
-    val sentByPlayer: Boolean,
     val content: String,
-    val readByAdmin: Boolean,
-    val readByPlayer: Boolean,
+    val sentById: String,
+    val readByIds: List<String>,
     val createdAt: String,
-    val updatedAt: String
 )

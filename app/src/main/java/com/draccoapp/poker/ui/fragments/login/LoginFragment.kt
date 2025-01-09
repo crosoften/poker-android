@@ -7,18 +7,16 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.draccoapp.poker.R
-import com.draccoapp.poker.api.model.ChatMessageSend
 import com.draccoapp.poker.api.model.request.Login
 import com.draccoapp.poker.api.model.request.Login2faBodyNew
-import com.draccoapp.poker.api.service.chatSocket.ChatSocketService
 import com.draccoapp.poker.databinding.FragmentLoginBinding
 import com.draccoapp.poker.ui.activities.MainActivity
 import com.draccoapp.poker.utils.Constants
@@ -26,15 +24,12 @@ import com.draccoapp.poker.utils.Preferences
 import com.draccoapp.poker.utils.Validation
 import com.draccoapp.poker.utils.mostrarToast
 import com.draccoapp.poker.viewModel.AuthViewModel
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
 
 private const val TAG = "LoginFragment"
 
 class LoginFragment : Fragment() {
-
-    private val socket: ChatSocketService by inject()
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<AuthViewModel>()

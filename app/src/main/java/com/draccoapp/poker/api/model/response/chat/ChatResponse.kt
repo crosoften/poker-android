@@ -6,11 +6,10 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class ChatResponse(
     val id: String,
-    val playerId: String,
-    val playerName: String,
-    val type: String,
+    val title: String,
+    val participants: List<Participants>,
     val messages: List<ChatMessageReceived>,
-    val unreadMessages: Int,
+    val unreadMessages: Int? = null,
     val createdAt: String,
     val updatedAt: String,
 )

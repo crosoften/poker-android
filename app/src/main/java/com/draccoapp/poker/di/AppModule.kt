@@ -43,7 +43,7 @@ import javax.net.ssl.X509TrustManager
 private const val CONNECTION_TIMEOUT = 30 * 1000
 
 val netWorkModule = module {
-    single {
+    single<Preferences> {
         Preferences(PokerApplication.instance) // Substitua isso pela forma correta de obter a instância de Preferences no seu caso
     }
     single<OkHttpClient> {

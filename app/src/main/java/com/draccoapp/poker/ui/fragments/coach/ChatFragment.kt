@@ -15,8 +15,10 @@ import com.draccoapp.poker.api.model.ChatMessageReceived
 import com.draccoapp.poker.api.model.response.chat.ChatResponse
 import com.draccoapp.poker.api.model.response.chat.MessageAdapter
 import com.draccoapp.poker.databinding.FragmentChatBinding
+import com.draccoapp.poker.utils.Preferences
 import com.draccoapp.poker.utils.mostrarToast
 import com.draccoapp.poker.viewModel.CoachViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -25,6 +27,7 @@ class ChatFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: CoachViewModel by viewModel()
     private val args: ChatFragmentArgs by navArgs()
+    private val preferences by inject<Preferences>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,12 +83,13 @@ class ChatFragment : Fragment() {
     }
 
     private fun setupChatInformation(chatInformation: ChatResponse) {
-        binding.tvChatName.text = chatInformation.playerName
-        binding.tvReceiverName.text = chatInformation.type
+        binding.tvChatName.text = chatInformation.title
+        binding.tvReceiverName.visibility = View.GONE
     }
 
     private fun setupRvChat(messages: List<ChatMessageReceived>) {
-        binding.rvChatMessages.adapter = MessageAdapter(messages)
+        val userid = preferences.getUserId()
+        binding.rvChatMessages.adapter = MessageAdapter(messages, userid)
         val linearLayout =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvChatMessages.layoutManager = linearLayout

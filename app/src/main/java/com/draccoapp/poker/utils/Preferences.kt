@@ -161,6 +161,12 @@ class Preferences(context: Context) {
         editor.apply()
     }
 
+    fun saveUserId(userId: String){
+        editor.putString(KEY_ID, userId)
+        editor.commit()
+        editor.apply()
+    }
+
     fun getUserId(): String {
         return preferences.getString(KEY_ID, null).orEmpty()
     }

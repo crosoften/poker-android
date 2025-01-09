@@ -64,6 +64,7 @@
         tools:text="1 min" />
 
     <FrameLayout
+        android:id="@+id/chat_quantity_message_container"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:background="@drawable/circle_shape"
