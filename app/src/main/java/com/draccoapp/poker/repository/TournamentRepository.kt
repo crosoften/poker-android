@@ -1,5 +1,6 @@
 package com.draccoapp.poker.repository
 
+import android.util.Log
 import com.draccoapp.poker.api.model.request.AddUpdadeTournament
 import com.draccoapp.poker.api.model.request.AnswerBody
 import com.draccoapp.poker.api.model.request.TournamentBodyNew
@@ -36,16 +37,18 @@ class TournamentRepository(
                     body = body
                 )
                 when {
-
                     response.isSuccessful -> {
                         Result.success(response.body())
                     }
-
+                    response.code() == 400 -> {
+                        Result.failure(Throwable("Error. An active contract is required to proceed"))
+                    }
                     else -> {
                         Result.failure(Throwable(response.message()))
                     }
                 }
             } catch (e: Exception) {
+                Log.i("errorTest", "createTournament: ${e.message}")
                 Result.failure(Throwable(e.message))
             }
         }

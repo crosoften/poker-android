@@ -72,16 +72,18 @@ class ProfileFragment : Fragment() {
 
             //CURRENT CONTRACT INFOS
             binding.textName.text = response.myself.name
-            Glide.with(requireContext()).load(response.myself.imageUrl).into(binding.imgProfile)
-            binding.txtTempoRestanteContrato.text = response.myself.contractExpiresIn
+                     Glide.with(requireContext()).load(response.myself.imageUrl)
+                .placeholder(R.drawable.ic_profile)
+                .into(binding.imgProfile)
+            binding.txtTempoRestanteContrato.text = response.myself.contractExpiresIn ?: "0"
             binding.txtSeusTorneios.text = response.myself.tournamentsCount.toString()
             binding.txtLucroContratoAtual.text = response.myself.contractProfit.toString()
             binding.textView7.text = response.myself.ranking.toString()
 
             //OVERALL INFOS
-            binding.txtSeusTorneiosGerais.text = response.myself.overallInfos.tournamentsCount.toString()
-            binding.txtLucroGeral.text = response.myself.overallInfos.profit.toString()
-            binding.txtRankingGeral.text = response.myself.overallInfos.ranking.toString()
+            binding.txtSeusTorneiosGerais.text = (response.myself.overallInfos?.tournamentsCount ?: "0").toString()
+            binding.txtLucroGeral.text = (response.myself.overallInfos?.profit ?: "0").toString()
+            binding.txtRankingGeral.text = (response.myself.overallInfos?.ranking ?: "0").toString()
         }
     }
 

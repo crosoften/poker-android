@@ -10,7 +10,7 @@ data class MeusDadosResponse(
     @Json(name = "birthday")
     val birthday: String,
     @Json(name = "contractExpiresIn")
-    val contractExpiresIn: String,
+    val contractExpiresIn: String?,
     @Json(name = "contractProfit")
     val contractProfit: Double,
     @Json(name = "email")
@@ -38,5 +38,5 @@ data class MeusDadosResponse(
     @Json(name = "tournamentsCount")
     val tournamentsCount: Int,
     @Json(name = "overallInfos")
-    val overallInfos: OverallInfosX
+    val overallInfos: OverallInfosX?
 )

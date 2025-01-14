@@ -10,7 +10,7 @@ data class CurrentContract(
     @Json(name = "ranking")
     val ranking: Int,
     @Json(name = "timeLeft")
-    val timeLeft: String,
+    val timeLeft: Int,
     @Json(name = "tournamentsCount")
     val tournamentsCount: Int
 )

@@ -218,7 +218,7 @@ class HomeFragment : Fragment() {
                 .placeholder(R.drawable.ic_profile)
                 .into(binding.shapeableImageView)
             binding.tvPlayerLevelValue.text = response.myself.playerLevel
-            binding.txtTempoRestanteContrato.text = response.myself.contractExpiresIn
+            binding.txtTempoRestanteContrato.text = response.myself.contractExpiresIn ?: "0"
             binding.txtSeusTorneios.text = response.myself.tournamentsCount.toString()
             binding.txtLucroContratoAtual.text = response.myself.contractProfit.toString()
             binding.tvPlayerRakingValue.text = response.myself.ranking.toString()

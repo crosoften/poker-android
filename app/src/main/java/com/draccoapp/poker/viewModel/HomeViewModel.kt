@@ -76,7 +76,7 @@ class HomeViewModel(private val repository: GlobalRepository, private val prefer
             }
 
             override fun onFailure(call: Call<MeusDadosResponse>, t: Throwable) {
-                mostrarToast("Generic error", PokerApplication.instance)
+                mostrarToast( "Erro ao buscar dados do usuário", PokerApplication.instance)
                 Log.e("HomeViewModel", "ONFAILUREEE  o erro na função getMeusDados foi $t")
             }
 
