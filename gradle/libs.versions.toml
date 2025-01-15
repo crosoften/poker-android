@@ -1,13 +1,18 @@
 [versions]
 agp = "8.7.2"
+featureDelivery = "2.1.0"
 kotlin = "1.9.21"
 core-ktx = "1.12.0"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 appcompat = "1.6.1"
+loggingInterceptor = "4.9.1"
 material = "1.11.0"
 constraintlayout = "2.1.4"
+pagingCommonKtx = "3.3.1"
+pagingRuntimeKtx = "3.3.1"
+playServicesMaps = "18.0.2"
 safeargs = "2.7.7"
 navigationFragmentVersion = "2.7.7"
 navigationUIVersion = "2.7.7"
@@ -28,11 +33,16 @@ socketIoClient = "2.1.1"
 
 
 [libraries]
+androidx-paging-common-ktx-v331 = { module = "androidx.paging:paging-common-ktx", version.ref = "pagingCommonKtx" }
+androidx-paging-runtime-ktx-v331 = { module = "androidx.paging:paging-runtime-ktx", version.ref = "pagingRuntimeKtx" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+feature-delivery = { module = "com.google.android.play:feature-delivery", version.ref = "featureDelivery" }
+feature-delivery-ktx = { module = "com.google.android.play:feature-delivery-ktx", version.ref = "featureDelivery" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptor" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 navigationFragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentVersion" }
@@ -45,6 +55,7 @@ lifecycleRuntime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx
 kotlinxCoroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 koinAndroid = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 rxjava2Adapter = { group = "com.squareup.retrofit2", name = "adapter-rxjava2", version.ref = "rxjava2Adapter" }
 moshiKotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshiKotlin" }

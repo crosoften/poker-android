@@ -58,8 +58,6 @@ class RegisterContactFragment : Fragment() {
 
 
     private fun onclick() {
-        binding.editPhone.addTextChangedListener(MaskEditUtil.mask(binding.editPhone, MaskEditUtil.FORMAT_PHONE))
-
         binding.apply {
 
             back.setOnClickListener {
@@ -71,7 +69,7 @@ class RegisterContactFragment : Fragment() {
                 firstTimeMovingToDoneFragment = true
                 val email = editEmail
                 val phone = editPhone
-                val phoneLimpo = MaskEditUtil.unmask(phone.text.toString())
+                val phoneLimpo = phone.text.toString()
 
                 //Salvando dados
                 RegisterEmail = email.text.toString()

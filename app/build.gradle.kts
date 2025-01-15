@@ -14,8 +14,8 @@ android {
         applicationId = "com.draccoapp.poker"
         minSdk = 26
         targetSdk = 34
-        versionCode = 13
-        versionName = "1.0.0.13"
+        versionCode = 14
+        versionName = "1.0.0.14"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -77,16 +77,12 @@ dependencies {
     ksp(libs.moshiKotlinKsp)
     implementation(libs.pagingRuntimeKtx)
     implementation(libs.pagingCommonKtx)
-
-    implementation("com.google.android.play:feature-delivery:2.1.0")
-
+    implementation(libs.feature.delivery)
     // For Kotlin users, also import the Kotlin extensions library for Play Feature Delivery:
-    implementation("com.google.android.play:feature-delivery-ktx:2.1.0")
+    implementation(libs.feature.delivery.ktx)
     // Paging3
-    implementation ("androidx.paging:paging-runtime-ktx:3.3.1")
-    implementation ("androidx.paging:paging-common-ktx:3.3.1")
-
-    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.1")
-    implementation ("com.google.android.gms:play-services-maps:18.0.2")// Ou versão mais recente
-
+    implementation (libs.androidx.paging.runtime.ktx.v331)
+    implementation (libs.androidx.paging.common.ktx.v331)
+    implementation (libs.logging.interceptor)
+    implementation (libs.play.services.maps)// Ou versão mais recente
 }
