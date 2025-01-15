@@ -42,11 +42,6 @@ class SplashFragment : Fragment() {
     }
 
     private fun initDelay() {
-//        val progressBarHorizontal = binding.progressBar
-        val preferences = Preferences(requireContext())
-        preferences.setLanguage("en")
-
-
         val totalProgressTime = 3000
         val progressBarMax = 100
 
@@ -55,7 +50,6 @@ class SplashFragment : Fragment() {
 
         animator.addUpdateListener { animation ->
             val progress = animation.animatedValue as Int
-//            progressBarHorizontal.progress = progress
         }
 
         animator.start()

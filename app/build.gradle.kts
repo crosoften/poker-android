@@ -14,8 +14,8 @@ android {
         applicationId = "com.draccoapp.poker"
         minSdk = 26
         targetSdk = 34
-        versionCode = 6
-        versionName = "1.0.0.6"
+        versionCode = 13
+        versionName = "1.0.0.13"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -42,10 +42,15 @@ android {
     dataBinding {
         enable = true
     }
+
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
 }
 
 dependencies {
-
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -55,7 +60,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
-
     implementation(libs.coil)
     implementation(libs.navigationFragment)
     implementation(libs.navigationUi)
@@ -63,10 +67,7 @@ dependencies {
     implementation(libs.lifecycleLivedata)
     implementation(libs.lifecycleRuntime)
     implementation(libs.kotlinxCoroutines)
-
     implementation(libs.glide)
-
-
     implementation(libs.koinAndroid)
     implementation(libs.gson)
     implementation(libs.retrofit)
@@ -77,6 +78,10 @@ dependencies {
     implementation(libs.pagingRuntimeKtx)
     implementation(libs.pagingCommonKtx)
 
+    implementation("com.google.android.play:feature-delivery:2.1.0")
+
+    // For Kotlin users, also import the Kotlin extensions library for Play Feature Delivery:
+    implementation("com.google.android.play:feature-delivery-ktx:2.1.0")
     // Paging3
     implementation ("androidx.paging:paging-runtime-ktx:3.3.1")
     implementation ("androidx.paging:paging-common-ktx:3.3.1")

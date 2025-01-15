@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
@@ -206,15 +208,12 @@ class ProfileFragment : Fragment() {
         setLocale("en")
     }
 
-    private fun setLocale(language: String?) {
-        val myLocale = Locale(language)
-        val res = resources
-        val dm = res.displayMetrics
-        val conf = res.configuration
-        conf.locale = myLocale
-        res.updateConfiguration(conf, dm)
-
-        requireActivity().recreate()
+    private fun setLocale(lang: String) {
+        AppCompatDelegate.setApplicationLocales(
+            LocaleListCompat.forLanguageTags(
+                lang
+            )
+        )
     }
 
 

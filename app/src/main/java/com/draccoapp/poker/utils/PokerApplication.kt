@@ -14,8 +14,6 @@ class PokerApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        setLocale("en")
-
         instance = this
 
         startKoin{
@@ -29,15 +27,4 @@ class PokerApplication: Application() {
         lateinit var instance: Context
             private set
     }
-
-
-    private fun setLocale(langCode: String) {
-        val locale = Locale(langCode)
-        Locale.setDefault(locale)
-        val res: Resources = resources
-        val config = Configuration(res.configuration)
-        config.setLocale(locale)
-        res.updateConfiguration(config, res.displayMetrics)
-    }
-
 }

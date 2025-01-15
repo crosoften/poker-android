@@ -1,5 +1,6 @@
 package com.draccoapp.poker.ui.fragments.login
 
+import android.app.LocaleManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +12,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.draccoapp.poker.R
@@ -25,7 +28,7 @@ import com.draccoapp.poker.utils.Validation
 import com.draccoapp.poker.utils.mostrarToast
 import com.draccoapp.poker.viewModel.AuthViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.Locale
+
 
 private const val TAG = "LoginFragment"
 
@@ -187,17 +190,12 @@ class LoginFragment : Fragment() {
         setLocale("en")
     }
 
-    fun setLocale(lang: String?) {
-        val myLocale = Locale(lang)
-        val res = resources
-        val dm = res.displayMetrics
-        val conf = res.configuration
-        conf.locale = myLocale
-        res.updateConfiguration(conf, dm)
-
-        // Recriar o LoginFragment usando o NavController
-        val navController = findNavController()
-        navController.navigate(R.id.loginFragment)
+    private fun setLocale(lang: String) {
+        AppCompatDelegate.setApplicationLocales(
+            LocaleListCompat.forLanguageTags(
+                lang
+            )
+        )
     }
 
     private fun closeKeyboard() {
