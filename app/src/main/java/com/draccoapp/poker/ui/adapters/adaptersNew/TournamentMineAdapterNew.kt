@@ -19,7 +19,8 @@ import com.draccoapp.poker.utils.converterDistance
 class TournamentMineAdapterNew(
     private val context : Context,
     private val onClick: (TournamentInImData) -> Unit,
-    private val onClickUpdate: (TournamentInImData) -> Unit
+    private val onClickUpdate: (TournamentInImData) -> Unit,
+    private val type : String,
 ): RecyclerView.Adapter<TournamentMineAdapterNew.ViewHolder>() {
 
     private var tournamentList: AsyncListDiffer<TournamentInImData> = AsyncListDiffer(this, DiffCallBack)
@@ -69,7 +70,6 @@ class TournamentMineAdapterNew(
                 onClick(nextTournament)
             }
 
-            val type = context.getPreferenceData().getLanguage()
             binding.textDistance.text = converterDistance(nextTournament.tournament?.location?.distance, type)
 
             binding.icCamera.setOnClickListener {

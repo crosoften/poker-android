@@ -33,9 +33,6 @@ class DetailTournamentFragment : Fragment() {
 
     private val args by navArgs<DetailTournamentFragmentArgs>()
 
-
-
-
     private val tournament by lazy {
         args.tournament
     }
@@ -56,10 +53,8 @@ class DetailTournamentFragment : Fragment() {
     }
 
 
-
-
     private fun setupUI() {
-        if (args.origins == "next"){
+        if (args.origins == "next") {
             binding.tvAttTour.visibility = View.GONE
             binding.btnReport.visibility = View.GONE
         } else {
@@ -67,21 +62,30 @@ class DetailTournamentFragment : Fragment() {
             binding.btnReport.visibility = View.VISIBLE
         }
 
-        if (tournament.status == "pending"){
+        if (tournament.status == "pending") {
+            binding.buttonInscrever.text = "Finalizar"
             binding.tvStatus.text = "Inscrito"
             binding.tvStatus.backgroundTintList = resources.getColorStateList(R.color.status_peding)
-        } else {
-            binding.tvStatus.backgroundTintList = resources.getColorStateList(R.color.status_aproved)
+        }else {
+            binding.tvStatus.backgroundTintList =
+                resources.getColorStateList(R.color.status_aproved)
             binding.tvStatus.text = "Validada"
         }
-
+        if(tournament.status == "active"){
+            binding.buttonInscrever.text = "Finalizar"
+        }
 
         binding.buttonLink.setOnClickListener {
-            if (!tournament.eventUrl.isNullOrEmpty() && tournament.eventUrl!!.contains("https")){
+            if (tournament.status == "peding" || tournament.status == "active") {
+                findNavController().popBackStack()
+                return@setOnClickListener
+            }
+            if (!tournament.eventUrl.isNullOrEmpty() && tournament.eventUrl!!.contains("https")) {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(tournament.eventUrl))
                 startActivity(intent)
             } else {
-                Toast.makeText(requireContext(), "Link não encontrado", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Link não encontrado", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
@@ -116,7 +120,6 @@ class DetailTournamentFragment : Fragment() {
         }
 
         binding.textView22.text = buildString {
-
 
 
             append(tournament.location?.street)
@@ -155,7 +158,6 @@ class DetailTournamentFragment : Fragment() {
 //        }
 
 
-
     }
 
     private fun onClick() {
@@ -180,7 +182,10 @@ class DetailTournamentFragment : Fragment() {
                 findNavController()
                     .navigate(
                         DetailTournamentFragmentDirections
-                            .actionDetailTournamentFragmentToTournamentUpdateFragment(args.idSub, args.status!!)
+                            .actionDetailTournamentFragmentToTournamentUpdateFragment(
+                                args.idSub,
+                                args.status!!
+                            )
                     )
             }
 

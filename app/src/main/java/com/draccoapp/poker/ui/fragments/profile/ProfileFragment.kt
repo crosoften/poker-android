@@ -187,7 +187,7 @@ class ProfileFragment : Fragment() {
 
     private fun setupRecycler() {
 
-        applicantAdapter = TournamentMineAdapterNew(requireContext(),{},{})
+        applicantAdapter = TournamentMineAdapterNew(requireContext(),{},{},"")
 
         binding.recyclerDone.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)

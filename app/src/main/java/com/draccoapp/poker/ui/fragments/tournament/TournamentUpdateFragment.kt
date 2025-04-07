@@ -57,8 +57,16 @@ class TournamentUpdateFragment : Fragment() {
         }else{
             binding.imageView4.visibility = View.VISIBLE
         }
+    }
 
+    // Adicione este método para atualizar a lista
+    private fun refreshUpdatesList() {
+        viewModel.getFavorites(args.subscriptionId)
+    }
 
+    override fun onResume() {
+        super.onResume()
+        refreshUpdatesList()
     }
 
     private fun setupObserver() {
@@ -68,9 +76,7 @@ class TournamentUpdateFragment : Fragment() {
     }
 
     private fun onclick() {
-
         binding.apply {
-
             back.setOnClickListener {
                 findNavController()
                     .popBackStack()
@@ -83,25 +89,16 @@ class TournamentUpdateFragment : Fragment() {
                             .actionTournamentUpdateFragmentToAddUpdateFragment(args.subscriptionId)
                     )
             }
-
-
-
         }
     }
 
-
-
     private fun setupRecycler() {
-
         updateAdapter = UpdateTournamentAdapter(::onClickTournament)
 
         binding.recycler.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = updateAdapter
         }
-
-
-
     }
 
     private fun onClickTournament(tournament: UpdateTournamentData){
@@ -114,8 +111,6 @@ class TournamentUpdateFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         _binding = null
     }
-
 }

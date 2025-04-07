@@ -52,8 +52,6 @@ class GatewayFragment : Fragment() {
     private val selectionBoxTexts = mutableListOf<String>()
     private var questionIdCounter = 0
 
-
-
     private val args by navArgs<GatewayFragmentArgs>()
     private val tournament by lazy {
         args.tournament
@@ -89,6 +87,12 @@ class GatewayFragment : Fragment() {
     private fun setupObserver() {
         viewModel.appState.observe(viewLifecycleOwner){ state -> handleLoadingState(state) }
 
+        // A função configRespostaMultipleChoice já cria um RadioGroup que força seleção única, então está correta
+// A função configRespostaHorizontalLayoutWithCircles já permite seleção múltipla, então também está correta
+
+// Na função setupObserver, você precisa modificar como as perguntas são processadas
+// Encontre esta parte na sua função setupObserver e modifique-a:
+
         viewModel.successGetTournamentForms.observe(viewLifecycleOwner) {
             val questions = it.form.questions
             Log.i(TAG, "setupObserver: As questions são $questions")
@@ -96,46 +100,56 @@ class GatewayFragment : Fragment() {
             val linearLayout = binding.linLayQuestions
             linearLayout.removeAllViews()
 
-            // Adiciona dinamicamente TextViews para cada pergunta
+            // Adiciona TextViews para cada pergunta dinamicamente
             questions.forEach { question ->
-
                 val questionId = generateQuestionId()
-
-                // Atualize a pergunta com o ID gerado
                 val questionWithId = question.copy(id = questionId)
 
-                when (questionWithId .type) {
-                    "shortAnswer" -> {
-                        configPergunta(question, linearLayout)
-                        configRespostaShortAnswer(linearLayout)
-                    }
-
-                    "longAnswer" -> {
-                        configPergunta(question, linearLayout)
-                        configRespostaLongAnswer(linearLayout)
-                    }
-
-                    "multipleChoice" -> {
+                // Verifica o texto da pergunta para determinar o tipo correto a ser usado
+                when {
+                    // Se a pergunta for sobre anos jogando poker, garante que use multipleChoice (botões de rádio - seleção única)
+                    question.question.contains("quantos anos você joga poker", ignoreCase = true) -> {
                         configPergunta(question, linearLayout)
                         configRespostaMultipleChoice(question, linearLayout, questionId)
                     }
 
-                    "selectionBox" -> {
+                    // Se a pergunta for sobre características, garante que use selectionBox (círculos - seleção múltipla)
+                    question.question.contains("selecione uma características", ignoreCase = true) -> {
                         configPergunta(question, linearLayout)
                         configRespostaHorizontalLayoutWithCircles(question, linearLayout)
                     }
 
-                    "dropdown" -> {
-                        configPergunta(question, linearLayout)
-                        configRespostaDropdown(question, linearLayout)
-                    }
-
+                    // Para todas as outras perguntas, use o tipo original
                     else -> {
-                        mostrarToast("Tipo de pergunta desconhecido", requireContext())
+                        when (questionWithId.type) {
+                            "shortAnswer" -> {
+                                configPergunta(question, linearLayout)
+                                configRespostaShortAnswer(linearLayout)
+                            }
+                            "longAnswer" -> {
+                                configPergunta(question, linearLayout)
+                                configRespostaLongAnswer(linearLayout)
+                            }
+                            "multipleChoice" -> {
+                                configPergunta(question, linearLayout)
+                                configRespostaMultipleChoice(question, linearLayout, questionId)
+                            }
+                            "selectionBox" -> {
+                                configPergunta(question, linearLayout)
+                                configRespostaHorizontalLayoutWithCircles(question, linearLayout)
+                            }
+                            "dropdown" -> {
+                                configPergunta(question, linearLayout)
+                                configRespostaDropdown(question, linearLayout)
+                            }
+                            else -> {
+                                mostrarToast("Tipo de pergunta desconhecido", requireContext())
+                            }
+                        }
                     }
                 }
             }
-        }//observer
+        }
 
         viewModel.successSubscribeTournament.observe(viewLifecycleOwner) {
             findNavController().navigate(

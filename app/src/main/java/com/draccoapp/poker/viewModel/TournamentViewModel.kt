@@ -45,6 +45,10 @@ class TournamentViewModel(
     val successAddUpdate = MutableLiveData<AnswerResponse>()
     val successGetDetailsUpdadte = MutableLiveData<DetailsUpdateTournament>()
 
+    private val _languageLiveData = MutableLiveData<String>()
+    val languageLiveData: LiveData<String> = _languageLiveData
+
+
     val error: LiveData<String>
         get() = _error
 
@@ -61,32 +65,42 @@ class TournamentViewModel(
     private val _entry = MutableLiveData<Unit>()
 
 
-fun subscribeToTournament(idTounament : String, answerBody: AnswerBody){
-    repository.subscribeToTournament(idTournament = idTounament, answerBody = answerBody).enqueue(object : Callback<AnswerResponse> {
-        override fun onResponse(call: Call<AnswerResponse>, response: Response<AnswerResponse>) {
-            if (response.isSuccessful) {
-                successSubscribeTournament.postValue(response.body())
-                Log.i("TournamentViewModel", "onResponse: A resposta foi isSuccessfull")
-            } else {
-                try {
-                    val errorBody = response.errorBody()?.string()
-                    val erroLoginLimpo = limparMessage(errorBody.toString())
-                    Log.e("Error Body", "O erro  do servidor  LIMPOOO  foi ${erroLoginLimpo ?: "erro desconhecido"} ")
-                    mostrarToast(" $erroLoginLimpo ", PokerApplication.instance)
-                } catch (e: IOException) {
-                    Log.e("IOException", "Erro de leitura do response ->>", e)
+    fun subscribeToTournament(idTounament: String, answerBody: AnswerBody) {
+        repository.subscribeToTournament(idTournament = idTounament, answerBody = answerBody)
+            .enqueue(object : Callback<AnswerResponse> {
+                override fun onResponse(
+                    call: Call<AnswerResponse>,
+                    response: Response<AnswerResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        successSubscribeTournament.postValue(response.body())
+                        Log.i("TournamentViewModel", "onResponse: A resposta foi isSuccessfull")
+                    } else {
+                        try {
+                            val errorBody = response.errorBody()?.string()
+                            val erroLoginLimpo = limparMessage(errorBody.toString())
+                            Log.e(
+                                "Error Body",
+                                "O erro  do servidor  LIMPOOO  foi ${erroLoginLimpo ?: "erro desconhecido"} "
+                            )
+                            mostrarToast(" $erroLoginLimpo ", PokerApplication.instance)
+                        } catch (e: IOException) {
+                            Log.e("IOException", "Erro de leitura do response ->>", e)
+                        }
+                    }
                 }
-            }
-        }
 
-        override fun onFailure(call: Call<AnswerResponse>, t: Throwable) {
-            mostrarToast("Generic error", PokerApplication.instance)
-            Log.e("TournamentViewModel", "ONFAILUREEE  o erro na função solicitarTokenViewModel do CadastroViewModel foi $t")
-        }
+                override fun onFailure(call: Call<AnswerResponse>, t: Throwable) {
+                    mostrarToast("Generic error", PokerApplication.instance)
+                    Log.e(
+                        "TournamentViewModel",
+                        "ONFAILUREEE  o erro na função solicitarTokenViewModel do CadastroViewModel foi $t"
+                    )
+                }
 
-    })
+            })
 
-}
+    }
 
     fun getFavorites(subscriptionId: String) {
         val request = repository.getUpdate(subscriptionId)
@@ -153,7 +167,8 @@ fun subscribeToTournament(idTounament : String, answerBody: AnswerBody){
         })
 
     }
-fun getUpdateDetails(id: String) {
+
+    fun getUpdateDetails(id: String) {
         val request = repository.getUpdateDetails(id)
         request.enqueue(object : Callback<DetailsUpdateTournament> {
             override fun onResponse(
@@ -175,11 +190,13 @@ fun getUpdateDetails(id: String) {
 
     }
 
-
     fun getTournament(id: String) {
         _appState.postValue(DataState.Loading)
         repository.getTournament(id).enqueue(object : Callback<TournamentForms> {
-            override fun onResponse(call: Call<TournamentForms>, response: Response<TournamentForms>) {
+            override fun onResponse(
+                call: Call<TournamentForms>,
+                response: Response<TournamentForms>
+            ) {
                 if (response.isSuccessful) {
                     successGetTournamentForms.postValue(response.body())
                     _appState.postValue(DataState.Success)
@@ -198,12 +215,14 @@ fun getUpdateDetails(id: String) {
 
             override fun onFailure(call: Call<TournamentForms>, t: Throwable) {
                 mostrarToast("Generic error", PokerApplication.instance)
-                Log.e("TournamentViewModel", "ONFAILUREEE  o erro na função solicitarTokenViewModel do CadastroViewModel foi $t")
+                Log.e(
+                    "TournamentViewModel",
+                    "ONFAILUREEE  o erro na função solicitarTokenViewModel do CadastroViewModel foi $t"
+                )
             }
 
         })
     }
-
 
 
     fun createTournament(body: TournamentBodyNew) {
@@ -271,6 +290,14 @@ fun getUpdateDetails(id: String) {
                     _appState.value = DataState.Error
                 }
             )
+        }
+    }
+
+    fun loadLanguage() {
+        viewModelScope.launch {
+            val language = preferences.getLanguage()
+            Log.d("language",language )
+            _languageLiveData.postValue(language)
         }
     }
 

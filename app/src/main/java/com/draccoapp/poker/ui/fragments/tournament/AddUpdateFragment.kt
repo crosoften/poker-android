@@ -100,7 +100,8 @@ class AddUpdateFragment : Fragment() {
         val options = arrayOf<CharSequence>(
             //  getString(R.string.camera),
             getString(R.string.galeria),
-            getString(R.string.cancelar))
+            getString(R.string.cancelar)
+        )
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.selecionar_comprovante))
             .setItems(options) { dialog, item ->
@@ -155,7 +156,11 @@ class AddUpdateFragment : Fragment() {
                 startCamera()
             } else {
                 // A permissão foi negada, você pode exibir uma mensagem para o usuário ou solicitar novamente
-                Toast.makeText(requireContext(), getString(R.string.camera_permission_denied), Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.camera_permission_denied),
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             }
         }
@@ -216,8 +221,10 @@ class AddUpdateFragment : Fragment() {
 
                         val stream = ByteArrayOutputStream()
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream)
-                        val requestBody = RequestBody.create("image/jpeg".toMediaType(), stream.toByteArray())
-                        val imagePart = MultipartBody.Part.createFormData("file", "image.jpg", requestBody)
+                        val requestBody =
+                            RequestBody.create("image/jpeg".toMediaType(), stream.toByteArray())
+                        val imagePart =
+                            MultipartBody.Part.createFormData("file", "image.jpg", requestBody)
                         withContext(Dispatchers.Main) {
                             fotoSelecionada = imagePart
                             viewModelImage.uploadArquivo(fotoSelecionada)
@@ -238,8 +245,10 @@ class AddUpdateFragment : Fragment() {
                         val stream = ByteArrayOutputStream()
                         val bitmap = bitmapCamera
                         bitmap?.compress(Bitmap.CompressFormat.JPEG, 70, stream)
-                        val requestBody = RequestBody.create("image/jpeg".toMediaType(), stream.toByteArray())
-                        val imagePart = MultipartBody.Part.createFormData("file", "image.jpg", requestBody)
+                        val requestBody =
+                            RequestBody.create("image/jpeg".toMediaType(), stream.toByteArray())
+                        val imagePart =
+                            MultipartBody.Part.createFormData("file", "image.jpg", requestBody)
                         withContext(Dispatchers.Main) {
                             fotoSelecionada = imagePart
                             viewModelImage.uploadArquivo(fotoSelecionada)
@@ -274,18 +283,18 @@ class AddUpdateFragment : Fragment() {
             }
 
             imageView6.setOnClickListener {
-                    openImagePicker()
+                openImagePicker()
 
             }
 
             buttonEnter.setOnClickListener {
-                if (validade()){
+                if (validade()) {
                     viewModel.createUpdate(
                         AddUpdadeTournament(
                             subscriptionId = args.idTournament,
                             title = binding.editName.text.toString(),
                             message = binding.editMessage.text.toString(),
-                            proofUrl = imagemUpload
+                            proofUrl = if (imagemUpload == "") null else imagemUpload
                         )
                     )
                     findNavController()

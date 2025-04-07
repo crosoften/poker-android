@@ -54,6 +54,7 @@ class HomeFragment : Fragment() {
     private lateinit var nextTournamentData: List<NextTournament>
     private lateinit var currentLocation: LatLng
     private lateinit var locationManager: LocationManager
+    private var type = "PT"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,6 +68,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         location()
+        viewModel.loadLanguage()
         setupRecycler()
         setupLocation()
         checkPermissions()
@@ -82,21 +84,24 @@ class HomeFragment : Fragment() {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            val lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            val lastKnownLocation =
+                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
             if (lastKnownLocation != null) {
                 currentLocation = LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude)
                 requireContext().getPreferenceData().location(currentLocation)
                 homeViewModel.getHomeFragment()
                 viewModel.getTounamentImIn()
             } else {
-                locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER,
+                locationManager.requestSingleUpdate(
+                    LocationManager.GPS_PROVIDER,
                     { location ->
                         Log.e("gps", "dentro do else")
                         currentLocation = LatLng(location.latitude, location.longitude)
                         requireContext().getPreferenceData().location(currentLocation)
                         homeViewModel.getHomeFragment()
                         viewModel.getTounamentImIn()
-                    }, null)
+                    }, null
+                )
             }
         } else {
             ActivityCompat.requestPermissions(
@@ -183,7 +188,7 @@ class HomeFragment : Fragment() {
     private fun setupObserver() {
         lifecycleScope.launch {
             homeViewModel.appState.collect { state ->
-                when(state){
+                when (state) {
                     DataState.Success -> hideLoading()
                     DataState.Loading -> showLoading()
                     DataState.Error -> hideLoading()
@@ -231,6 +236,10 @@ class HomeFragment : Fragment() {
         viewModel.successTournamentInIm.observe(viewLifecycleOwner) { response ->
             response.data?.let { tournamentMineAdapter.updateList(it) }
         }
+        viewModel.languageLiveData.observe(viewLifecycleOwner) {
+            type = it
+            setupRecycler()
+        }
     }
 
 
@@ -258,7 +267,7 @@ class HomeFragment : Fragment() {
     private fun setupRecycler() {
         setupMyTournamentRecycler()
 
-        nextTournamentAdapter = TournamentAdapterNew(requireContext(), location = null) {
+        nextTournamentAdapter = TournamentAdapterNew(requireContext(), location = null, {
             findNavController()
                 .navigate(
                     HomeFragmentDirections
@@ -269,7 +278,7 @@ class HomeFragment : Fragment() {
                             "next"
                         )
                 )
-        }
+        }, type)
 
         binding.recyclerNext.apply {
             layoutManager =
@@ -303,7 +312,7 @@ class HomeFragment : Fragment() {
             } else {
                 Toast.makeText(requireContext(), "Torneio fechado", Toast.LENGTH_SHORT).show()
             }
-        })
+        }, "")
 
         binding.recyclerDone.apply {
             layoutManager =

@@ -21,7 +21,8 @@ import com.draccoapp.poker.utils.converterDistance
 class TournamentAdapterNew(
     private val context: Context,
     location: Location?,
-    private val onClick: (NextTournament) -> Unit
+    private val onClick: (NextTournament) -> Unit,
+    private val type :String
 ) : RecyclerView.Adapter<TournamentAdapterNew.ViewHolder>() {
 
     private var tournamentList: AsyncListDiffer<NextTournament> =
@@ -36,6 +37,7 @@ class TournamentAdapterNew(
 
     fun updateLocation(location: Location) {
         userLocation = location
+        notifyDataSetChanged()
     }
 
     fun setUnit(unit: String) {
@@ -72,8 +74,6 @@ class TournamentAdapterNew(
             binding.icCamera.visibility = View.INVISIBLE
 
             Glide.with(context).load(nextTournament.imageUrl).into(binding.imageView7)
-            val type = context.getPreferenceData().getLanguage()
-
 
             userLocation?.let {
                 val latitude = it.latitude

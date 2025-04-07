@@ -12,6 +12,7 @@ import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.databinding.FragmentNextTournamentBinding
 import com.draccoapp.poker.extensions.showSnackBarRed
 import com.draccoapp.poker.ui.adapters.TournamentListAdapter
+import com.draccoapp.poker.ui.fragments.home.HomeFragmentDirections
 import com.draccoapp.poker.viewModel.HomeViewModel
 import com.draccoapp.poker.viewModel.UserViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,7 +23,7 @@ class NextTournamentFragment : Fragment() {
     private var _binding: FragmentNextTournamentBinding? = null
     private val binding get() = _binding!!
     private val TAG = "NextTournamentFragment"
-    private val viewModel : UserViewModel by viewModel()
+    private val viewModel: UserViewModel by viewModel()
     private val homeViewModel: HomeViewModel by viewModel()
 
     private lateinit var nextAdapter: TournamentListAdapter
@@ -78,19 +79,22 @@ class NextTournamentFragment : Fragment() {
         nextAdapter = TournamentListAdapter(::onClickTournament)
 
         binding.recycler.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = nextAdapter
         }
     }
 
-    private fun onClickTournament(tournament: NextTournament){
-//        findNavController()
-//            .navigate(
-//                NextTournamentFragmentDirections
-//                    .actionNextTournamentFragmentToDetailTournamentFragment(
-//                        tournament
-//                    )
-//            )
+    private fun onClickTournament(tournament: NextTournament) {
+
+        findNavController().navigate(
+            NextTournamentFragmentDirections.actionNextTournamentFragmentToDetailTournamentFragment(
+                tournament,
+                null,
+                "null",
+                "next"
+            )
+        )
     }
 
     override fun onDestroyView() {
