@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.draccoapp.poker.R
 import com.draccoapp.poker.data.Contract
 import com.draccoapp.poker.databinding.ItemContractListBinding
 
@@ -40,13 +41,7 @@ class ContractListAdapter(
 
 
         fun bind(contract: Contract){
-
             binding.textTitleList.text = contract.title
-            binding.textValueList.text = buildString {
-                append("Valor: ")
-                append("\$ 100000,00")
-            }
-
             binding.root.setOnClickListener {
                 onClick(contract)
             }

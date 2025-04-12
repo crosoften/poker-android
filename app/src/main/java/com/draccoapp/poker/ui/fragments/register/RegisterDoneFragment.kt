@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.draccoapp.poker.R
 import com.draccoapp.poker.databinding.FragmentAboutBinding
 import com.draccoapp.poker.databinding.FragmentRegisterDoneBinding
+import com.draccoapp.poker.utils.Preferences
 
 
 class RegisterDoneFragment : Fragment() {
@@ -34,12 +35,14 @@ class RegisterDoneFragment : Fragment() {
     }
 
     private fun onclick() {
+        val preferences = Preferences(requireContext())
+        preferences.setAutorized(false)
 
         binding.apply {
 
             back.setOnClickListener {
                 findNavController()
-                    .popBackStack()
+                    .popBackStack(R.id.loginFragment, false)
             }
 
             buttonProfileAbout.setOnClickListener {
@@ -49,6 +52,7 @@ class RegisterDoneFragment : Fragment() {
                             .actionRegisterDoneFragmentToAboutFragment2()
                     )
             }
+
 
             buttonProfileContact.setOnClickListener {
                 findNavController()

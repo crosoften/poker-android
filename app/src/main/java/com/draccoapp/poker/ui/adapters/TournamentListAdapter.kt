@@ -5,31 +5,42 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.draccoapp.poker.data.Tournament
-import com.draccoapp.poker.databinding.ItemTournamentBinding
+import coil.load
+import com.draccoapp.poker.R
+import com.draccoapp.poker.api.model.response.homeFrament.NextTournament
+import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.databinding.ItemTournamentListBinding
+import com.draccoapp.poker.extensions.viewInvisible
+import com.draccoapp.poker.utils.converterDataNextTournament
+import java.util.Locale
 
 class TournamentListAdapter(
-    private val onClick: (Tournament) -> Unit
+    private val onClick: (NextTournament) -> Unit
 ): RecyclerView.Adapter<TournamentListAdapter.ViewHolder>() {
 
-    private var tournamentList: AsyncListDiffer<Tournament> = AsyncListDiffer(this, DiffCallBack)
+    private var tournamentList: AsyncListDiffer<NextTournament> = AsyncListDiffer(this, DiffCallBack)
 
-    fun updateList(list: List<Tournament>){
+    private var unit = "km"
+
+    fun updateList(list: List<NextTournament>){
         tournamentList.submitList(list)
     }
 
-    object DiffCallBack : DiffUtil.ItemCallback<Tournament>() {
+    fun setUnit(unit: String){
+        this.unit = unit
+    }
+
+    object DiffCallBack : DiffUtil.ItemCallback<NextTournament>() {
         override fun areItemsTheSame(
-            oldItem: Tournament,
-            newItem: Tournament
+            oldItem: NextTournament,
+            newItem: NextTournament
         ): Boolean {
             return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: Tournament,
-            newItem: Tournament
+            oldItem: NextTournament,
+            newItem: NextTournament
         ): Boolean {
             return oldItem == newItem
         }
@@ -39,15 +50,43 @@ class TournamentListAdapter(
         private val binding: ItemTournamentListBinding
     ): RecyclerView.ViewHolder(binding.root) {
 
-        private val distance = arrayListOf(5, 10, 20, 30, 40, 50)
-
-        fun bind(tournament: Tournament){
+        fun bind(tournament: NextTournament){
 
             binding.textTitleList.text = tournament.title
-            binding.textDateList.text = tournament.dataFull
-            binding.textDistanceList.text = buildString {
-                append(distance.random())
-                append(" km de você")
+            binding.textDateList.text = tournament.startDatetime?.let {
+                converterDataNextTournament(
+                    it
+                )
+            }
+
+            tournament.imageUrl.let { url ->
+                binding.imageView5.load(url) {
+                    crossfade(true)
+                    placeholder(R.drawable.ic_wallpaper)
+                    error(R.drawable.ic_wallpaper)
+                }
+            }
+
+//            tournament.distance?.let { distance ->
+//                when(unit){
+//                    "metric" -> binding.textDistanceList.text = buildString {
+//                        append(String.format(Locale.US, "%.2f", distance))
+//                        append(binding.root.context.getString(R.string.km_de_voce))
+//                    }
+//                    "imperial" -> binding.textDistanceList.text = buildString {
+//                        append(String.format(Locale.US, "%.2f", distance))
+//                        append(binding.root.context.getString(R.string.mi_de_voce))
+//                    }
+//                }
+//            } ?: run {
+                binding.textDistanceList.viewInvisible()
+//            }
+
+
+            if (tournament.status == "pending"){
+                binding.chipList.text = "Inscrito"
+            } else {
+                binding.chipList.text = "Validada"
             }
 
             binding.root.setOnClickListener {

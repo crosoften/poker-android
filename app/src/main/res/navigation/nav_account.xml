@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_loginFragment_to_registerProfileFragment"
             app:destination="@id/registerProfileFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerDoneFragment"
+            app:destination="@id/registerDoneFragment" />
     </fragment>
     <fragment
         android:id="@+id/twoFactorFragment"

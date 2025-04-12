@@ -1,29 +1,29 @@
 package com.draccoapp.poker.ui.fragments.contract.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.draccoapp.poker.R
-import com.draccoapp.poker.data.Contract
-import com.draccoapp.poker.data.randomContract
-import com.draccoapp.poker.databinding.FragmentAllContractBinding
+import com.draccoapp.poker.api.model.response.contract.Contract
+import com.draccoapp.poker.api.model.type.ContractStatus
+import com.draccoapp.poker.api.pagging.adaptersPaginacao.AdapterPaginacaoPending
 import com.draccoapp.poker.databinding.FragmentPendingContractBinding
-import com.draccoapp.poker.ui.adapters.ContractListAdapter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.draccoapp.poker.ui.adapters.Contract2Adapter
+import com.draccoapp.poker.utils.mostrarToast
+import com.draccoapp.poker.viewModel.ContractViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import retrofit2.HttpException
 
 
 class PendingContractFragment : Fragment() {
 
     private var _binding: FragmentPendingContractBinding? = null
     private val binding get() = _binding!!
-
-
-    private lateinit var contractListAdapter: ContractListAdapter
+    private lateinit var adapterPaginacaoPending: AdapterPaginacaoPending
+    private val viewModel: ContractViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,57 +31,34 @@ class PendingContractFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentPendingContractBinding.inflate(inflater, container, false)
+        adapterPaginacaoPending = AdapterPaginacaoPending()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        onclick()
-        setupRecycler()
-        initModels()
+        setupObserver()
     }
 
-    private fun onclick() {
-        binding.apply {
-
-
-        }
-    }
-
-    private fun initModels() {
-
-        val numContractToAdd = 10
-
-        lifecycleScope.launch {
-            val contractToAdd = (1..numContractToAdd).map { randomContract() }
-
-            launch(Dispatchers.Main) {
-                contractListAdapter.updateList(contractToAdd)
+    private fun setupObserver() {
+        viewModel.allContracts.observe(viewLifecycleOwner){
+            viewModel.filterContracts("pending")?.let {
+                setupRecycler(it)
             }
         }
-
-    }
-
-    private fun setupRecycler() {
-
-        contractListAdapter = ContractListAdapter(::onClickContract)
-
-        binding.recycler.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            adapter = contractListAdapter
+        viewModel.error.observe(viewLifecycleOwner) {
+            mostrarToast(it, requireContext())
         }
     }
 
-    private fun onClickContract(contract: Contract){
-//        findNavController()
-//            .navigate(
-//                HomeFragmentDirections
-//                    .actionHomeFragmentToDetailTournamentFragment(
-//                        tournament
-//                    )
-//            )
+    private fun setupRecycler(pendingContracts: List<Contract>) {
+        binding.recycler.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapter = Contract2Adapter(pendingContracts){}
+        }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

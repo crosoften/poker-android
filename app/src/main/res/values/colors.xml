@@ -2,13 +2,19 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="primary">#C11E23</color>
+    <color name="primary">#DB282D</color>
     <color name="secundary">#0171C5</color>
+    <color name="bordaVermelha">#DC282D</color>
     <color name="background">#1D2429</color>
     <color name="button_background">#14181B</color>
     <color name="background_tournament">#014A76</color>
     <color name="textPrimary">#0564B3</color>
     <color name="unselect_bottom">#FFFFFF</color>
     <color name="text_edit">#8F9193</color>
+    <color name="transparent">#00000000</color>
+    <color name="vermelhoSnack">#fd7268</color>
+    <color name="verdeSnack">#0c5b0a</color>
     <color name="background_chip">#1E7A21</color>
+    <color name="status_peding">#7C3828</color>
+    <color name="status_aproved">#1E7A21</color>
 </resources>

@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_bold"
-                android:text="contratos"
+                android:text="@string/contratos"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@+id/back"
@@ -83,7 +83,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="#F5F5F5"
-                    android:hint="O que você procura?"
+                    android:hint="@string/o_que_voc_procura"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:paddingVertical="0dp"
@@ -97,11 +97,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
+                android:contentDescription="Filtro de contratos"
                 android:src="@drawable/ic_filter"
                 app:layout_constraintBottom_toBottomOf="@+id/input_search_contract"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/input_search_contract"
-                android:contentDescription="Filtro de contratos" />
+                app:layout_constraintTop_toTopOf="@+id/input_search_contract" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_list_contract"
@@ -113,12 +113,12 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/input_search_contract"
-                app:tabTextColor="@color/white"
-                app:tabSelectedTextColor="@color/primary"
                 app:tabIndicator="@color/primary"
                 app:tabIndicatorColor="@color/primary"
                 app:tabMode="auto"
-                app:tabRippleColor="@color/background" />
+                app:tabRippleColor="@color/background"
+                app:tabSelectedTextColor="@color/primary"
+                app:tabTextColor="@color/white" />
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/view_pager_list"

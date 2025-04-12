@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_bold"
-                android:text="SOBRE"
+                android:text="@string/sobre"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@+id/back"

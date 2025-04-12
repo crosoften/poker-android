@@ -1,12 +1,21 @@
-package com.draccoapp.poker.utils
+package com.draccoapp.poker.extensions
 
 
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.view.View
+import com.draccoapp.poker.utils.Preferences
 import com.google.android.material.snackbar.Snackbar
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+import java.util.TimeZone
 
 fun Context.getCharset(text: String): String {
     return String(text.toByteArray(Charsets.ISO_8859_1), Charsets.UTF_8)
@@ -61,4 +70,35 @@ fun Context.copyToClipboard(text: CharSequence) {
     val clipboard = getSystemService(ClipboardManager::class.java)
     val clip = ClipData.newPlainText("label", text)
     clipboard.setPrimaryClip(clip)
+}
+
+
+
+//fun String.isoToBrFormat(): String {
+//    val isoFormatter = DateTimeFormatter.ISO_DATE_TIME
+//    val brFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+//    val date = LocalDate.parse(this, isoFormatter)
+//    return date.format(brFormatter)
+//}
+
+
+//fun String.isoToDateTimeFormat(context: Context): String {
+//
+//    val preferences = Preferences(context)
+//    val isoFormatter = DateTimeFormatter.ISO_DATE_TIME
+//    val locale = Locale(preferences.getLanguage(), preferences.getCountry())
+//    val localFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", locale)
+//    val date = LocalDateTime.parse(this, isoFormatter)
+//    val localDate = date.atZone(ZoneId.of("UTC")).toLocalDateTime()
+//    return localDate.format(localFormatter)
+//}
+
+fun Context.openWebPage(url: String) {
+    val webpage: Uri = Uri.parse(url)
+    val intent = Intent(Intent.ACTION_VIEW, webpage)
+    startActivity(intent)
+}
+
+fun Context.getPreferenceData(): Preferences {
+    return Preferences(this)
 }

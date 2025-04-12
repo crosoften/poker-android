@@ -12,44 +12,32 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragments.tournament.DetailTournamentFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/background"
-            android:orientation="vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:elevation="4dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp"
+            android:src="@drawable/ic_left_arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/solicitation_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="4dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/torneio"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="10dp"
-                android:src="@drawable/ic_left_arrow"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/white" />
-
-            <TextView
-                android:id="@+id/solicitation_details"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_bold"
-                android:text="TORNEIO"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/back"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/back" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toTopOf="@+id/back" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -58,7 +46,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -67,13 +55,13 @@
                 <ImageView
                     android:id="@+id/imageView2"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="240dp"
+                    android:contentDescription="Plano de fundo do torneio"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_wallpaper"
+                    tools:src="@drawable/ic_wallpaper"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:contentDescription="Plano de fundo do torneio" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView13"
@@ -83,7 +71,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="Torneio Poker"
+                    android:text="@string/torneio_poker"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toStartOf="@+id/textView14"
@@ -103,13 +91,28 @@
                     app:layout_constraintTop_toTopOf="@+id/textView13" />
 
                 <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/poppins_bold"
+                    tools:text="Inscrito"
+                    android:background="@drawable/bg_status"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="4dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textView14"/>
+
+
+                <TextView
                     android:id="@+id/textView15"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/poppins"
-                    android:text="Premiação"
+                    android:text="@string/premia_o"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -120,7 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="6dp"
                     android:fontFamily="@font/poppins_bold"
                     android:text="$ 20000,00"
                     android:textColor="@color/white"
@@ -135,7 +138,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="Regras para Jogar"
+                    android:text="@string/regras_para_jogar"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -146,6 +149,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="6dp"
                     android:src="@drawable/ic_report"
                     app:layout_constraintBottom_toBottomOf="@+id/textView17"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -153,13 +157,26 @@
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
 
                 <TextView
+                    android:id="@+id/tvAttTour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:fontFamily="@font/poppins"
+                    android:text="Atualizar Torneio"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView17"
+                    app:layout_constraintEnd_toStartOf="@id/btn_report"
+                    app:layout_constraintTop_toTopOf="@+id/textView17" />
+
+                <TextView
                     android:id="@+id/textView18"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="6dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/poppins"
+                    android:maxLines="8"
                     android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -173,7 +190,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="Data do evento"
+                    android:text="@string/data_do_evento"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -184,12 +201,37 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="2dp"
                     android:fontFamily="@font/poppins"
                     android:text="00/00/0000 às 9:00"
                     android:textColor="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+                <TextView
+                    android:id="@+id/tv_date_finish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Data de Encerramento"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView20" />
+
+                <TextView
+                    android:id="@+id/date_finish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/poppins"
+                    android:text="00/00/0000 às 9:00"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_date_finish" />
 
 
                 <TextView
@@ -199,18 +241,18 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="Endereço"
+                    android:text="@string/endere_o"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView20" />
+                    app:layout_constraintTop_toBottomOf="@+id/date_finish" />
 
                 <TextView
                     android:id="@+id/textView22"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="2dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/poppins"
                     android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
@@ -227,7 +269,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/poppins"
-                    android:text="Você está a 40km de distância do torneio"
+                    android:text="@string/voc_est_a_40km_de_dist_ncia_do_torneio"
                     android:textColor="@color/primary"
                     app:layout_constraintEnd_toStartOf="@+id/imageView3"
                     app:layout_constraintStart_toStartOf="parent"
@@ -252,11 +294,11 @@
                     android:layout_marginTop="30dp"
                     android:layout_marginEnd="24dp"
                     android:background="@drawable/bg_button"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:text="Increver-se"
-                    android:textColor="@color/white"
                     android:fontFamily="@font/roboto_bold"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:text="@string/increver_se"
                     android:textAllCaps="true"
+                    android:textColor="@color/white"
                     app:backgroundTint="@color/primary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -273,17 +315,16 @@
                     android:layout_marginEnd="24dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/bg_button_secundary"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:text="Link oficial do torneio"
-                    android:textColor="@color/white"
                     android:fontFamily="@font/roboto_bold"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:text="@string/link_oficial_do_torneio"
                     android:textAllCaps="true"
+                    android:textColor="@color/white"
                     app:backgroundTint="@color/background"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/button_inscrever" />
-
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

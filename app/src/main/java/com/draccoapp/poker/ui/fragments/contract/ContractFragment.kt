@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.draccoapp.poker.R
+import com.draccoapp.poker.databinding.FragmentAllContractBinding
 import com.draccoapp.poker.databinding.FragmentApplicantTournamentBinding
 import com.draccoapp.poker.databinding.FragmentContractBinding
 import com.draccoapp.poker.ui.adapters.ViewPagerContractListAdapter
@@ -31,6 +33,19 @@ class ContractFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViewPager()
+        onclick()
+    }
+
+    private fun onclick() {
+
+        binding.apply {
+
+            back.setOnClickListener {
+                findNavController()
+                    .popBackStack()
+            }
+
+        }
     }
 
     private fun setupViewPager() {
@@ -41,16 +56,16 @@ class ContractFragment : Fragment() {
         TabLayoutMediator(binding.tabListContract, binding.viewPagerList){ tab, position->
             when(position){
                 0->{
-                    tab.text = "Todos"
+                    tab.text = getString(R.string.todos)
                 }
                 1->{
-                    tab.text = "Pendentes"
+                    tab.text = getString(R.string.pendentes)
                 }
                 2->{
-                    tab.text = "Vigentes"
+                    tab.text = getString(R.string.vigentes)
                 }
                 3 -> {
-                    tab.text = "Finalizados"
+                    tab.text = getString(R.string.finalizados)
                 }
             }
         }.attach()

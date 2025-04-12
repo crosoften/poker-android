@@ -5,22 +5,26 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.draccoapp.poker.R
-import com.draccoapp.poker.data.Tournament
-import com.draccoapp.poker.data.randomTournament
-import com.draccoapp.poker.databinding.FragmentDetailTournamentBinding
+import com.draccoapp.poker.api.model.response.homeFrament.NextTournament
+import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.databinding.FragmentNextTournamentBinding
+import com.draccoapp.poker.extensions.showSnackBarRed
 import com.draccoapp.poker.ui.adapters.TournamentListAdapter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.draccoapp.poker.ui.fragments.home.HomeFragmentDirections
+import com.draccoapp.poker.viewModel.HomeViewModel
+import com.draccoapp.poker.viewModel.UserViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class NextTournamentFragment : Fragment() {
 
     private var _binding: FragmentNextTournamentBinding? = null
     private val binding get() = _binding!!
+    private val TAG = "NextTournamentFragment"
+    private val viewModel: UserViewModel by viewModel()
+    private val homeViewModel: HomeViewModel by viewModel()
 
     private lateinit var nextAdapter: TournamentListAdapter
 
@@ -35,28 +39,39 @@ class NextTournamentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        homeViewModel.getHomeFragment()
+        setupObserver()
         onclick()
         setupRecycler()
-        initModels()
     }
 
     private fun onclick() {
+        binding.apply {
 
-    }
-
-    private fun initModels() {
-
-        val numTournamentToAdd = 10
-
-        lifecycleScope.launch {
-            val tournamentToAdd = (1..numTournamentToAdd).map { randomTournament() }
-
-            launch(Dispatchers.Main) {
-                nextAdapter.updateList(tournamentToAdd)
+            back.setOnClickListener {
+                findNavController()
+                    .popBackStack()
             }
         }
+    }
 
+    private fun setupObserver() {
+
+//        viewModel.getTournamentsAvailableToUser()
+        homeViewModel.successHomeFragment.observe(viewLifecycleOwner) { response ->
+            response.nextTournaments?.let { nextAdapter.updateList(it) }
+        }
+
+//        viewModel.tournamentsByUser.observe(viewLifecycleOwner) { response ->
+//            nextAdapter.updateList(response)
+//            nextAdapter.setUnit(viewModel.getUnit())
+//        }
+
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            error?.let {
+                binding.root.showSnackBarRed(it)
+            }
+        }
     }
 
     private fun setupRecycler() {
@@ -64,19 +79,22 @@ class NextTournamentFragment : Fragment() {
         nextAdapter = TournamentListAdapter(::onClickTournament)
 
         binding.recycler.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = nextAdapter
         }
     }
 
-    private fun onClickTournament(tournament: Tournament){
-//        findNavController()
-//            .navigate(
-//                HomeFragmentDirections
-//                    .actionHomeFragmentToDetailTournamentFragment(
-//                        tournament
-//                    )
-//            )
+    private fun onClickTournament(tournament: NextTournament) {
+
+        findNavController().navigate(
+            NextTournamentFragmentDirections.actionNextTournamentFragmentToDetailTournamentFragment(
+                tournament,
+                null,
+                "null",
+                "next"
+            )
+        )
     }
 
     override fun onDestroyView() {

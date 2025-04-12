@@ -1,0 +1,7 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <stroke
+        android:width="2dp"
+        android:color="@color/primary" /> <!-- Largura e cor da borda -->
+    <solid android:color="@color/background" /> <!-- Cor do círculo -->
+</shape>

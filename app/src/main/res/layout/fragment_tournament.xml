@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_bold"
-                android:text="INSCRIÇÃO"
+                android:text="@string/inscri_o"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@+id/back"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -72,7 +72,7 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/poppins_light"
-                    android:text="Nome do torneio"
+                    android:text="@string/nome_do_torneio"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -97,7 +97,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="@color/black"
-                        android:hint="Informe o nome do torneio"
+                        android:hint="@string/informe_o_nome_do_torneio"
                         android:inputType="textCapWords"
                         android:maxLines="1"
                         android:paddingVertical="0dp"
@@ -113,11 +113,24 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/poppins_light"
-                    android:text="Premiação"
+                    android:text="@string/premia_o"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/input_name" />
+
+                <TextView
+                    android:id="@+id/txt_moedaAtual"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/poppins_light"
+                    android:text="()"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/label_award"
+                    app:layout_constraintStart_toEndOf="@+id/label_award"
+                    app:layout_constraintTop_toTopOf="@+id/label_award" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_award"
@@ -138,10 +151,181 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="@color/black"
-                        android:hint="R$ 000,00"
+                        android:hint="000.00"
                         android:inputType="numberDecimal"
                         android:maxLines="1"
                         android:paddingVertical="0dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/label_startDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_light"
+                    android:text="@string/date_start"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/input_award" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_startDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="12dp"
+                    app:endIconTint="@color/white"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toStartOf="@id/input_finishDate"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/label_startDate">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_startDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/black"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:paddingVertical="0dp"
+                        android:text=" "
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/label_finishDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_light"
+                    android:text="@string/date_finish"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="@id/input_finishDate"
+                    app:layout_constraintTop_toBottomOf="@id/input_award" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_finishDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="24dp"
+                    app:endIconTint="@color/white"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/input_startDate"
+                    app:layout_constraintTop_toBottomOf="@+id/label_finishDate">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_finishDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/black"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:paddingVertical="0dp"
+                        android:text=" "
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/label_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_light"
+                    android:text="@string/time"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/input_finishDate" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="24dp"
+                    app:endIconTint="@color/white"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/label_time">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/black"
+                        android:imeOptions="actionNext"
+                        android:inputType="date"
+                        android:maxLines="1"
+                        android:paddingVertical="0dp"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/label_descripiton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_light"
+                    android:text="@string/description_torneio"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/input_time" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_descripiton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="24dp"
+                    app:endIconTint="@color/white"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/label_descripiton">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_descripiton"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/black"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:paddingVertical="0dp"
+                        android:text=" "
+                        android:textAlignment="viewStart"
                         android:textColor="@color/white"
                         android:textColorHint="@color/white" />
 
@@ -153,16 +337,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="20dp"
-                    android:text="País"
-                    android:textColor="@color/white"
                     android:fontFamily="@font/poppins_light"
+                    android:text="@string/pa_s"
+                    android:textColor="@color/white"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/input_award" />
+                    app:layout_constraintTop_toBottomOf="@+id/input_descripiton" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_country"
-                    style="@style/TextInputLayoutDrop"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="24dp"
@@ -175,16 +359,14 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/label_country">
 
-                    <AutoCompleteTextView
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_country"
                         android:layout_width="match_parent"
-                        android:focusableInTouchMode="false"
                         android:layout_height="50dp"
                         android:background="@color/black"
-                        android:imeOptions="actionNext"
-                        android:textAlignment="viewStart"
-                        android:inputType="none"
-                        android:text="Brasil"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:paddingVertical="0dp"
                         android:textColor="@color/white"
                         android:textColorHint="@color/white" />
 
@@ -197,16 +379,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="20dp"
-                    android:text="Estado"
-                    android:textColor="@color/white"
                     android:fontFamily="@font/poppins_light"
+                    android:text="@string/estado"
+                    android:textColor="@color/white"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/input_country" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_state"
-                    style="@style/TextInputLayoutDrop"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="24dp"
@@ -219,16 +401,14 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/label_state">
 
-                    <AutoCompleteTextView
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_state"
                         android:layout_width="match_parent"
-                        android:focusableInTouchMode="false"
                         android:layout_height="50dp"
                         android:background="@color/black"
-                        android:imeOptions="actionNext"
-                        android:textAlignment="viewStart"
-                        android:inputType="none"
-                        android:text="São Paulo"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:paddingVertical="0dp"
                         android:textColor="@color/white"
                         android:textColorHint="@color/white" />
 
@@ -240,16 +420,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="20dp"
-                    android:text="Cidade"
-                    android:textColor="@color/white"
                     android:fontFamily="@font/poppins_light"
+                    android:text="@string/cidade"
+                    android:textColor="@color/white"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/input_state" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_city"
-                    style="@style/TextInputLayoutDrop"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="24dp"
@@ -262,15 +441,188 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/label_city">
 
-                    <AutoCompleteTextView
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_city"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="@color/black"
-                        android:focusableInTouchMode="false"
                         android:imeOptions="actionNext"
-                        android:inputType="none"
-                        android:text="São Paulo"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:paddingVertical="0dp"
+                        android:text=" "
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/label_neighborhood"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_light"
+                    android:text="@string/neighborhood"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/input_city" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_neighborhood"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="24dp"
+                    app:endIconTint="@color/white"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/label_neighborhood">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_neighborhood"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/black"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:paddingVertical="0dp"
+                        android:text=" "
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/label_street"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_light"
+                    android:text="@string/street"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/input_neighborhood" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_street"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="24dp"
+                    app:endIconTint="@color/white"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/label_street">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_street"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/black"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:paddingVertical="0dp"
+                        android:text=" "
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/label_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_light"
+                    android:text="@string/number"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/input_street" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="24dp"
+                    app:endIconTint="@color/white"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/label_number">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/black"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:paddingVertical="0dp"
+                        android:text=" "
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/label_zipcode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_light"
+                    android:text="@string/zipcode"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/input_number" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_zipcode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="24dp"
+                    app:endIconTint="@color/white"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/label_zipcode">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_zipcode"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/black"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLines="1"
+                        android:paddingVertical="0dp"
+                        android:text=" "
                         android:textAlignment="viewStart"
                         android:textColor="@color/white"
                         android:textColorHint="@color/white" />
@@ -284,11 +636,11 @@
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/poppins_light"
-                    android:text="Link do torneio"
+                    android:text="@string/link_do_torneio"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/input_city" />
+                    app:layout_constraintTop_toBottomOf="@+id/input_zipcode" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_link"
@@ -309,7 +661,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="@color/black"
-                        android:hint="Informe o link do torneio"
+                        android:hint="@string/informe_o_link_do_torneio"
                         android:inputType="textCapWords"
                         android:maxLines="1"
                         android:paddingVertical="0dp"
@@ -333,7 +685,7 @@
 
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_enter"
+                    android:id="@+id/button_confirmar"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -345,7 +697,7 @@
                     android:background="@drawable/bg_button"
                     android:fontFamily="@font/roboto_bold"
                     android:foreground="?attr/selectableItemBackground"
-                    android:text="confirmar"
+                    android:text="@string/confirmar"
                     android:textAllCaps="true"
                     android:textColor="@color/white"
                     app:backgroundTint="@color/primary"

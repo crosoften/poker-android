@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_bold"
-                android:text="ATUALIZAÇÃO DO TORNEIO"
+                android:text="@string/atualiza_o_do_torneio"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@+id/back"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -70,8 +70,9 @@
                     android:layout_height="200dp"
                     android:contentDescription="Plano de fundo do torneio"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_wallpaper"
+                    tools:src="@drawable/ic_wallpaper"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -83,7 +84,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/poppins_semibold"
-                    android:text="Torneio Poker"
+                    tools:text="@string/torneio_poker"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toStartOf="@+id/textView14"
@@ -110,7 +111,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="Descrição"
+                    android:text="@string/descri_o"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -125,21 +126,12 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/poppins"
-                    android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                    tools:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView15" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    tools:listitem="@layout/item_list_update"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -153,20 +145,7 @@
             android:background="@color/background"
             app:layout_constraintBottom_toBottomOf="parent">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/btn_new_update"
-                style="@style/ThemeOverlay.Material3.FloatingActionButton.Primary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:circularflow_defaultRadius="50dp"
-                android:layout_margin="15dp"
-                android:src="@drawable/ic_plus"
-                app:backgroundTint="@color/primary"
-                app:fabSize="normal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/white" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

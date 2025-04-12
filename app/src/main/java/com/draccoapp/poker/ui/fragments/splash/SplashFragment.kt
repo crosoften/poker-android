@@ -13,12 +13,18 @@ import androidx.navigation.fragment.findNavController
 import com.draccoapp.poker.R
 import com.draccoapp.poker.databinding.FragmentSplashBinding
 import com.draccoapp.poker.ui.activities.AccountActivity
+import com.draccoapp.poker.ui.activities.MainActivity
+import com.draccoapp.poker.utils.Preferences
+import com.draccoapp.poker.viewModel.AuthViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SplashFragment : Fragment() {
 
     private var _binding: FragmentSplashBinding? = null
     private val binding get() = _binding!!
+    private val TAG = "SplashFragment"
+    private val viewModel: AuthViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,8 +42,6 @@ class SplashFragment : Fragment() {
     }
 
     private fun initDelay() {
-//        val progressBarHorizontal = binding.progressBar
-
         val totalProgressTime = 3000
         val progressBarMax = 100
 
@@ -46,7 +50,6 @@ class SplashFragment : Fragment() {
 
         animator.addUpdateListener { animation ->
             val progress = animation.animatedValue as Int
-//            progressBarHorizontal.progress = progress
         }
 
         animator.start()
@@ -54,9 +57,13 @@ class SplashFragment : Fragment() {
 
         animator.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
-                startActivity(Intent(requireContext(), AccountActivity::class.java))
-                requireActivity().finishAffinity()
-
+                if (viewModel.getIsLogged()) {
+                    startActivity(Intent(requireContext(), MainActivity::class.java))
+                    requireActivity().finishAffinity()
+                } else {
+                    startActivity(Intent(requireContext(), AccountActivity::class.java))
+                    requireActivity().finishAffinity()
+                }
             }
         })
     }

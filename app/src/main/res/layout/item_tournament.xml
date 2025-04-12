@@ -3,15 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="158dp"
-    android:backgroundTint="@color/background"
+    android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    app:strokeColor="@color/background"
-    android:layout_height="wrap_content">
+    android:backgroundTint="@color/background"
+    app:strokeColor="@color/background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.825" />
 
         <ImageView
             android:id="@+id/imageView7"
@@ -40,7 +46,7 @@
             android:id="@+id/text_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="0dp"
             android:fontFamily="@font/poppins"
             android:text="00/00/0000"
             android:textColor="@color/white"
@@ -53,10 +59,10 @@
             android:id="@+id/text_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="0dp"
             android:layout_marginBottom="4dp"
             android:fontFamily="@font/poppins"
-            android:text="40 km de você"
+            android:text="@string/_40_km_de_voc"
             android:textColor="@color/primary"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -64,6 +70,7 @@
             app:layout_constraintTop_toBottomOf="@+id/text_date" />
 
         <ImageView
+            android:id="@+id/ic_camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

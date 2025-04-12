@@ -5,21 +5,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.draccoapp.poker.R
-import com.draccoapp.poker.data.Tournament
-import com.draccoapp.poker.data.randomTournament
+import com.draccoapp.poker.api.model.response.homeFrament.NextTournament
+import com.draccoapp.poker.api.model.response.homeFrament.TournamentsImIn
+import com.draccoapp.poker.api.modelOld.response.Tournament
 import com.draccoapp.poker.databinding.FragmentAllApplicantBinding
-import com.draccoapp.poker.ui.adapters.TournamentAdapter
+import com.draccoapp.poker.extensions.showSnackBarRed
+import com.draccoapp.poker.ui.adapters.TournamentImInListAdapter
 import com.draccoapp.poker.ui.adapters.TournamentListAdapter
-import com.draccoapp.poker.ui.fragments.home.HomeFragmentDirections
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.draccoapp.poker.ui.fragments.tournament.applicant.ApplicantTournamentFragmentDirections
+import com.draccoapp.poker.viewModel.HomeViewModel
+import com.draccoapp.poker.viewModel.UserViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class AllApplicantFragment : Fragment() {
@@ -27,8 +25,11 @@ class AllApplicantFragment : Fragment() {
     private var _binding: FragmentAllApplicantBinding? = null
     private val binding get() = _binding!!
 
+    private val TAG = "AllApplicantFragment"
+    private val viewModel : UserViewModel by viewModel()
+    private val homeViewModel: HomeViewModel by viewModel()
 
-    private lateinit var applicantAdapter: TournamentListAdapter
+    private lateinit var applicantAdapter: TournamentImInListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,10 +42,10 @@ class AllApplicantFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        homeViewModel.getHomeFragment()
+        setupObserver()
         onclick()
         setupRecycler()
-        initModels()
     }
 
     private fun onclick() {
@@ -54,23 +55,30 @@ class AllApplicantFragment : Fragment() {
         }
     }
 
-    private fun initModels() {
+    private fun setupObserver() {
 
-        val numTournamentToAdd = 10
+//        viewModel.getTournamentsJoinedByUser()
+        homeViewModel.successHomeFragment.observe(viewLifecycleOwner) { response ->
 
-        lifecycleScope.launch {
-            val tournamentToAdd = (1..numTournamentToAdd).map { randomTournament() }
+            response.tournamentsImIn?.let { applicantAdapter.updateList(it) }
 
-            launch(Dispatchers.Main) {
-                applicantAdapter.updateList(tournamentToAdd)
-            }
         }
 
+        viewModel.tournamentApplicant.observe(viewLifecycleOwner) { response ->
+//            applicantAdapter.updateList(response)
+//            applicantAdapter.setUnit(viewModel.getUnit())
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            error?.let {
+                binding.root.showSnackBarRed(it)
+            }
+        }
     }
 
     private fun setupRecycler() {
 
-        applicantAdapter = TournamentListAdapter(::onClickTournament)
+        applicantAdapter = TournamentImInListAdapter(::onClickTournament)
 
         binding.recycler.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -78,11 +86,11 @@ class AllApplicantFragment : Fragment() {
         }
     }
 
-    private fun onClickTournament(tournament: Tournament){
+    private fun onClickTournament(tournament: TournamentsImIn){
 //        findNavController()
 //            .navigate(
-//                HomeFragmentDirections
-//                    .actionHomeFragmentToDetailTournamentFragment(
+//                ApplicantTournamentFragmentDirections
+//                    .actionApplicantTournamentFragmentToDetailTournamentFragment(
 //                        tournament
 //                    )
 //            )
