@@ -87,10 +87,11 @@ class TournamentAdapterNew(
                 )
 
                 Log.i("localizacao", "bind: $distance")
+                binding.textDistance.text = converterDistance(distance.toString(), type)
             }
             Log.i("localizacao", "torneio: ${nextTournament}")
 
-            binding.textDistance.text = converterDistance(nextTournament.location?.distance, type)
+            binding.textDistance.text = converterDistance(nextTournament.location.distance, type)
 
             binding.root.setOnClickListener {
                 onClick(nextTournament)
