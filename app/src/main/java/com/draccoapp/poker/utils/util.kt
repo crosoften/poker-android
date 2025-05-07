@@ -114,9 +114,13 @@ fun converterDataNextTournament(dataHoraString: String): String {
 fun converterDistance(distance: String?, type: String): String {
     if (distance == null) return "Unknown distance"
 
-    val distanceValue = distance.toIntOrNull() ?: return "Invalid distance"
+    val cleanType = type.trim().uppercase().ifEmpty { "PT" }
 
-    return when (type.uppercase()) {
+    android.util.Log.d("converterDistance", "type tratado: '$cleanType'")
+
+    val distanceValue = distance.toDoubleOrNull() ?: return "Invalid distance"
+
+    return when (cleanType) {
         "PT" -> {
             val distanceInKm = distanceValue / 1000.0
             String.format("%.1f km de distância", distanceInKm)
@@ -128,6 +132,7 @@ fun converterDistance(distance: String?, type: String): String {
         else -> "Invalid type"
     }
 }
+
 
 fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
     val R = 6371 // Raio da Terra em quilômetros
