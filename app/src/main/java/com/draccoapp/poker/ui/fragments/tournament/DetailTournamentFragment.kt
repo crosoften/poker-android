@@ -3,26 +3,21 @@ package com.draccoapp.poker.ui.fragments.tournament
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import coil.load
 import com.bumptech.glide.Glide
 import com.draccoapp.poker.R
 import com.draccoapp.poker.databinding.FragmentDetailTournamentBinding
 import com.draccoapp.poker.extensions.getPreferenceData
-import com.draccoapp.poker.extensions.viewInvisible
-import com.draccoapp.poker.utils.MaskEditUtil
 import com.draccoapp.poker.utils.converterDataNextTournament
 import com.draccoapp.poker.utils.converterDistance
 import com.draccoapp.poker.viewModel.TournamentViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.Locale
 
 
 class DetailTournamentFragment : Fragment() {
@@ -125,8 +120,8 @@ class DetailTournamentFragment : Fragment() {
 
 
         }
-        val distance = tournament.location?.distance
-        val type = requireContext().getPreferenceData().getLanguage()
+        val distance = tournament.location.distance
+        val type = requireContext().getPreferenceData().getLanguage().ifBlank { "PT" }
         binding.textView23.text = converterDistance(distance, type)
 
 //        tournament.distance?.let { distance ->
