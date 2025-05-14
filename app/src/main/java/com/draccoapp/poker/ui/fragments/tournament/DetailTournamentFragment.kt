@@ -57,6 +57,19 @@ class DetailTournamentFragment : Fragment() {
             binding.btnReport.visibility = View.VISIBLE
         }
 
+        if (tournament.status == "pending") {
+            binding.buttonInscrever.text = "Inscrever-se"
+            binding.tvStatus.text = "Inscrito"
+            binding.tvStatus.backgroundTintList = resources.getColorStateList(R.color.status_peding)
+        }else {
+            binding.tvStatus.backgroundTintList =
+                resources.getColorStateList(R.color.status_aproved)
+            binding.tvStatus.text = "Validado"
+        }
+        if(tournament.status == "active"){
+            binding.buttonInscrever.text = "Inscrever-se"
+        }
+
         binding.buttonLink.setOnClickListener {
             if (tournament.status == "peding" || tournament.status == "active") {
                 findNavController().popBackStack()

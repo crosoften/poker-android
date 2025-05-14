@@ -1,5 +1,6 @@
 package com.draccoapp.poker.ui.fragments.tournament
 
+
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -34,6 +35,9 @@ import com.draccoapp.poker.viewModel.TournamentViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.core.view.isVisible
+
+
 
 
 class GatewayFragment : Fragment() {
@@ -44,18 +48,22 @@ class GatewayFragment : Fragment() {
 //    var shortAnswerCounter = 1
 //    var dropdownCounter = 1
 
+
     private val editTextList = mutableListOf<TextInputEditText>()
     private val editTextLongList = mutableListOf<TextInputEditText>()
     private val selectedRadioButtonsMap = mutableMapOf<Int, RadioButton>()
+
 
     private val dropDownList = mutableListOf<AutoCompleteTextView>()
     private val selectionBoxTexts = mutableListOf<String>()
     private var questionIdCounter = 0
 
+
     private val args by navArgs<GatewayFragmentArgs>()
     private val tournament by lazy {
         args.tournament
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,6 +73,7 @@ class GatewayFragment : Fragment() {
         _binding = FragmentGatewayBinding.inflate(inflater, container, false)
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -77,6 +86,8 @@ class GatewayFragment : Fragment() {
     }
 
 
+
+
     private fun setupUI() {
         Glide.with(requireContext()).load(tournament.imageUrl).into(binding.imageView2)
         tournament.title.let { binding.textView13.text = it }
@@ -84,14 +95,18 @@ class GatewayFragment : Fragment() {
         tournament.prize.let { binding.textView16.text = it.toString() }
     }
 
+
     private fun setupObserver() {
         viewModel.appState.observe(viewLifecycleOwner){ state -> handleLoadingState(state) }
+
 
         // A função configRespostaMultipleChoice já cria um RadioGroup que força seleção única, então está correta
 // A função configRespostaHorizontalLayoutWithCircles já permite seleção múltipla, então também está correta
 
+
 // Na função setupObserver, você precisa modificar como as perguntas são processadas
 // Encontre esta parte na sua função setupObserver e modifique-a:
+
 
         viewModel.successGetTournamentForms.observe(viewLifecycleOwner) {
             val questions = it.form.questions
@@ -110,13 +125,14 @@ class GatewayFragment : Fragment() {
                     // Se a pergunta for sobre anos jogando poker, garante que use multipleChoice (botões de rádio - seleção única)
                     question.question.contains("quantos anos você joga poker", ignoreCase = true) -> {
                         configPergunta(question, linearLayout)
-                        configRespostaMultipleChoice(question, linearLayout, questionId)
+                        configRespostaHorizontalLayoutWithCircles(question, linearLayout, questionId)
                     }
+
 
                     // Se a pergunta for sobre características, garante que use selectionBox (círculos - seleção múltipla)
                     question.question.contains("selecione uma características", ignoreCase = true) -> {
                         configPergunta(question, linearLayout)
-                        configRespostaHorizontalLayoutWithCircles(question, linearLayout)
+                        configRespostaMultipleChoice(question, linearLayout)
                     }
 
                     // Para todas as outras perguntas, use o tipo original
@@ -132,11 +148,11 @@ class GatewayFragment : Fragment() {
                             }
                             "multipleChoice" -> {
                                 configPergunta(question, linearLayout)
-                                configRespostaMultipleChoice(question, linearLayout, questionId)
+                                configRespostaMultipleChoice(question, linearLayout)
                             }
                             "selectionBox" -> {
                                 configPergunta(question, linearLayout)
-                                configRespostaHorizontalLayoutWithCircles(question, linearLayout)
+                                configRespostaHorizontalLayoutWithCircles(question, linearLayout, questionId)
                             }
                             "dropdown" -> {
                                 configPergunta(question, linearLayout)
@@ -178,7 +194,7 @@ class GatewayFragment : Fragment() {
         binding.mainContainer.visibility = View.VISIBLE
     }
 
-    private fun configRespostaHorizontalLayoutWithCircles(question: Question, parentLinearLayout: LinearLayout) {
+    private fun configRespostaMultipleChoice(question: Question, parentLinearLayout: LinearLayout) {
         question.options.forEach { option ->
             // Cria um LinearLayout horizontal
             val horizontalLayout = LinearLayout(requireContext()).apply {
@@ -236,6 +252,7 @@ class GatewayFragment : Fragment() {
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 ).apply { setMargins(6, 0, 16, 0) }
 
+
                 addView(outerCircle)
                 addView(innerCircle)
             }
@@ -249,19 +266,20 @@ class GatewayFragment : Fragment() {
 
             // Listener personalizado para alternar a visibilidade do círculo cheio
             frameLayout.setOnClickListener {
-                innerCircle.visibility = if (innerCircle.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-                outerCircle.background = if (innerCircle.visibility == View.VISIBLE) {
+                innerCircle.visibility = if (innerCircle.isVisible) View.GONE else View.VISIBLE
+                outerCircle.background = if (innerCircle.isVisible) {
                     ContextCompat.getDrawable(requireContext(), R.drawable.circle_outline_red)
                 } else ContextCompat.getDrawable(requireContext(), R.drawable.circle_outline_white)
 
-
                 //se o iner tiver visible vc adiciona e se o invisível vc remove
-                if (innerCircle.visibility == View.VISIBLE) {
+                if (innerCircle.isVisible) {
                     selectionBoxTexts.add(textView.text.toString())
+
 
                 } else {
                     selectionBoxTexts.remove(textView.text.toString())
                 }
+
 
                 Log.i("Circles", "configRespostaHorizontalLayout: InnerCircle visibility é ${innerCircle.visibility}")
             }
@@ -310,38 +328,38 @@ class GatewayFragment : Fragment() {
         linearLayout.addView(textInputLayout)
     }
 
-    private fun configRespostaMultipleChoice(question: Question, linearLayout: LinearLayout, questionId: Int) {
-//        val radioGroup = RadioGroup(requireContext())
+    private fun configRespostaHorizontalLayoutWithCircles(question: Question, linearLayout: LinearLayout, questionId: Int) {
         val radioGroup = RadioGroup(requireContext()).apply {
-            id = questionId  // Adicione um ID único para o RadioGroup
+            orientation = RadioGroup.VERTICAL
 
-            // Adicione um listener para monitorar as mudanças na seleção
             setOnCheckedChangeListener { group, checkedId ->
-                // Limpe a seleção anterior da questão atual
                 selectedRadioButtonsMap.remove(group.id)
 
-                // Encontre o RadioButton selecionado e adicione-o à lista
-                val selectedRadioButton = findViewById<RadioButton>(checkedId)
+                val selectedRadioButton = group.findViewById<RadioButton>(checkedId)
                 selectedRadioButton?.let {
                     selectedRadioButtonsMap[group.id] = it
+                    Log.d("GatewayFragment", "Selecionado: ${it.text}")
                 }
             }
         }
 
-        question.options.forEach { option ->
+        question.options.forEachIndexed { _, option ->
             val radioButton = RadioButton(requireContext()).apply {
                 text = option.option
-                setTextColor(resources.getColor(R.color.white))
+                setTextColor(resources.getColor(R.color.white, null))
                 textSize = 13f
 
-                // Define as margens para o RadioButton
-                val layoutParams = RadioGroup.LayoutParams(
+
+                // Garante IDs únicos para cada botão
+                id = View.generateViewId()
+
+
+                layoutParams = RadioGroup.LayoutParams(
                     RadioGroup.LayoutParams.WRAP_CONTENT,
                     RadioGroup.LayoutParams.WRAP_CONTENT
                 ).apply {
-                    setPadding(17, 0, 0, 0)
+                    setMargins(17, 0, 0, 0)
                 }
-                this.layoutParams = layoutParams
             }
             radioGroup.addView(radioButton)
         }
@@ -349,8 +367,10 @@ class GatewayFragment : Fragment() {
         linearLayout.addView(radioGroup)
     }
 
-    private fun configRespostaShortAnswer(linearLayout: LinearLayout) {
 
+
+
+    private fun configRespostaShortAnswer(linearLayout: LinearLayout) {
 
         val textInputLayout = TextInputLayout(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(
@@ -361,6 +381,7 @@ class GatewayFragment : Fragment() {
                 isHintEnabled = false
             }
         }
+
 
         // Cria um TextInputEditText e define a configuração
         val textInputEditText = TextInputEditText(requireContext()).apply {
@@ -379,6 +400,7 @@ class GatewayFragment : Fragment() {
             )
             id = View.generateViewId() // Gera um ID único
 
+
 //            tag = "shortAnswer $shortAnswerCounter" // Define a tag incremental
             editTextList.add(this)
         }
@@ -386,6 +408,7 @@ class GatewayFragment : Fragment() {
         textInputLayout.addView(textInputEditText)
         linearLayout.addView(textInputLayout)
     }
+
 
     private fun configRespostaLongAnswer(linearLayout: LinearLayout) {
         val textInputLayout = TextInputLayout(requireContext()).apply {
@@ -425,9 +448,9 @@ class GatewayFragment : Fragment() {
     private fun configPergunta(question: Question, linearLayout: LinearLayout) {
         val textView = TextView(context).apply {
             Log.i("QuestionReq", "configPergunta: question.required é : ${question.required}")
-            if (question.required) {
-                text = question.question.trim() + " *"
-            } else text = question.question.trim()
+            (if (question.required) {
+                question.question.trim() + " *"
+            } else question.question.trim()).also { this.text = it }
 
             textSize = 15f
             setTextColor(resources.getColor(R.color.white))
@@ -443,18 +466,19 @@ class GatewayFragment : Fragment() {
             buttonInscrever.setOnClickListener {
                 val answersList = mutableListOf<String>()
 
-
                 editTextList.forEach { editText ->
                     val answer = editText.text.toString()
                     Log.i("Respostas", "O texto da resposta curta é $answer")
                     answersList.add(answer)
                 }
 
+
                 editTextLongList.forEach { editText ->
                     val answer = editText.text.toString()
                     Log.i("Respostas", "O texto da resposta longas é $answer")
                     answersList.add(answer)
                 }
+
 
                 selectedRadioButtonsMap.values.forEach { radioButton ->
                     val answer = radioButton.text.toString()
@@ -464,16 +488,21 @@ class GatewayFragment : Fragment() {
 //                Log.i("Respostas", "onClick: a lista de RADIO é $selectedRadioButtons")
 
 
+
+
                 dropDownList.forEach { dropdown ->
                     val answer = dropdown.text.toString()
                     Log.i("Respostas", "onClick: O texto do dropdown é $answer")
                     answersList.add(answer)
                 }
 
+
                 Log.i("Respostas", "onClick: O texto do selectionBox é $selectionBoxTexts")
                 val joinedString = selectionBoxTexts.joinToString(separator = ", ")
 
+
                 answersList.add(joinedString)
+
 
                 val bodyAnswers = AnswerBody(answersList)
                 bodyAnswers.answer.forEach {
@@ -484,26 +513,32 @@ class GatewayFragment : Fragment() {
                 }
             }
 
+
             back.setOnClickListener {
                 findNavController()
                     .popBackStack()
             }
         }
 
+
     }
+
 
     // Método de extensão para converter dp para px
     fun Int.dpToPx(context: Context): Int {
         return (this * context.resources.displayMetrics.density).toInt()
     }
 
+
     // Função para gerar IDs únicos
     private fun generateQuestionId(): Int {
         return questionIdCounter++
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
+
 
         _binding = null
     }
