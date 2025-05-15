@@ -301,6 +301,32 @@ class TournamentViewModel(
         }
     }
 
+    fun getStatusTournaments() {
+        val request = repository.getTounamentImIn()
+        request.enqueue(object : Callback<TournamentInImResponse> {
+            override fun onResponse(
+                call: Call<TournamentInImResponse>,
+                response: Response<TournamentInImResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val tournamentList = response.body()?.data
+                    tournamentList?.forEach { tournamentInImData ->
+                        val status = tournamentInImData.status
+                        Log.d("TournamentStatus", "Torneio ID: ${tournamentInImData.id}, Status: $status")
+                        // Aqui você pode postar esse status em algum LiveData se quiser
+                    }
+                    successTournamentInIm.postValue(response.body())
+                } else {
+                    _error.postValue(ResponseParser.parseError(response))
+                }
+            }
+
+            override fun onFailure(call: Call<TournamentInImResponse>, t: Throwable) {
+                _error.postValue(t.message)
+            }
+        })
+    }
+
 
     val listaDeEstadosBrasileiros = mutableListOf(
         "Acre",

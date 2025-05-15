@@ -139,6 +139,13 @@
     <string name="_40_km_de_voc">40 km de você</string>
     <string name="zip_code">CEP</string>
     <string name="hint_digit_your_message">Digite sua mensagem</string>
+    <string name="login">LOGIN</string>
+    <string name="approved">Validado</string>
+    <string name="pending">Inscrito</string>
+    <string name="repproved">Reprovado</string>
+    <string name="closed">Encerrado</string>
+    <string name="complete">CONCLUIR</string>
+    <string name="sign_up">INSCREVER-SE</string>
 
 
 </resources>

@@ -17,4 +17,8 @@
     <color name="background_chip">#1E7A21</color>
     <color name="status_peding">#7C3828</color>
     <color name="status_aproved">#1E7A21</color>
+    <color name="status_approved">#28DC28</color> <!-- Green -->
+    <color name="status_pending">#DC4D28</color> <!-- Orange/Red -->
+    <color name="status_repproved">#DC4D28</color> <!-- Orange/Red -->
+    <color name="status_closed">#DC4D28</color> <!-- Orange/Red -->
 </resources>

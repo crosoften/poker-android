@@ -139,4 +139,11 @@
     <string name="_40_km_de_voc">40 km from you</string>
     <string name="zip_code">Zip Code</string>
     <string name="hint_digit_your_message">Digit your message</string>
+    <string name="login">LOGIN</string>
+    <string name="approved">Validaded</string>
+    <string name="pending">Registrated</string>
+    <string name="repproved">Repprovated</string>
+    <string name="closed">Closed</string>
+    <string name="complete">Complete</string>
+    <string name="sign_up">Sign Up</string>
 </resources>
