@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "405504249570",
+    "project_id": "propath-1",
+    "storage_bucket": "propath-1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:405504249570:android:324594ef148541f19b98bb",
+        "android_client_info": {
+          "package_name": "com.draccoapp.poker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAk_JKH6dD9O91Mid1kLJGJUt6HAARIT7I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

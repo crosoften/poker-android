@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.safeargsAndroid)
     alias(libs.plugins.kotlin.parcelize)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -85,4 +86,6 @@ dependencies {
     implementation (libs.androidx.paging.common.ktx.v331)
     implementation (libs.logging.interceptor)
     implementation (libs.play.services.maps)// Ou versão mais recente
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging)
 }
